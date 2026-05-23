@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Company Schedule Settings - {{ company.name }}</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary: #0F766E;      /* Deep Teal - Main brand color */
+    --secondary: #14B8A6;    /* Soft Teal - Hover states */
+    --background: #FFFAFA;   /* Snow White - Main background */
+    --card-bg: #FFFFFF;      /* Pure White - Cards */
+    --text-primary: #1E293B;  /* Dark Slate - Main text */
+    --text-secondary: #64748B; /* Gray - Secondary text */
+    --border: #E2E8F0;        /* Light gray border */
+    --green: #10B981;
+    --yellow: #F59E0B;
+    --red: #EF4444;
+    --blue: #0F766E;
+    
+    --shadow-luxury: 0 6px 24px rgba(15,23,42,0.08);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* GLOBAL FLUID BASE */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--background);
+    min-height: 100vh;
+    color: var(--text-primary);
+    padding: 24px;
+    position: relative;
+}
+
+/* Subtle background pattern */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at 25% 50%, rgba(15,118,110,0.03) 0%, transparent 50%),
+                      radial-gradient(circle at 75% 80%, rgba(15,118,110,0.02) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* MAIN CONTAINER */
+.container {
+    max-width: 650px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* CARD STYLE */
+.settings-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: var(--shadow-luxury);
+    animation: fadeIn 0.5s ease;
+    position: relative;
+}
+
+/* Top accent line */
+.settings-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), var(--primary), transparent);
+    border-radius: 3px;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* TITLE */
+h2 {
+    margin-bottom: 8px;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+    letter-spacing: -0.3px;
+}
+
+.company-name {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+    font-size: 14px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* SECTION TITLES */
+h3, h4 {
+    margin: 24px 0 16px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+}
+
+/* FORM GROUPS */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+/* SELECT DROPDOWN */
+select, input[type="time"], input[type="number"] {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--background);
+    color: var(--text-primary);
+    outline: none;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    transition: var(--transition);
+}
+
+select option {
+    background: var(--card-bg);
+    color: var(--text-primary);
+}
+
+select:focus, input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(15,118,110,0.1);
+}
+
+/* CHECKBOX GROUP */
+.checkbox-group {
+    background: rgba(15,118,110,0.03);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-top: 10px;
+    border: 1px solid var(--border);
+}
+
+.checkbox {
+    display: inline-block;
+    margin-right: 24px;
+    margin-bottom: 12px;
+}
+
+.checkbox label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-primary);
+}
+
+.checkbox input {
+    width: auto;
+    margin-right: 8px;
+    transform: scale(1.1);
+    cursor: pointer;
+    accent-color: var(--primary);
+}
+
+/* ALERT MESSAGES */
+.alert {
+    padding: 14px 18px;
+    border-radius: var(--radius-md);
+    margin-bottom: 24px;
+    font-size: 14px;
+}
+
+.alert-info {
+    background: rgba(15,118,110,0.08);
+    border: 1px solid rgba(15,118,110,0.15);
+    color: var(--primary);
+}
+
+.alert-info a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.alert-info a:hover {
+    text-decoration: underline;
+}
+
+.alert-success {
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.2);
+    color: var(--green);
+}
+
+.alert-error {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.2);
+    color: var(--red);
+}
+
+/* HELP TEXT */
+.help-text {
+    display: block;
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 6px;
+}
+
+/* BUTTON */
+.btn-save {
+    width: 100%;
+    padding: 14px;
+    margin-top: 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-save:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(15,118,110,0.25);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--border);
+    margin-top: 10px;
+}
+
+.btn-secondary:hover {
+    background: rgba(15,118,110,0.08);
+    border-color: var(--primary);
+    transform: translateY(-1px);
+}
+
+/* FIXED & SHIFT SECTIONS */
+.schedule-section {
+    transition: var(--transition);
+}
+
+/* MESSAGES */
+.error, .success {
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.error {
+    background: rgba(239,68,68,0.1);
+    color: var(--red);
+    border: 1px solid rgba(239,68,68,0.2);
+}
+
+.success {
+    background: rgba(16,185,129,0.1);
+    color: var(--green);
+    border: 1px solid rgba(16,185,129,0.2);
+}
+
+/* NAVIGATION LINKS */
+.nav-links {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    margin: 0 12px;
+    transition: var(--transition);
+}
+
+.nav-link:hover {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+    body {
+        padding: 16px;
+    }
+    
+    .settings-card {
+        padding: 24px 20px;
+    }
+    
+    h2 {
+        font-size: 22px;
+    }
+    
+    .checkbox {
+        display: block;
+        margin-right: 0;
+    }
+    
+    .checkbox-group {
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .settings-card {
+        padding: 20px 16px;
+    }
+    
+    h4 {
+        font-size: 16px;
+    }
+    
+    select, input {
+        padding: 10px 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <div class="settings-card">
+        <h2>Schedule Settings</h2>
+        <div class="company-name">{{ company.name }}</div>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="{% if message.tags == 'success' %}success{% elif message.tags == 'error' %}error{% else %}alert alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- Schedule Type Selection -->
+            <div class="form-group">
+                <label>Schedule Type</label>
+                <select name="schedule_type" id="schedule_type">
+                    {% for value, label in schedule_types %}
+                    <option value="{{ value }}" {% if company.schedule_type == value %}selected{% endif %}>
+                        {{ label }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <small class="help-text">Choose how your company tracks work hours</small>
+            </div>
+            
+            <!-- FIXED SCHEDULE SECTION -->
+            <div id="fixed_section" class="schedule-section" style="{% if company.schedule_type != 'fixed' %}display:none;{% endif %}">
+                <h4>Fixed Work Schedule</h4>
+                
+                <div class="form-group">
+                    <label>Start Time</label>
+                    <input type="time" name="fixed_start_time" 
+                           value="{{ company.fixed_start_time|time:'H:i' }}">
+                    <small class="help-text">When employees should start work</small>
+                </div>
+                
+                <div class="form-group">
+                    <label>End Time</label>
+                    <input type="time" name="fixed_end_time"
+                           value="{{ company.fixed_end_time|time:'H:i' }}">
+                    <small class="help-text">When employees should finish work</small>
+                </div>
+                
+                <div class="form-group">
+                    <label>Late After (minutes)</label>
+                    <input type="number" name="fixed_late_threshold"
+                           value="{{ company.fixed_late_threshold|default:15 }}" min="0" max="120">
+                    <small class="help-text">Employee is marked late this many minutes after start time</small>
+                </div>
+                
+                <div class="form-group">
+                    <label>Early Departure After (minutes)</label>
+                    <input type="number" name="fixed_early_departure_threshold"
+                           value="{{ company.fixed_early_departure_threshold|default:15 }}" min="0" max="120">
+                    <small class="help-text">Employee is marked early departure this many minutes before end time</small>
+                </div>
+            </div>
+            
+            <!-- SHIFT SECTION INFO -->
+            <div id="shifts_section" class="schedule-section" style="{% if company.schedule_type != 'shifts' %}display:none;{% endif %}">
+                <div class="alert alert-info">
+                    🔄 <strong>Shift Schedule Selected</strong><br>
+                    You can create different shifts (Morning, Afternoon, Night) and assign employees to them.
+                    <br><br>
+                    <a href="{% url 'users:manage_shifts' %}">→ Click here to create and assign shifts ←</a>
+                </div>
+            </div>
+            
+            <!-- Working Days -->
+            <h4>Working Days</h4>
+            <div class="checkbox-group">
+                {% for day in weekdays %}
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="working_days" value="{{ day.value }}"
+                               {% if day.value in company.working_days %}checked{% endif %}>
+                        {{ day.name }}
+                    </label>
+                </div>
+                {% endfor %}
+                <small class="help-text" style="display: block; margin-top: 10px;">Select days when employees work</small>
+            </div>
+            
+            <button type="submit" class="btn-save">Save Settings</button>
+        </form>
+        
+        <div class="nav-links">
+            <a href="{% url 'users:hr_dashboard' %}" class="nav-link">← Back to Dashboard</a>
+            {% if company.schedule_type == 'shifts' %}
+            <a href="{% url 'users:manage_shifts' %}" class="nav-link">Manage Shifts →</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    // Toggle between fixed and shift sections
+    const scheduleTypeSelect = document.getElementById('schedule_type');
+    const fixedSection = document.getElementById('fixed_section');
+    const shiftsSection = document.getElementById('shifts_section');
+    
+    function toggleSections() {
+        if (scheduleTypeSelect.value === 'fixed') {
+            fixedSection.style.display = 'block';
+            shiftsSection.style.display = 'none';
+        } else if (scheduleTypeSelect.value === 'shifts') {
+            fixedSection.style.display = 'none';
+            shiftsSection.style.display = 'block';
+        }
+    }
+    
+    if (scheduleTypeSelect) {
+        scheduleTypeSelect.addEventListener('change', toggleSections);
+    }
+    
+    // Auto-hide messages after 5 seconds
+    setTimeout(function() {
+        const messages = document.querySelectorAll('.success, .error, .alert');
+        messages.forEach(function(msg) {
+            if (!msg.innerHTML.includes('Shift Schedule Selected')) {
+                msg.style.transition = 'opacity 0.5s';
+                msg.style.opacity = '0';
+                setTimeout(function() {
+                    msg.style.display = 'none';
+                }, 500);
+            }
+        });
+    }, 5000);
+</script>
+</body>
+</html>

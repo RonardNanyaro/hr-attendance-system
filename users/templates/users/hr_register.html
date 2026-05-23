@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HR Registration - HR System</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary: #0F766E;      /* Deep Teal - Main brand color */
+    --secondary: #14B8A6;    /* Soft Teal - Hover states */
+    --success: #10B981;      /* Success Green */
+    --background: #FFFAFA;   /* Snow White - Main background */
+    --card-bg: #FFFFFF;      /* Pure White - Cards */
+    --text-primary: #1E293B;  /* Dark Slate - Main text */
+    --text-secondary: #64748B; /* Gray - Secondary text */
+    --border: #E2E8F0;        /* Light gray border */
+    --shadow-luxury: 0 20px 35px -10px rgba(0,0,0,0.1);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* GLOBAL FLUID BASE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    color: var(--text-primary);
+    position: relative;
+}
+
+/* Subtle background pattern */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at 25% 50%, rgba(15,118,110,0.03) 0%, transparent 50%),
+                      radial-gradient(circle at 75% 80%, rgba(15,118,110,0.02) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* CARD */
+.box {
+    width: min(420px, 95vw);
+    padding: 36px 32px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-luxury);
+    text-align: center;
+    animation: fadeIn 0.5s ease;
+    position: relative;
+    z-index: 1;
+}
+
+/* Top accent line */
+.box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), var(--primary), transparent);
+    border-radius: 3px;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* TITLE */
+h2 {
+    margin-bottom: 8px;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 28px;
+}
+
+/* INPUTS */
+input {
+    width: 100%;
+    padding: 12px 16px;
+    margin: 8px 0;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--background);
+    color: var(--text-primary);
+    outline: none;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    transition: var(--transition);
+}
+
+input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(15,118,110,0.1);
+}
+
+input::placeholder {
+    color: var(--text-secondary);
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 16px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: var(--transition);
+}
+
+button:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(15,118,110,0.25);
+}
+
+/* LINKS */
+.link {
+    display: block;
+    margin-top: 20px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    transition: var(--transition);
+}
+
+.link:hover {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+/* MESSAGES */
+.error, .success {
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.error {
+    background: rgba(239,68,68,0.1);
+    color: #EF4444;
+    border: 1px solid rgba(239,68,68,0.2);
+}
+
+.success {
+    background: rgba(16,185,129,0.1);
+    color: #10B981;
+    border: 1px solid rgba(16,185,129,0.2);
+}
+
+/* Phone input specific */
+.phone-note {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    text-align: left;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .box {
+        padding: 28px 20px;
+    }
+    
+    h2 {
+        font-size: 22px;
+    }
+    
+    input, button {
+        padding: 10px 14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Create HR Account</h2>
+    <div class="subtitle">Register your company and HR profile</div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{% if message.tags == 'error' %}error{% else %}success{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="company_name" placeholder="Company Name" required>
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email Address" required>
+
+        <input 
+            type="tel" 
+            name="phone" 
+            value="+255" 
+            placeholder="Phone Number (+2557XXXXXXXX)"
+            required
+            onfocus="if(this.value==='+255'){this.setSelectionRange(4,4);}"
+            oninput="if(!this.value.startsWith('+255')){this.value='+255';}"
+        >
+        <div class="phone-note">📱 Tanzanian format: +255 followed by 9 digits</div>
+
+        <input type="password" name="password" placeholder="Password" required>
+
+        <button type="submit">Create Account</button>
+    </form>
+
+    <a href="{% url 'users:hr_login' %}" class="link">← Back to Login</a>
+</div>
+
+</body>
+</html>

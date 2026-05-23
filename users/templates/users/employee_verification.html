@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Employee Verification - HR System</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary: #0F766E;      /* Deep Teal - Main brand color */
+    --secondary: #14B8A6;    /* Soft Teal - Hover states */
+    --background: #FFFAFA;   /* Snow White - Main background */
+    --card-bg: #FFFFFF;      /* Pure White - Cards */
+    --text-primary: #1E293B;  /* Dark Slate - Main text */
+    --text-secondary: #64748B; /* Gray - Secondary text */
+    --border: #E2E8F0;        /* Light gray border */
+    --pending: #F59E0B;
+    --approved: #10B981;
+    --rejected: #EF4444;
+    
+    --shadow-luxury: 0 6px 24px rgba(15,23,42,0.08);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--background);
+    color: var(--text-primary);
+    padding: 24px;
+    min-height: 100vh;
+}
+
+/* HEADER */
+.header-section {
+    margin-bottom: 28px;
+}
+
+h1 {
+    color: var(--primary);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* TOP BAR */
+.top-bar {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* INPUTS */
+.search-input {
+    flex: 1;
+    min-width: 250px;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    outline: none;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    transition: var(--transition);
+}
+
+.search-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(15,118,110,0.1);
+}
+
+.search-input::placeholder {
+    color: var(--text-secondary);
+}
+
+.filter-select {
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    outline: none;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    min-width: 150px;
+    transition: var(--transition);
+}
+
+.filter-select:focus {
+    border-color: var(--primary);
+}
+
+/* TABLE WRAPPER */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-luxury);
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    min-width: 700px;
+}
+
+/* HEADER */
+th {
+    background: rgba(15,118,110,0.05);
+    color: var(--primary);
+    padding: 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* CELLS */
+td {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+/* ROW HOVER */
+tbody tr:hover {
+    background: rgba(15,118,110,0.03);
+}
+
+/* BUTTONS */
+.approve-btn, .reject-btn {
+    padding: 6px 14px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: var(--transition);
+    margin: 0 4px;
+}
+
+.approve-btn {
+    background: var(--approved);
+    color: white;
+}
+
+.approve-btn:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
+.reject-btn {
+    background: var(--rejected);
+    color: white;
+}
+
+.reject-btn:hover {
+    background: #DC2626;
+    transform: translateY(-1px);
+}
+
+/* BADGES */
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-pending {
+    background: rgba(245,158,11,0.1);
+    color: var(--pending);
+    border: 1px solid rgba(245,158,11,0.2);
+}
+
+.badge-approved {
+    background: rgba(16,185,129,0.1);
+    color: var(--approved);
+    border: 1px solid rgba(16,185,129,0.2);
+}
+
+.badge-rejected {
+    background: rgba(239,68,68,0.1);
+    color: var(--rejected);
+    border: 1px solid rgba(239,68,68,0.2);
+}
+
+/* EMPTY STATE */
+.empty-state {
+    text-align: center;
+    padding: 48px;
+    color: var(--text-secondary);
+}
+
+/* TOAST */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--primary);
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+    box-shadow: var(--shadow-luxury);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    body {
+        padding: 16px;
+    }
+    
+    h1 {
+        font-size: 24px;
+    }
+    
+    .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-input, .filter-select {
+        width: 100%;
+    }
+    
+    th, td {
+        padding: 12px;
+        font-size: 12px;
+    }
+    
+    .approve-btn, .reject-btn {
+        padding: 4px 10px;
+        font-size: 11px;
+    }
+    
+    .toast {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        text-align: center;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header-section">
+    <h1>Employee Verification</h1>
+    <div class="subtitle">Review and verify employee registrations</div>
+</div>
+
+<!-- CSRF -->
+<form style="display:none;">
+    {% csrf_token %}
+</form>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+    <input type="text" id="searchInput" class="search-input" placeholder="Search by name or email...">
+    <select id="filterStatus" class="filter-select">
+        <option value="all">All Status</option>
+        <option value="pending">Pending</option>
+        <option value="approved">Approved</option>
+        <option value="rejected">Rejected</option>
+    </select>
+</div>
+
+<!-- TABLE WRAPPER -->
+<div class="table-wrapper">
+    <table id="employeeTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for emp in pending_employees %}
+            <tr data-status="pending">
+                <td>{{ emp.user.username }}</td>
+                <td>{{ emp.user.email }}</td>
+                <td>{{ emp.phone_number|default:"—" }}</td>
+                <td><span class="badge badge-pending">Pending</span></td>
+                <td>
+                    <button class="approve-btn" onclick="updateStatus({{ emp.id }}, 'approve', this)">Approve</button>
+                    <button class="reject-btn" onclick="updateStatus({{ emp.id }}, 'reject', this)">Reject</button>
+                </td>
+            </tr>
+            {% endfor %}
+
+            {% for emp in approved_employees %}
+            <tr data-status="approved">
+                <td>{{ emp.user.username }}</td>
+                <td>{{ emp.user.email }}</td>
+                <td>{{ emp.phone_number|default:"—" }}</td>
+                <td><span class="badge badge-approved">Approved</span></td>
+                <td>—</td>
+            </tr>
+            {% endfor %}
+
+            {% for emp in rejected_employees %}
+            <tr data-status="rejected">
+                <td>{{ emp.user.username }}</td>
+                <td>{{ emp.user.email }}</td>
+                <td>{{ emp.phone_number|default:"—" }}</td>
+                <td><span class="badge badge-rejected">Rejected</span></td>
+                <td>—</td>
+            </tr>
+            {% endfor %}
+            
+            {% if not pending_employees and not approved_employees and not rejected_employees %}
+            <tr>
+                <td colspan="5" class="empty-state">No employee registrations found</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<script>
+function getCSRFToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]').value;
+}
+
+function showToast(message, isSuccess = true) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.style.backgroundColor = isSuccess ? '#10B981' : '#EF4444';
+    toast.style.opacity = '1';
+    setTimeout(() => {
+        toast.style.opacity = '0';
+    }, 3000);
+}
+
+/* UPDATE STATUS */
+function updateStatus(id, action, btn) {
+    fetch(`/verify-employee/${id}/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": getCSRFToken(),
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({action: action})
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            let row = btn.closest("tr");
+            row.style.transition = 'opacity 0.3s';
+            row.style.opacity = "0";
+            setTimeout(() => {
+                row.remove();
+                showToast(`Employee ${action}d successfully!`, true);
+                // Check if table is empty after removal
+                if (document.querySelectorAll("#employeeTable tbody tr").length === 0) {
+                    location.reload();
+                }
+            }, 300);
+        } else {
+            showToast(data.error || "Error updating employee", false);
+        }
+    })
+    .catch(error => {
+        showToast("Network error. Please try again.", false);
+    });
+}
+
+/* SEARCH */
+document.getElementById("searchInput").addEventListener("keyup", function() {
+    let value = this.value.toLowerCase();
+    document.querySelectorAll("#employeeTable tbody tr").forEach(row => {
+        if (row.querySelector('.empty-state')) return;
+        let text = row.innerText.toLowerCase();
+        row.style.display = text.includes(value) ? "" : "none";
+    });
+});
+
+/* FILTER */
+document.getElementById("filterStatus").addEventListener("change", function() {
+    let value = this.value;
+    document.querySelectorAll("#employeeTable tbody tr").forEach(row => {
+        if (row.querySelector('.empty-state')) return;
+        let status = row.getAttribute("data-status");
+        row.style.display = (value === "all" || status === value) ? "" : "none";
+    });
+});
+</script>
+
+</body>
+</html>

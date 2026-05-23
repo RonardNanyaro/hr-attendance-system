@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HR Login - Attendance System</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary: #0F766E;      /* Deep Teal - Main brand color */
+    --secondary: #14B8A6;    /* Soft Teal - Hover states */
+    --background: #FFFAFA;   /* Snow White - Main background */
+    --card-bg: #FFFFFF;      /* Pure White - Card background */
+    --text-primary: #1E293B;  /* Dark Slate - Main text */
+    --text-secondary: #64748B; /* Gray - Secondary text */
+    --border: #E2E8F0;        /* Light gray border */
+    --shadow-luxury: 0 20px 35px -10px rgba(0,0,0,0.1);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* GLOBAL FLUID BASE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    color: var(--text-primary);
+    position: relative;
+}
+
+/* Subtle background pattern for luxury feel */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at 25% 50%, rgba(15,118,110,0.03) 0%, transparent 50%),
+                      radial-gradient(circle at 75% 80%, rgba(15,118,110,0.02) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* LOGIN CARD */
+.box {
+    width: min(400px, 95vw);
+    padding: 40px 36px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-luxury);
+    text-align: center;
+    animation: fadeIn 0.5s ease;
+    position: relative;
+    z-index: 1;
+}
+
+/* Top accent line */
+.box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), var(--primary), transparent);
+    border-radius: 3px;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ICON */
+.login-icon {
+    margin-bottom: 20px;
+}
+
+/* TITLE */
+h2 {
+    margin-bottom: 8px;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 32px;
+}
+
+/* INPUTS */
+input {
+    width: 100%;
+    padding: 14px 16px;
+    margin: 8px 0;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--background);
+    color: var(--text-primary);
+    outline: none;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    transition: var(--transition);
+}
+
+input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(15,118,110,0.1);
+}
+
+input::placeholder {
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 16px;
+    background: var(--primary);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: var(--transition);
+    color: white;
+    font-family: 'Inter', sans-serif;
+}
+
+button:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(15,118,110,0.25);
+}
+
+/* LINKS */
+.link {
+    margin-top: 16px;
+    display: inline-block;
+    color: var(--text-secondary);
+    font-size: 13px;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.link:hover {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+/* Forgot password link */
+.forgot-link {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 13px;
+    text-decoration: none;
+    margin-top: 12px;
+    transition: var(--transition);
+}
+
+.forgot-link:hover {
+    color: var(--primary);
+}
+
+/* MESSAGES */
+.error, .success {
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.error {
+    background: rgba(239,68,68,0.1);
+    color: #EF4444;
+    border: 1px solid rgba(239,68,68,0.2);
+}
+
+.success {
+    background: rgba(16,185,129,0.1);
+    color: #10B981;
+    border: 1px solid rgba(16,185,129,0.2);
+}
+
+/* Divider */
+.divider {
+    margin: 20px 0 12px;
+    height: 1px;
+    background: var(--border);
+}
+
+/* Info text */
+.info-text {
+    margin-top: 24px;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .box {
+        padding: 28px 20px;
+    }
+    
+    h2 {
+        font-size: 22px;
+    }
+    
+    .subtitle {
+        font-size: 13px;
+        margin-bottom: 24px;
+    }
+    
+    input, button {
+        padding: 11px 14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <div class="login-icon">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="#0F766E"/>
+            <circle cx="12" cy="8" r="2.5" fill="#14B8A6"/>
+        </svg>
+    </div>
+    
+    <h2>HR Access</h2>
+    <div class="subtitle">Secure login for HR personnel</div>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if success %}
+        <div class="success">{{ success }}</div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <a href="{% url 'users:hr_forgot_password' %}" class="forgot-link">
+        Forgot Password?
+    </a>
+
+    <div class="divider"></div>
+
+    <a href="{% url 'users:hr_register' %}" class="link">
+        Create HR Account →
+    </a>
+    
+    <div class="info-text">
+        Secure HR portal • Attendance Management System
+    </div>
+</div>
+
+</body>
+</html>

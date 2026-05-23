@@ -1,0 +1,11 @@
+Django==4.2
+psycopg2-binary
+dj-database-url
+gunicorn
+whitenoise
+python-dotenv
+django-cors-headers
+djangorestframework
+djangorestframework-simplejwt
+reportlab
+africastalking

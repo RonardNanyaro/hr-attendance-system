@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Weekly Report - HR Attendance</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Luxury Premium Colors */
+    --primary: #0F766E;      /* Deep Teal - Main brand color */
+    --secondary: #14B8A6;    /* Soft Teal - Hover states */
+    --sidebar: #0F172A;      /* Luxury Navy - Dark backgrounds */
+    --background: #FFFAFA;   /* Snow White - Main background */
+    --card-bg: #FFFFFF;      /* Pure White - Cards */
+    --text-primary: #1E293B;  /* Dark Slate - Main text */
+    --text-secondary: #64748B; /* Gray - Secondary text */
+    --border: #E2E8F0;        /* Light gray border */
+    
+    /* Status Colors */
+    --present: #10B981;
+    --absent: #EF4444;
+    --late: #F59E0B;
+    --out: #8B5CF6;
+    
+    /* Effects */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-luxury: 0 6px 24px rgba(15,23,42,0.08);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--background);
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+/* HEADER */
+.header {
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+}
+
+.header h2 {
+    margin: 0;
+    color: var(--primary);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+}
+
+/* BUTTONS */
+.back-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.back-btn:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(15,118,110,0.3);
+}
+
+/* CONTROLS */
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+    background: var(--background);
+}
+
+/* SELECT DROPDOWN */
+select {
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--transition);
+    min-width: 260px;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(15,118,110,0.1);
+}
+
+/* EXPORT BUTTONS */
+.export-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.export-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.csv-btn {
+    background: var(--present);
+    color: white;
+}
+
+.csv-btn:hover {
+    background: #059669;
+    transform: translateY(-2px);
+}
+
+.pdf-btn {
+    background: var(--absent);
+    color: white;
+}
+
+.pdf-btn:hover {
+    background: #DC2626;
+    transform: translateY(-2px);
+}
+
+/* STATS CARDS */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 0 24px 24px 24px;
+}
+
+.stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    text-align: center;
+    transition: var(--transition);
+    box-shadow: var(--shadow-luxury);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.stat-card.present .stat-value { color: var(--present); }
+.stat-card.absent .stat-value { color: var(--absent); }
+.stat-card.late .stat-value { color: var(--late); }
+.stat-card.out .stat-value { color: var(--out); }
+
+/* TABLE WRAPPER */
+.table-wrapper {
+    padding: 0 24px 24px 24px;
+    overflow-x: auto;
+}
+
+/* TABLE */
+.attendance-table {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-luxury);
+}
+
+/* TABLE HEADER */
+.attendance-table th {
+    background: rgba(15,118,110,0.08);
+    color: var(--primary);
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* TABLE CELLS */
+.attendance-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+/* STATUS BADGES */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-present {
+    background: rgba(16,185,129,0.1);
+    color: var(--present);
+    border: 1px solid rgba(16,185,129,0.2);
+}
+
+.status-absent {
+    background: rgba(239,68,68,0.1);
+    color: var(--absent);
+    border: 1px solid rgba(239,68,68,0.2);
+}
+
+.status-late {
+    background: rgba(245,158,11,0.1);
+    color: var(--late);
+    border: 1px solid rgba(245,158,11,0.2);
+}
+
+.status-out {
+    background: rgba(139,92,246,0.1);
+    color: var(--out);
+    border: 1px solid rgba(139,92,246,0.2);
+}
+
+/* ROW HOVER */
+.attendance-table tbody tr:hover {
+    background: rgba(15,118,110,0.04);
+}
+
+/* EMPTY STATE */
+.empty-state {
+    text-align: center;
+    padding: 48px;
+    color: var(--text-secondary);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        text-align: center;
+        padding: 16px;
+    }
+    
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px;
+    }
+    
+    select {
+        width: 100%;
+    }
+    
+    .export-buttons {
+        justify-content: center;
+    }
+    
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 0 16px 16px 16px;
+    }
+    
+    .stat-value {
+        font-size: 28px;
+    }
+    
+    .table-wrapper {
+        padding: 0 16px 16px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-card {
+        padding: 16px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <h2>📊 Weekly Attendance Report</h2>
+    <a href="{% url 'users:hr_dashboard' %}">
+        <button class="back-btn">← Back to Dashboard</button>
+    </a>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+    <form method="GET">
+        <select name="week" onchange="this.form.submit()">
+            {% for w in weeks %}
+            <option value="{{ w.start|date:'Y-m-d' }}|{{ w.end|date:'Y-m-d' }}"
+                {% if w.start|date:'Y-m-d' == selected_start|date:'Y-m-d' %}selected{% endif %}>
+                {{ w.start|date:"d M Y" }} → {{ w.end|date:"d M Y" }}
+            </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <div class="export-buttons">
+        <a href="{% url 'users:export_csv' %}?start={{ selected_start|date:'Y-m-d' }}&end={{ selected_end|date:'Y-m-d' }}">
+            <button class="export-btn csv-btn">📄 Export CSV</button>
+        </a>
+        <a href="{% url 'users:export_pdf' %}?start={{ selected_start|date:'Y-m-d' }}&end={{ selected_end|date:'Y-m-d' }}">
+            <button class="export-btn pdf-btn">📑 Export PDF</button>
+        </a>
+    </div>
+</div>
+
+<!-- STATS CARDS -->
+<div class="cards">
+    <div class="stat-card present">
+        <div class="stat-value">{{ present|default:"0" }}</div>
+        <div class="stat-label">✅ Present</div>
+    </div>
+    <div class="stat-card absent">
+        <div class="stat-value">{{ absent|default:"0" }}</div>
+        <div class="stat-label">❌ Absent</div>
+    </div>
+    <div class="stat-card late">
+        <div class="stat-value">{{ late|default:"0" }}</div>
+        <div class="stat-label">⚠️ Late</div>
+    </div>
+    <div class="stat-card out">
+        <div class="stat-value">{{ out|default:"0" }}</div>
+        <div class="stat-label">🏃 Early Departure</div>
+    </div>
+</div>
+
+<!-- TABLE -->
+<div class="table-wrapper">
+    <table class="attendance-table">
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Check-In</th>
+                <th>Check-Out</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in attendance %}
+            <tr>
+                <td>{{ a.employee.name }}</td>
+                <td>{{ a.date|date:"d M Y" }}</td>
+                <td>
+                    <span class="status-badge status-{{ a.status|lower }}">
+                        {% if a.status == 'present' %}✓ Present
+                        {% elif a.status == 'absent' %}✗ Absent
+                        {% elif a.status == 'late' %}⚠ Late
+                        {% elif a.status == 'early_departure' %}🏃 Early Departure
+                        {% else %}{{ a.status|title }}
+                        {% endif %}
+                    </span>
+                </td>
+                <td>{{ a.check_in|default:"—" }}</td>
+                <td>{{ a.check_out|default:"—" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="empty-state">No attendance data available for this period</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Dashboard - HR System</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary: #0F766E;      /* Deep Teal - Main brand color */
+    --secondary: #14B8A6;    /* Soft Teal - Hover states */
+    --accent: #0F172A;       /* Luxury Navy - Dark accents */
+    --background: #FFFAFA;   /* Snow White - Main background */
+    --card-bg: #FFFFFF;      /* Pure White - Cards */
+    --text-primary: #1E293B;  /* Dark Slate - Main text */
+    --text-secondary: #64748B; /* Gray - Secondary text */
+    --border: #E2E8F0;        /* Light gray border */
+    --pending: #F59E0B;
+    --approved: #10B981;
+    --rejected: #EF4444;
+    --blue: #0F766E;
+    --green: #10B981;
+    --red: #EF4444;
+    --orange: #F97316;
+    
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-luxury: 0 6px 24px rgba(15,23,42,0.08);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--background);
+    color: var(--text-primary);
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+    padding: 20px 24px;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-luxury);
+}
+
+.header h2 {
+    margin: 0;
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+/* BADGES */
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.badge {
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: var(--transition);
+}
+
+.badge.pending { 
+    background: rgba(245,158,11,0.1); 
+    color: var(--pending); 
+    border: 1px solid rgba(245,158,11,0.2);
+}
+.badge.approved { 
+    background: rgba(16,185,129,0.1); 
+    color: var(--approved); 
+    border: 1px solid rgba(16,185,129,0.2);
+}
+.badge.total { 
+    background: rgba(15,118,110,0.1); 
+    color: var(--primary); 
+    border: 1px solid rgba(15,118,110,0.2);
+}
+
+/* STATS SECTION */
+.stats-section {
+    padding: 24px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 0;
+}
+
+.stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    text-align: center;
+    transition: var(--transition);
+    box-shadow: var(--shadow-luxury);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(15,118,110,0.2);
+}
+
+.stat-card .stat-number {
+    font-size: 36px;
+    font-weight: 700;
+    margin: 12px 0;
+}
+
+.stat-card .stat-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* SECTION TITLES */
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--primary);
+    display: inline-block;
+    color: var(--text-primary);
+}
+
+/* CONTAINER */
+.container {
+    padding: 0 24px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+/* CARD */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    overflow-x: auto;
+    box-shadow: var(--shadow-luxury);
+    transition: var(--transition);
+}
+
+.card:hover {
+    border-color: rgba(15,118,110,0.15);
+}
+
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--primary);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+th {
+    background: rgba(15,118,110,0.05);
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 14px 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+th, td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    font-size: 14px;
+}
+
+tbody tr:hover {
+    background: rgba(15,118,110,0.03);
+}
+
+td:first-child, th:first-child { padding-left: 16px; }
+td:last-child, th:last-child { padding-right: 16px; }
+
+/* BUTTONS */
+button {
+    padding: 6px 14px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 12px;
+    transition: var(--transition);
+    margin: 2px;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+.approve { 
+    background: var(--approved); 
+    color: white;
+}
+.approve:hover {
+    background: #059669;
+    box-shadow: 0 4px 8px rgba(16,185,129,0.3);
+}
+
+.reject { 
+    background: var(--rejected); 
+    color: white;
+}
+.reject:hover {
+    background: #DC2626;
+    box-shadow: 0 4px 8px rgba(239,68,68,0.3);
+}
+
+.delete { 
+    background: rgba(239,68,68,0.1); 
+    color: var(--red);
+    border: 1px solid rgba(239,68,68,0.2);
+}
+.delete:hover {
+    background: var(--red);
+    color: white;
+}
+
+/* STATUS */
+.status {
+    padding: 4px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status.pending { 
+    background: rgba(245,158,11,0.1); 
+    color: var(--pending); 
+    border: 1px solid rgba(245,158,11,0.2);
+}
+.status.approved { 
+    background: rgba(16,185,129,0.1); 
+    color: var(--approved); 
+    border: 1px solid rgba(16,185,129,0.2);
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-content h3 {
+    color: var(--primary);
+    margin-bottom: 16px;
+}
+
+.modal-content p {
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+}
+
+.modal-content textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 16px 0;
+    border-radius: var(--radius-md);
+    background: var(--background);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.modal-content textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+/* TOAST */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: -350px;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    transition: 0.4s ease;
+    z-index: 9999;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: var(--shadow-lg);
+}
+
+.toast.show { 
+    right: 30px; 
+}
+.toast.success { 
+    background: var(--green); 
+}
+.toast.error { 
+    background: var(--red); 
+}
+
+/* ANIMATION */
+.fade {
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px;
+    }
+    
+    .badges {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .stats-section {
+        padding: 16px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .container {
+        padding: 0 16px 16px 16px;
+        gap: 20px;
+    }
+    
+    .card {
+        padding: 16px;
+    }
+    
+    th, td {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+    
+    .toast.show {
+        right: 16px;
+        left: 16px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .badge {
+        font-size: 11px;
+        padding: 5px 10px;
+    }
+    
+    .stat-card .stat-number {
+        font-size: 28px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <h2>🏢 Admin Dashboard</h2>
+    <div class="badges">
+        <div class="badge total">Total HR: <span id="total">{{ total_hr }}</span></div>
+        <div class="badge total">Total Companies: <span id="total-companies">{{ total_companies }}</span></div>
+        <div class="badge pending">Pending HR: <span id="pending-count">{{ pending_hrs|length }}</span></div>
+        <div class="badge pending">Pending Companies: <span id="pending-companies-count">{{ pending_companies|length }}</span></div>
+        <div class="badge approved">Approved HR: <span id="approved-count">{{ approved_hrs|length }}</span></div>
+    </div>
+</div>
+
+<!-- STATS SECTION -->
+<div class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number" style="color: var(--primary);">{{ total_companies }}</div>
+            <div class="stat-label">Total Companies</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" style="color: var(--approved);">{{ total_hr }}</div>
+            <div class="stat-label">Total HR Staff</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" style="color: var(--pending);">{{ pending_companies|length }}</div>
+            <div class="stat-label">Pending Companies</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" style="color: var(--pending);">{{ pending_hrs|length }}</div>
+            <div class="stat-label">Pending HR Approvals</div>
+        </div>
+    </div>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+<!-- PENDING COMPANIES -->
+<div class="card">
+    <h3>🏢 Pending Companies <span style="color: var(--pending); font-size: 13px;">(Need Approval)</span></h3>
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Requested By</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="pending-companies-table">
+            {% for company in pending_companies %}
+            <tr id="company-{{ company.id }}" class="fade">
+                <td><strong>{{ company.name }}</strong></td>
+                <td>{{ company.requested_by.username }}</td>
+                <td>{{ company.requested_by.email }}</td>
+                <td>{% with profile=company.requested_by.profile %}{{ profile.phone_number|default:"N/A" }}{% endwith %}</td>
+                <td>{{ company.requested_at|date:"Y-m-d H:i" }}</td>
+                <td>
+                    <button class="approve" onclick="approveCompany({{ company.id }})">Approve</button>
+                    <button class="reject" onclick="showRejectModal({{ company.id }})">Reject</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center; color: var(--text-secondary); padding: 40px;">🎉 No pending companies - All companies approved!</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- APPROVED COMPANIES -->
+<div class="card">
+    <h3>✅ Approved Companies</h3>
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Approved By</th>
+                    <th>Approved On</th>
+                    <th>HR Count</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="approved-companies-table">
+            {% for company in approved_companies %}
+            <tr id="approved-company-{{ company.id }}" class="fade">
+                <td><strong>{{ company.name }}</strong></td>
+                <td>{{ company.approved_by.username|default:"N/A" }}</td>
+                <td>{{ company.approved_at|date:"Y-m-d H:i"|default:"N/A" }}</td>
+                <td>{{ company.hr_profiles.count }}</td>
+                <td>
+                    <button class="delete" onclick="deleteCompany({{ company.id }})">Delete</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 40px;">No approved companies yet</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- PENDING HR -->
+<div class="card">
+    <h3>👥 Pending HR Approvals <span style="color: var(--pending); font-size: 13px;">(Waiting for Approval)</span></h3>
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Company</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="pending-table">
+            {% for hr in pending_hrs %}
+            <tr id="pending-{{ hr.id }}" class="fade">
+                <td><strong>{{ hr.user.username }}</strong></td>
+                <td>{{ hr.user.email }}</td>
+                <td><span class="status pending">{{ hr.company.name|default:"N/A" }}</span></td>
+                <td>
+                    <button class="approve" onclick="approveHR({{ hr.id }})">Approve</button>
+                    <button class="delete" onclick="deleteHR({{ hr.user.id }}, 'pending-{{ hr.id }}')">Delete</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 40px;">🎉 No pending HR approvals!</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- APPROVED HR -->
+<div class="card">
+    <h3>✅ Approved HR Staff</h3>
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Company</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="approved-table">
+            {% for hr in approved_hrs %}
+            <tr id="approved-{{ hr.id }}" class="fade">
+                <td><strong>{{ hr.user.username }}</strong></td>
+                <td>{{ hr.user.email }}</td>
+                <td><span class="status approved">{{ hr.company.name|default:"N/A" }}</span></td>
+                <td>
+                    <button class="delete" onclick="deleteHR({{ hr.user.id }}, 'approved-{{ hr.id }}')">Delete</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 40px;">No approved HR staff yet</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</div>
+
+<!-- REJECT MODAL -->
+<div id="rejectModal" class="modal">
+    <div class="modal-content">
+        <h3>Reject Company</h3>
+        <p>Please provide a reason for rejection:</p>
+        <textarea id="rejectReason" rows="3" placeholder="Enter reason..."></textarea>
+        <div class="modal-buttons">
+            <button class="reject" onclick="confirmReject()">Confirm Reject</button>
+            <button onclick="closeModal()" style="background: #e2e8f0; color: #1e293b;">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<script>
+let currentCompanyId = null;
+
+function getCSRF(){
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.substring(0, 10) === ('csrftoken' + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(10));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function showToast(msg, type){
+    let t = document.getElementById('toast');
+    t.innerText = msg;
+    t.className = 'toast show ' + (type === 'success' ? 'success' : 'error');
+    setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function updateCounters(){
+    const pendingHR = document.querySelectorAll('#pending-table tr:not(:has(td[colspan]))').length;
+    const approvedHR = document.querySelectorAll('#approved-table tr:not(:has(td[colspan]))').length;
+    const pendingCompanies = document.querySelectorAll('#pending-companies-table tr:not(:has(td[colspan]))').length;
+    
+    document.getElementById('pending-count').innerText = pendingHR;
+    document.getElementById('approved-count').innerText = approvedHR;
+    document.getElementById('pending-companies-count').innerText = pendingCompanies;
+}
+
+function approveCompany(companyId){
+    fetch(`/approve-company/${companyId}/`, {
+        method:'POST',
+        headers:{'X-CSRFToken':getCSRF()}
+    })
+    .then(r=>r.json())
+    .then(d=>{
+        if(d.success){
+            showToast("Company Approved", "success");
+            setTimeout(() => location.reload(), 1500);
+        } else {
+            showToast(d.error || "Error", "error");
+        }
+    });
+}
+
+function showRejectModal(companyId){
+    currentCompanyId = companyId;
+    document.getElementById('rejectModal').style.display = 'flex';
+}
+
+function confirmReject(){
+    const reason = document.getElementById('rejectReason').value;
+    if(!reason){
+        showToast("Please enter a reason", "error");
+        return;
+    }
+    
+    fetch(`/reject-company/${currentCompanyId}/`, {
+        method:'POST',
+        headers:{
+            'X-CSRFToken':getCSRF(),
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify({reason: reason})
+    })
+    .then(r=>r.json())
+    .then(d=>{
+        if(d.success){
+            showToast("Company Rejected", "success");
+            setTimeout(() => location.reload(), 1500);
+        } else {
+            showToast(d.error || "Error", "error");
+        }
+    });
+    closeModal();
+}
+
+function closeModal(){
+    document.getElementById('rejectModal').style.display = 'none';
+    document.getElementById('rejectReason').value = '';
+    currentCompanyId = null;
+}
+
+function approveHR(id){
+    fetch(`/approve-hr/${id}/`, {
+        method:'POST',
+        headers:{'X-CSRFToken':getCSRF()}
+    })
+    .then(r=>r.json())
+    .then(d=>{
+        if(d.success){
+            let row = document.getElementById(`pending-${id}`);
+            row.querySelector('.approve')?.remove();
+            document.getElementById('approved-table').appendChild(row);
+            row.id = `approved-${id}`;
+            showToast("HR Approved", "success");
+            updateCounters();
+        } else {
+            showToast("Error", "error");
+        }
+    });
+}
+
+function deleteHR(userId, rowId){
+    if(confirm("Are you sure you want to delete this HR?")){
+        fetch(`/delete-hr/${userId}/`, {
+            method:'POST',
+            headers:{'X-CSRFToken':getCSRF()}
+        })
+        .then(r=>r.json())
+        .then(d=>{
+            if(d.success){
+                document.getElementById(rowId).remove();
+                showToast("HR Deleted", "success");
+                updateCounters();
+            } else {
+                showToast("Error", "error");
+            }
+        });
+    }
+}
+
+function deleteCompany(companyId){
+    if(confirm("Are you sure you want to delete this company? All associated HR and employees will also be deleted.")){
+        fetch(`/delete-company/${companyId}/`, {
+            method:'POST',
+            headers:{'X-CSRFToken':getCSRF()}
+        })
+        .then(r=>r.json())
+        .then(d=>{
+            if(d.success){
+                showToast("Company Deleted", "success");
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                showToast("Error", "error");
+            }
+        });
+    }
+}
+</script>
+
+</body>
+</html>

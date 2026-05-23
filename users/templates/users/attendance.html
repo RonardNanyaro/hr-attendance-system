@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Attendance System</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary: #0F766E;      /* Deep Teal - Main brand color */
+    --secondary: #14B8A6;    /* Soft Teal - Hover states */
+    --background: #FFFAFA;   /* Snow White - Main background */
+    --card-bg: #FFFFFF;      /* Pure White - Cards */
+    --text-primary: #1E293B;  /* Dark Slate - Main text */
+    --text-secondary: #64748B; /* Gray - Secondary text */
+    --border: #E2E8F0;        /* Light gray border */
+    --green: #10B981;
+    --red: #EF4444;
+    --yellow: #F59E0B;
+    --purple: #8B5CF6;
+    --blue: #0F766E;
+    
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-luxury: 0 6px 24px rgba(15,23,42,0.08);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-xl: 24px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--background);
+    color: var(--text-primary);
+    line-height: 1.5;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Subtle background pattern */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at 25% 50%, rgba(15,118,110,0.03) 0%, transparent 50%),
+                      radial-gradient(circle at 75% 80%, rgba(15,118,110,0.02) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* HEADER */
+.header {
+    padding: 24px 32px;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-luxury);
+}
+
+.header h2 {
+    margin: 0;
+    color: var(--primary);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+/* RULES SECTION */
+.rules {
+    margin: 24px;
+    padding: 20px 24px;
+    border-radius: var(--radius-lg);
+    background: rgba(15,118,110,0.05);
+    border: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    backdrop-filter: blur(4px);
+}
+
+.rules::before {
+    content: "📋 ";
+    font-weight: 600;
+    color: var(--primary);
+}
+
+/* CARDS */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 0 24px 24px 24px;
+}
+
+.card {
+    padding: 24px;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    transition: var(--transition);
+    cursor: pointer;
+    box-shadow: var(--shadow-luxury);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card .number {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.card .label {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* COLORS */
+.green { background: var(--green); color: white; }
+.red { background: var(--red); color: white; }
+.yellow { background: var(--yellow); color: white; }
+.blue { background: var(--primary); color: white; }
+
+/* TABLE CONTAINER */
+.table-container {
+    padding: 0 24px 24px 24px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    min-width: 800px;
+    border-collapse: collapse;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-luxury);
+}
+
+th {
+    background: rgba(15,118,110,0.05);
+    color: var(--primary);
+    padding: 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+tbody tr:hover {
+    background: rgba(15,118,110,0.03);
+}
+
+/* STATUS BADGES */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-present {
+    background: rgba(16,185,129,0.1);
+    color: var(--green);
+    border: 1px solid rgba(16,185,129,0.2);
+}
+
+.status-absent {
+    background: rgba(239,68,68,0.1);
+    color: var(--red);
+    border: 1px solid rgba(239,68,68,0.2);
+}
+
+.status-late {
+    background: rgba(245,158,11,0.1);
+    color: var(--yellow);
+    border: 1px solid rgba(245,158,11,0.2);
+}
+
+.status-leave {
+    background: rgba(139,92,246,0.1);
+    color: var(--purple);
+    border: 1px solid rgba(139,92,246,0.2);
+}
+
+/* VERIFICATION DOTS */
+.verification-dots {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    margin-bottom: 8px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: var(--transition);
+}
+
+.dot.active {
+    background: var(--green);
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.2);
+}
+
+.verification-text {
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.warning-text {
+    color: var(--yellow);
+}
+
+.good-text {
+    color: var(--green);
+}
+
+/* EMPTY STATE */
+.empty-state {
+    text-align: center;
+    padding: 48px;
+    color: var(--text-secondary);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .header {
+        padding: 16px 20px;
+    }
+    
+    .header h2 {
+        font-size: 22px;
+    }
+    
+    .rules {
+        margin: 16px;
+        padding: 16px;
+        font-size: 12px;
+    }
+    
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 0 16px 16px 16px;
+    }
+    
+    .card {
+        padding: 16px;
+    }
+    
+    .card .number {
+        font-size: 28px;
+    }
+    
+    .table-container {
+        padding: 0 16px 16px 16px;
+    }
+    
+    th, td {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .header h2 {
+        font-size: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h2>📊 Smart Attendance System</h2>
+</div>
+
+<div class="rules">
+    <strong>Attendance Tracking Rules</strong><br>
+    • Monday – Friday Working Days<br>
+    • Check-in / Check-out with Biometric Verification<br>
+    • 3-Step Random Verification System<br>
+    • Late arrivals recorded after shift start time<br>
+    • Early departures flagged before shift end time
+</div>
+
+<!-- SUMMARY CARDS -->
+<div class="cards">
+    <div class="card green">
+        <div class="number">{{ present|default:"0" }}</div>
+        <div class="label">Present Today</div>
+    </div>
+    <div class="card red">
+        <div class="number">{{ absent|default:"0" }}</div>
+        <div class="label">Absent Today</div>
+    </div>
+    <div class="card yellow">
+        <div class="number">{{ late|default:"0" }}</div>
+        <div class="label">Late Today</div>
+    </div>
+    <div class="card blue">
+        <div class="number">{{ out|default:"0" }}</div>
+        <div class="label">Early Departure</div>
+    </div>
+</div>
+
+<!-- TABLE -->
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Check-In</th>
+                <th>Check-Out</th>
+                <th>Verification</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for emp in employees %}
+            <tr>
+                <td><strong>{{ emp.name }}</strong></td>
+                <td>{{ emp.department|default:"—" }}</td>
+                <td>
+                    <span class="status-badge status-{{ emp.status|lower }}">
+                        {% if emp.status == 'present' %}✓ Present
+                        {% elif emp.status == 'late' %}⚠ Late
+                        {% elif emp.status == 'leave' %}📋 On Leave
+                        {% else %}✗ Absent{% endif %}
+                    </span>
+                </td>
+                <td>{{ emp.check_in_time|date:"H:i"|default:"—" }}</td>
+                <td>{{ emp.check_out_time|date:"H:i"|default:"—" }}</td>
+                <td>
+                    <div class="verification-dots">
+                        <div class="dot {% if emp.verification_count >= 1 %}active{% endif %}"></div>
+                        <div class="dot {% if emp.verification_count >= 2 %}active{% endif %}"></div>
+                        <div class="dot {% if emp.verification_count >= 3 %}active{% endif %}"></div>
+                    </div>
+                    <div class="verification-text">
+                        {% if emp.verification_count < 3 %}
+                            <span class="warning-text">⚠ {{ emp.verification_count|default:"0" }}/3 Verified</span>
+                        {% else %}
+                            <span class="good-text">✓ Fully Verified</span>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="empty-state">No employee data available</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Manage Departments - {{ company.name }}</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary: #0F766E;      /* Deep Teal - Main brand color */
+    --secondary: #14B8A6;    /* Soft Teal - Hover states */
+    --accent: #0F172A;       /* Luxury Navy - Navbar background */
+    --background: #FFFAFA;   /* Snow White - Main background */
+    --card-bg: #FFFFFF;      /* Pure White - Cards */
+    --text-primary: #1E293B;  /* Dark Slate - Main text */
+    --text-secondary: #64748B; /* Gray - Secondary text */
+    --border: #E2E8F0;        /* Light gray border */
+    --green: #10B981;
+    --red: #EF4444;
+    --blue: #0F766E;
+    
+    --shadow-luxury: 0 6px 24px rgba(15,23,42,0.08);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* GLOBAL */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--background);
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-luxury);
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.company-badge {
+    background: rgba(15,118,110,0.1);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.nav-links {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.nav-links a:hover {
+    background: rgba(15,118,110,0.08);
+    color: var(--primary);
+}
+
+.logout {
+    background: rgba(239,68,68,0.1);
+    color: var(--red) !important;
+    border: 1px solid rgba(239,68,68,0.2);
+}
+
+.logout:hover {
+    background: rgba(239,68,68,0.15);
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-primary);
+}
+
+/* MAIN */
+.main {
+    padding: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* CARD */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-luxury);
+}
+
+.card h2 {
+    color: var(--primary);
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+}
+
+.card > p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.card h3 {
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+/* FORM */
+.form-group {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.form-group input {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--background);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: var(--transition);
+}
+
+.form-group input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(15,118,110,0.1);
+}
+
+.form-group input::placeholder {
+    color: var(--text-secondary);
+}
+
+/* BUTTONS */
+.btn-add {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.btn-add:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(15,118,110,0.3);
+}
+
+.btn-delete {
+    background: rgba(239,68,68,0.1);
+    color: var(--red);
+    border: 1px solid rgba(239,68,68,0.2);
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.btn-delete:hover {
+    background: var(--red);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.btn-back {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--border);
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.btn-back:hover {
+    background: rgba(15,118,110,0.08);
+    border-color: var(--primary);
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 14px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+th {
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+td {
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+tbody tr:hover {
+    background: rgba(15,118,110,0.03);
+}
+
+/* TOAST */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: -350px;
+    padding: 14px 20px;
+    border-radius: var(--radius-md);
+    transition: 0.4s ease;
+    z-index: 9999;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: var(--shadow-luxury);
+}
+
+.toast.show { 
+    right: 20px; 
+}
+
+.toast.success { 
+    background: var(--green); 
+}
+
+.toast.error { 
+    background: var(--red); 
+}
+
+/* Empty state */
+.empty-row td {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+    
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 65px;
+        right: 16px;
+        flex-direction: column;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 12px;
+        width: 180px;
+        box-shadow: var(--shadow-luxury);
+    }
+    
+    .nav-links.show {
+        display: flex;
+    }
+    
+    .form-group {
+        flex-direction: column;
+    }
+    
+    .main {
+        padding: 16px;
+    }
+    
+    .card {
+        padding: 20px;
+    }
+    
+    th, td {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+    
+    .btn-add {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 12px 16px;
+    }
+    
+    .logo {
+        font-size: 16px;
+    }
+    
+    .company-badge {
+        font-size: 10px;
+        padding: 4px 10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">🏢 HR SYSTEM</div>
+    <div class="company-badge">{{ company.name }}</div>
+    <div class="nav-links" id="navLinks">
+        <a href="{% url 'users:logout' %}" class="logout">Logout</a>
+    </div>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <div class="card">
+        <h2>Department Management</h2>
+        <p>Manage departments for {{ company.name }}</p>
+
+        <!-- ADD DEPARTMENT FORM -->
+        <div class="form-group">
+            <input type="text" id="deptName" placeholder="Enter department name (e.g., IT, HR, Finance)" autocomplete="off">
+            <button class="btn-add" onclick="addDepartment()">+ Add Department</button>
+        </div>
+
+        <!-- DEPARTMENTS LIST -->
+        <h3>Your Departments</h3>
+        
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Department Name</th>
+                        <th>Created</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="departmentsTable">
+                    {% for dept in departments %}
+                    <tr id="dept-{{ dept.id }}">
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ dept.name }}</td>
+                        <td>{{ dept.created_at|date:"Y-m-d" }}</td>
+                        <td>
+                            <button class="btn-delete" onclick="deleteDepartment({{ dept.id }})">Delete</button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr id="no-departments">
+                        <td colspan="4" class="empty-row">No departments yet. Add your first department above.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'users:hr_dashboard' %}" class="btn-back">← Back to Dashboard</a>
+    </div>
+
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<script>
+function getCSRF() {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.substring(0, 10) === ('csrftoken' + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(10));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function showToast(msg, type) {
+    let t = document.getElementById('toast');
+    t.innerText = msg;
+    t.className = 'toast show ' + (type === 'success' ? 'success' : 'error');
+    setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function toggleMenu() {
+    document.getElementById("navLinks").classList.toggle("show");
+}
+
+function addDepartment() {
+    const name = document.getElementById('deptName').value.trim();
+    if (!name) {
+        showToast("Please enter department name", "error");
+        return;
+    }
+
+    fetch('/api/departments/create/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCSRF(),
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({name: name})
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            showToast("Department added successfully", "success");
+            
+            // Remove empty row if exists
+            const noDeptRow = document.getElementById('no-departments');
+            if (noDeptRow) noDeptRow.remove();
+            
+            // Add new row to table
+            const tbody = document.getElementById('departmentsTable');
+            const newRow = document.createElement('tr');
+            newRow.id = `dept-${data.department.id}`;
+            const rowCount = tbody.children.length + 1;
+            newRow.innerHTML = `
+                <td>${rowCount}</td>
+                <td>${escapeHtml(data.department.name)}</td>
+                <td>${new Date().toISOString().split('T')[0]}</td>
+                <td><button class="btn-delete" onclick="deleteDepartment(${data.department.id})">Delete</button></td>
+            `;
+            tbody.appendChild(newRow);
+            document.getElementById('deptName').value = '';
+            
+            // Renumber rows
+            renumberRows();
+        } else {
+            showToast(data.error || "Failed to add department", "error");
+        }
+    })
+    .catch(err => showToast("Network error", "error"));
+}
+
+function deleteDepartment(id) {
+    if (!confirm("Are you sure you want to delete this department?")) return;
+    
+    fetch(`/api/departments/delete/${id}/`, {
+        method: 'POST',
+        headers: {'X-CSRFToken': getCSRF()}
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            showToast("Department deleted", "success");
+            const row = document.getElementById(`dept-${id}`);
+            if (row) row.remove();
+            
+            // If no departments left, show empty message
+            if (document.getElementById('departmentsTable').children.length === 0) {
+                const tbody = document.getElementById('departmentsTable');
+                tbody.innerHTML = '<tr id="no-departments"><td colspan="4" class="empty-row">No departments yet. Add your first department above.</td></tr>';
+            }
+            
+            // Renumber rows
+            renumberRows();
+        } else {
+            showToast(data.error || "Failed to delete", "error");
+        }
+    });
+}
+
+function renumberRows() {
+    const rows = document.querySelectorAll('#departmentsTable tr');
+    rows.forEach((row, index) => {
+        if (row.id !== 'no-departments') {
+            row.cells[0].innerText = index + 1;
+        }
+    });
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+</script>
+
+</body>
+</html>

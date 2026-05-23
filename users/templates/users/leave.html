@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HR Leave Management</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Luxury Premium Colors */
+    --primary: #0F766E;      /* Deep Teal - Main brand color */
+    --secondary: #14B8A6;    /* Soft Teal - Hover states */
+    --background: #FFFAFA;   /* Snow White - Main background */
+    --card-bg: #FFFFFF;      /* Pure White - Cards */
+    --text-primary: #1E293B;  /* Dark Slate - Main text */
+    --text-secondary: #64748B; /* Gray - Secondary text */
+    --border: #E2E8F0;        /* Light gray border */
+    
+    /* Status Colors */
+    --pending: #F59E0B;
+    --approved: #10B981;
+    --rejected: #EF4444;
+    
+    /* Effects */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-luxury: 0 6px 24px rgba(15,23,42,0.08);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* GLOBAL */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--background);
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+/* NAVBAR */
+.navbar {
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: -0.3px;
+}
+
+.navbar button {
+    padding: 8px 20px;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    background: var(--primary);
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.navbar button:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+}
+
+/* FILTER TABS */
+.filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 20px 24px;
+    background: var(--background);
+}
+
+.filter-tabs button {
+    padding: 8px 20px;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 13px;
+    transition: var(--transition);
+}
+
+.filter-tabs button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.filter-tabs button.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* TABLE WRAPPER */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    padding: 0 24px 24px 24px;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    min-width: 1000px;
+    border-collapse: collapse;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-luxury);
+}
+
+/* TABLE CELLS */
+th, td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+}
+
+th {
+    background: rgba(15,118,110,0.05);
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+td {
+    color: var(--text-primary);
+}
+
+tr:hover {
+    background: rgba(15,118,110,0.03);
+}
+
+/* STATUS BADGES */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: rgba(245,158,11,0.1);
+    color: var(--pending);
+    border: 1px solid rgba(245,158,11,0.2);
+}
+
+.status-approved {
+    background: rgba(16,185,129,0.1);
+    color: var(--approved);
+    border: 1px solid rgba(16,185,129,0.2);
+}
+
+.status-rejected {
+    background: rgba(239,68,68,0.1);
+    color: var(--rejected);
+    border: 1px solid rgba(239,68,68,0.2);
+}
+
+/* BUTTONS */
+.approve-btn, .reject-btn {
+    padding: 6px 14px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.approve-btn {
+    background: var(--approved);
+    color: white;
+    margin-right: 8px;
+}
+
+.approve-btn:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
+.reject-btn {
+    background: var(--rejected);
+    color: white;
+}
+
+.reject-btn:hover {
+    background: #DC2626;
+    transform: translateY(-1px);
+}
+
+.done-text {
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-style: italic;
+}
+
+/* TOAST NOTIFICATION */
+#toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--primary);
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+    box-shadow: var(--shadow-lg);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 12px 16px;
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .filter-tabs {
+        padding: 16px;
+        justify-content: center;
+    }
+    
+    .filter-tabs button {
+        padding: 6px 14px;
+        font-size: 12px;
+    }
+    
+    .table-wrapper {
+        padding: 0 16px 16px 16px;
+    }
+    
+    th, td {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+    
+    .approve-btn, .reject-btn {
+        padding: 4px 10px;
+        font-size: 11px;
+    }
+    
+    #toast {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        text-align: center;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<div class="navbar">
+    <h2>📋 Leave Management</h2>
+    <form method="POST" action="{% url 'users:logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+</div>
+
+<!-- CSRF TOKEN (hidden) -->
+<form style="display:none;">
+    {% csrf_token %}
+</form>
+
+<!-- FILTER TABS -->
+<div class="filter-tabs">
+    <button class="filter-btn active" data-status="all">All Requests</button>
+    <button class="filter-btn" data-status="pending">Pending</button>
+    <button class="filter-btn" data-status="approved">Approved</button>
+    <button class="filter-btn" data-status="rejected">Rejected</button>
+</div>
+
+<!-- TABLE WRAPPER -->
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Type</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Requested</th>
+                <th>Day</th>
+                <th>Approved At</th>
+                <th>Rejected At</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for leave in leaves %}
+            <tr id="leave-{{ leave.id }}" data-status="{{ leave.status }}">
+                <td>{{ leave.employee.name }}</td>
+                <td>{{ leave.leave_type|title }}</td>
+                <td>{{ leave.reason|truncatechars:40 }}</td>
+                <td>
+                    <span class="status-badge status-{{ leave.status }}">
+                        {% if leave.status == 'pending' %}⏳ Pending
+                        {% elif leave.status == 'approved' %}✅ Approved
+                        {% elif leave.status == 'rejected' %}❌ Rejected
+                        {% else %}{{ leave.status|title }}
+                        {% endif %}
+                    </span>
+                </td>
+                <td>{{ leave.requested_at|date:"Y-m-d H:i" }}</td>
+                <td>{{ leave.requested_at|date:"l" }}</td>
+                <td class="approved-at">{{ leave.approved_at|date:"Y-m-d H:i"|default:"—" }}</td>
+                <td class="rejected-at">{{ leave.rejected_at|date:"Y-m-d H:i"|default:"—" }}</td>
+                <td class="action-cell">
+                    {% if leave.status == "pending" %}
+                        <button class="approve-btn" onclick="handleLeave({{ leave.id }}, 'approve')">Approve</button>
+                        <button class="reject-btn" onclick="handleLeave({{ leave.id }}, 'reject')">Reject</button>
+                    {% else %}
+                        <span class="done-text">✓ Processed</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                    No leave requests found
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+function getCSRF() {
+    return document.querySelector('[name=csrfmiddlewaretoken]').value;
+}
+
+function showToast(message, isSuccess = true) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.style.backgroundColor = isSuccess ? '#10B981' : '#EF4444';
+    toast.style.opacity = '1';
+    setTimeout(() => {
+        toast.style.opacity = '0';
+    }, 3000);
+}
+
+function handleLeave(id, action) {
+    fetch("{% url 'users:handle_leave' %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCSRF()
+        },
+        body: JSON.stringify({leave_id: id, action: action})
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (!data.success) {
+            showToast(data.error || 'Operation failed', false);
+            return;
+        }
+
+        const row = document.getElementById(`leave-${id}`);
+        const statusSpan = row.querySelector(".status-badge");
+        
+        // Update status display
+        if (action === 'approve') {
+            statusSpan.className = "status-badge status-approved";
+            statusSpan.innerHTML = "✅ Approved";
+            row.querySelector(".approved-at").innerHTML = new Date().toLocaleString();
+            showToast('Leave request approved!', true);
+        } else {
+            statusSpan.className = "status-badge status-rejected";
+            statusSpan.innerHTML = "❌ Rejected";
+            row.querySelector(".rejected-at").innerHTML = new Date().toLocaleString();
+            showToast('Leave request rejected', true);
+        }
+        
+        // Update action cell
+        row.querySelector(".action-cell").innerHTML = '<span class="done-text">✓ Processed</span>';
+        row.dataset.status = action === 'approve' ? 'approved' : 'rejected';
+    })
+    .catch(error => {
+        showToast('Network error. Please try again.', false);
+    });
+}
+
+/* FILTER FUNCTIONALITY */
+document.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.onclick = () => {
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        let status = btn.dataset.status;
+
+        document.querySelectorAll("tbody tr").forEach(row => {
+            if (status === "all" || row.dataset.status === status) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    };
+});
+</script>
+
+</body>
+</html>

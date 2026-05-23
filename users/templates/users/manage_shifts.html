@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Shifts - {{ company.name }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            /* Luxury Premium Colors */
+            --primary: #0F766E;      /* Deep Teal - Main brand color */
+            --secondary: #14B8A6;    /* Soft Teal - Hover states */
+            --accent: #0F172A;       /* Luxury Navy - Dark accents */
+            --background: #FFFAFA;   /* Snow White - Main background */
+            --card-bg: #FFFFFF;      /* Pure White - Cards */
+            --text-primary: #1E293B;  /* Dark Slate - Main text */
+            --text-secondary: #64748B; /* Gray - Secondary text */
+            --border: #E2E8F0;        /* Light gray border */
+            --green: #10B981;
+            --red: #EF4444;
+            --blue: #0F766E;
+            
+            /* Effects */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-luxury: 0 6px 24px rgba(15,23,42,0.08);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 24px;
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow-luxury);
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+        
+        /* Typography */
+        h2 {
+            margin: 0 0 8px 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.3px;
+        }
+        
+        h3 {
+            color: var(--primary);
+            margin: 0 0 20px 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .company-name {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            font-size: 14px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text-primary);
+            outline: none;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15,118,110,0.1);
+        }
+        
+        small {
+            color: var(--text-secondary);
+            font-size: 11px;
+            margin-top: 4px;
+            display: block;
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 10px 24px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(15,118,110,0.3);
+        }
+        
+        .btn-danger {
+            background: var(--red);
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .btn-danger:hover {
+            background: #DC2626;
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-block;
+            transition: var(--transition);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(15,118,110,0.08);
+            border-color: var(--primary);
+        }
+        
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        th {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        tr:hover {
+            background: rgba(15,118,110,0.04);
+        }
+        
+        /* Alerts */
+        .alert {
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .alert-success {
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.2);
+            color: #10B981;
+        }
+        
+        .alert-error {
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.2);
+            color: #EF4444;
+        }
+        
+        .alert-info {
+            background: rgba(15,118,110,0.08);
+            border: 1px solid rgba(15,118,110,0.15);
+            color: var(--primary);
+        }
+        
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 28px;
+        }
+        
+        /* Navigation Links */
+        .nav-links {
+            margin-bottom: 24px;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        /* Assign Form */
+        .assign-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .assign-form select {
+            flex: 2;
+            min-width: 160px;
+        }
+        
+        /* Lists */
+        ul {
+            margin-top: 12px;
+            margin-bottom: 0;
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .assign-form {
+                flex-direction: column;
+            }
+            
+            .assign-form select, .assign-form button {
+                width: 100%;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="nav-links">
+        <a href="{% url 'users:hr_dashboard' %}">← Back to Dashboard</a>
+        <a href="{% url 'users:company_settings' %}">⚙️ Company Settings</a>
+    </div>
+    
+    <div class="card">
+        <h2>🔄 Manage Shifts</h2>
+        <div class="company-name">{{ company.name }}</div>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'success' %}success{% elif message.tags == 'error' %}error{% else %}info{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <div class="grid-2">
+            <!-- Left: Create Shift Form -->
+            <div>
+                <h3>➕ Create New Shift</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="create">
+                    
+                    <div class="form-group">
+                        <label>Shift Name</label>
+                        <input type="text" name="name" placeholder="e.g., Morning Shift, Night Shift" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Start Time</label>
+                        <input type="time" name="start_time" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>End Time</label>
+                        <input type="time" name="end_time" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Late After (minutes)</label>
+                        <input type="number" name="late_threshold" value="15" min="0" max="120">
+                        <small>Employee marked late this many minutes after start time</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Early Departure (minutes)</label>
+                        <input type="number" name="early_departure_threshold" value="15" min="0" max="120">
+                        <small>Employee marked early departure this many minutes before end time</small>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Create Shift</button>
+                </form>
+            </div>
+            
+            <!-- Right: Existing Shifts List -->
+            <div>
+                <h3>📋 Existing Shifts</h3>
+                {% if shifts %}
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for shift in shifts %}
+                                <tr>
+                                    <td><strong>{{ shift.name }}</strong></td>
+                                    <td>{{ shift.start_time|time:"h:i A" }}</td>
+                                    <td>{{ shift.end_time|time:"h:i A" }}</td>
+                                    <td>
+                                        <form method="POST" style="display: inline;" onsubmit="return confirm('Delete {{ shift.name }} shift? This will unassign it from all employees.')">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="action" value="delete">
+                                            <input type="hidden" name="shift_id" value="{{ shift.id }}">
+                                            <button type="submit" class="btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="font-size: 11px; color: var(--text-secondary); padding-top: 0;">
+                                        ⏰ Late: {{ shift.late_threshold }} min | 🏃 Early: {{ shift.early_departure_threshold }} min
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        No shifts created yet. Use the form on the left to create your first shift.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Assign Shifts to Employees -->
+    <div class="card">
+        <h3>👥 Assign Shifts to Employees</h3>
+        
+        {% if employees %}
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee Name</th>
+                            <th>Department</th>
+                            <th>Current Shift</th>
+                            <th>Assign New Shift</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for employee in employees %}
+                        <tr>
+                            <td>{{ employee.name }}</td>
+                            <td>{{ employee.department|default:"-" }}</td>
+                            <td>
+                                {% if employee.assigned_shift %}
+                                    <span style="color: #10B981;">✅ {{ employee.assigned_shift.name }}</span>
+                                {% else %}
+                                    <span style="color: #94A3B8;">📌 Fixed Schedule</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form method="POST" action="{% url 'users:assign_employee_shift' %}" class="assign-form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="employee_id" value="{{ employee.id }}">
+                                    <select name="shift_id">
+                                        <option value="">-- No Shift (Fixed Schedule) --</option>
+                                        {% for shift in shifts %}
+                                        <option value="{{ shift.id }}" {% if employee.assigned_shift and employee.assigned_shift.id == shift.id %}selected{% endif %}>
+                                            {{ shift.name }} ({{ shift.start_time|time:"H:i" }} - {{ shift.end_time|time:"H:i" }})
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn-primary" style="padding: 8px 18px;">Assign</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                No employees found. Register employees first via the mobile app.
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Info Box -->
+    <div class="card">
+        <div class="alert alert-info">
+            💡 <strong>How Shifts Work</strong>
+            <ul>
+                <li>Employees with an assigned shift will follow that shift's schedule</li>
+                <li>Employees without an assigned shift will follow the company's Fixed Schedule</li>
+                <li>If your company uses Shift Schedule, you must assign shifts to employees</li>
+                <li>Late and early departure calculations are based on the assigned shift times</li>
+                <li>You can change an employee's shift at any time</li>
+            </ul>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="{% url 'users:company_settings' %}" class="btn-secondary">← Back to Company Settings</a>
+            <a href="{% url 'users:hr_dashboard' %}" class="btn-secondary" style="margin-left: 12px;">Go to Dashboard →</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-hide messages after 5 seconds
+    setTimeout(function() {
+        const messages = document.querySelectorAll('.alert-success, .alert-error');
+        messages.forEach(function(msg) {
+            if (!msg.innerHTML.includes('How Shifts Work')) {
+                msg.style.transition = 'opacity 0.5s';
+                msg.style.opacity = '0';
+                setTimeout(function() {
+                    msg.style.display = 'none';
+                }, 500);
+            }
+        });
+    }, 5000);
+</script>
+</body>
+</html>
