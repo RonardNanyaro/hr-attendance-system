@@ -1,0 +1,1103 @@
+INFO 2026-05-15 23:42:04,600 autoreload 6572 2716 Watching for file changes with StatReloader
+INFO 2026-05-15 23:42:16,312 basehttp 6572 3300 "GET / HTTP/1.1" 302 0
+INFO 2026-05-15 23:42:16,450 basehttp 6572 3300 "GET /hr-login/ HTTP/1.1" 200 3074
+WARNING 2026-05-15 23:42:16,771 log 6572 3412 Not Found: /favicon.ico
+WARNING 2026-05-15 23:42:16,772 basehttp 6572 3412 "GET /favicon.ico HTTP/1.1" 404 14337
+INFO 2026-05-15 23:42:26,908 basehttp 6572 11712 "GET /login/ HTTP/1.1" 200 2425
+INFO 2026-05-15 23:42:41,100 basehttp 6572 11712 "POST /login/ HTTP/1.1" 200 2483
+INFO 2026-05-15 23:44:08,261 basehttp 6572 11712 "POST /login/ HTTP/1.1" 302 0
+INFO 2026-05-15 23:44:08,545 basehttp 6572 11712 "GET /dashboard/ HTTP/1.1" 200 13914
+INFO 2026-05-15 23:44:34,045 basehttp 6572 11712 "GET / HTTP/1.1" 302 0
+INFO 2026-05-15 23:44:34,092 basehttp 6572 11712 "GET /login/ HTTP/1.1" 200 2425
+INFO 2026-05-15 23:44:42,707 basehttp 6572 11712 "GET /hr-login/ HTTP/1.1" 200 3074
+INFO 2026-05-15 23:44:56,618 basehttp 6572 11712 "POST /hr-login/ HTTP/1.1" 302 0
+INFO 2026-05-15 23:44:56,738 basehttp 6572 11712 "GET /hr-dashboard/ HTTP/1.1" 200 5236
+INFO 2026-05-15 23:45:11,681 basehttp 6572 11712 "GET /analytics/ HTTP/1.1" 200 3532
+INFO 2026-05-15 23:49:45,532 basehttp 6572 13364 "POST /api/employee/register/ HTTP/1.1" 200 114
+INFO 2026-05-15 23:50:09,738 basehttp 6572 11712 "GET /employee-verification/ HTTP/1.1" 200 4159
+INFO 2026-05-15 23:50:12,361 basehttp 6572 11712 "GET /employee-verification/ HTTP/1.1" 200 4159
+INFO 2026-05-15 23:50:13,348 basehttp 6572 11712 "GET /employee-verification/ HTTP/1.1" 200 4159
+INFO 2026-05-15 23:50:13,971 basehttp 6572 11712 "GET /employee-verification/ HTTP/1.1" 200 4159
+INFO 2026-05-15 23:50:14,440 basehttp 6572 11712 "GET /employee-verification/ HTTP/1.1" 200 4159
+INFO 2026-05-15 23:50:14,782 basehttp 6572 11712 "GET /employee-verification/ HTTP/1.1" 200 4159
+INFO 2026-05-15 23:50:15,148 basehttp 6572 11712 "GET /employee-verification/ HTTP/1.1" 200 4159
+INFO 2026-05-15 23:50:15,457 basehttp 6572 11712 "GET /employee-verification/ HTTP/1.1" 200 4159
+INFO 2026-05-15 23:50:20,154 basehttp 6572 11712 "GET /hr-dashboard/ HTTP/1.1" 200 5236
+INFO 2026-05-15 23:50:21,060 basehttp 6572 11712 "GET /hr-dashboard/ HTTP/1.1" 200 5236
+WARNING 2026-05-15 23:50:24,855 log 6572 11712 Forbidden (CSRF token from POST incorrect.): /hr-login/
+WARNING 2026-05-15 23:50:24,867 basehttp 6572 11712 "POST /hr-login/ HTTP/1.1" 403 2503
+WARNING 2026-05-15 23:50:30,374 log 6572 11712 Forbidden (CSRF token from POST incorrect.): /hr-login/
+WARNING 2026-05-15 23:50:30,397 basehttp 6572 11712 "POST /hr-login/ HTTP/1.1" 403 2503
+WARNING 2026-05-15 23:50:34,078 log 6572 11712 Forbidden (CSRF token from POST incorrect.): /hr-login/
+WARNING 2026-05-15 23:50:34,091 basehttp 6572 11712 "POST /hr-login/ HTTP/1.1" 403 2503
+INFO 2026-05-15 23:50:37,360 basehttp 6572 11712 "GET /hr-login/ HTTP/1.1" 200 3074
+INFO 2026-05-15 23:50:40,266 basehttp 6572 11712 "GET /hr-login/ HTTP/1.1" 200 3074
+INFO 2026-05-15 23:55:13,257 basehttp 6572 13720 "POST /hr-login/ HTTP/1.1" 302 0
+INFO 2026-05-15 23:55:13,309 basehttp 6572 14500 "GET /hr-dashboard/ HTTP/1.1" 200 5236
+INFO 2026-05-15 23:55:15,673 basehttp 6572 14500 "GET /analytics/ HTTP/1.1" 200 3532
+INFO 2026-05-15 23:55:26,981 basehttp 6572 14500 "GET /employee-verification/ HTTP/1.1" 200 4159
+INFO 2026-05-15 23:55:35,311 basehttp 6572 14500 "GET /attendance/ HTTP/1.1" 200 3203
+INFO 2026-05-15 23:55:40,098 basehttp 6572 14500 "GET /leave/ HTTP/1.1" 200 5272
+INFO 2026-05-15 23:55:47,157 basehttp 6572 14500 "GET /departments/ HTTP/1.1" 200 9501
+INFO 2026-05-15 23:55:53,264 basehttp 6572 14500 "GET /hr-dashboard/ HTTP/1.1" 200 5236
+INFO 2026-05-15 23:55:54,984 basehttp 6572 14500 "GET /report/ HTTP/1.1" 200 6283
+INFO 2026-05-15 23:56:57,682 basehttp 6572 14500 "GET /report/ HTTP/1.1" 200 6283
+INFO 2026-05-15 23:57:36,061 basehttp 6572 14500 "GET /attendance/ HTTP/1.1" 200 3203
+INFO 2026-05-16 00:08:38,615 autoreload 6572 2716 C:\Users\Administrator\Desktop\mylife\users\models.py changed, reloading.
+INFO 2026-05-16 00:08:40,602 autoreload 8560 12680 Watching for file changes with StatReloader
+INFO 2026-05-16 00:13:08,436 autoreload 8560 12680 C:\Users\Administrator\Desktop\mylife\users\views.py changed, reloading.
+INFO 2026-05-16 00:13:09,963 autoreload 16108 13384 Watching for file changes with StatReloader
+INFO 2026-05-16 00:15:10,101 autoreload 16108 13384 C:\Users\Administrator\Desktop\mylife\users\urls.py changed, reloading.
+INFO 2026-05-16 00:15:12,080 autoreload 8668 13804 Watching for file changes with StatReloader
+INFO 2026-05-16 18:52:02,472 autoreload 1188 9876 Watching for file changes with StatReloader
+INFO 2026-05-16 18:59:07,270 autoreload 1188 9876 C:\Users\Administrator\Desktop\mylife\users\views.py changed, reloading.
+INFO 2026-05-16 18:59:19,015 autoreload 11632 9724 Watching for file changes with StatReloader
+INFO 2026-05-16 18:59:27,623 basehttp 11632 4596 "GET / HTTP/1.1" 302 0
+ERROR 2026-05-16 18:59:28,316 log 11632 4596 Internal Server Error: /hr-dashboard/
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 243, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\fields\mixins.py", line 37, in get_cached_value
+    return instance._state.fields_cache[self.cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'company'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: users_company.schedule_type
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\decorators.py", line 19, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\views.py", line 219, in hr_dashboard
+    company = profile.company
+              ^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 261, in __get__
+    rel_obj = self.get_object(instance)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 224, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 629, in get
+    num = len(clone)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: users_company.schedule_type
+ERROR 2026-05-16 18:59:28,438 basehttp 11632 4596 "GET /hr-dashboard/ HTTP/1.1" 500 175165
+WARNING 2026-05-16 18:59:29,177 log 11632 8444 Not Found: /favicon.ico
+WARNING 2026-05-16 18:59:29,185 basehttp 11632 8444 "GET /favicon.ico HTTP/1.1" 404 16024
+INFO 2026-05-16 19:02:39,578 autoreload 10504 11716 Watching for file changes with StatReloader
+INFO 2026-05-16 19:03:47,076 autoreload 10064 1292 Watching for file changes with StatReloader
+INFO 2026-05-16 19:04:03,581 basehttp 10064 2184 "GET / HTTP/1.1" 302 0
+INFO 2026-05-16 19:04:03,784 basehttp 10064 2184 "GET /hr-dashboard/ HTTP/1.1" 200 5236
+WARNING 2026-05-16 19:04:04,373 log 10064 9724 Not Found: /favicon.ico
+WARNING 2026-05-16 19:04:04,375 basehttp 10064 9724 "GET /favicon.ico HTTP/1.1" 404 16024
+INFO 2026-05-16 19:04:09,536 basehttp 10064 9660 "GET /departments/ HTTP/1.1" 200 9501
+INFO 2026-05-16 19:04:14,043 basehttp 10064 9660 "GET /analytics/ HTTP/1.1" 200 3532
+INFO 2026-05-16 19:04:17,427 basehttp 10064 9660 "GET /employee-verification/ HTTP/1.1" 200 4159
+INFO 2026-05-16 19:04:21,659 basehttp 10064 9660 "GET /leave/ HTTP/1.1" 200 5272
+INFO 2026-05-16 19:04:25,671 basehttp 10064 9660 "GET /report/ HTTP/1.1" 200 6196
+INFO 2026-05-16 19:09:42,510 basehttp 10064 10272 "GET /hr-dashboard/ HTTP/1.1" 200 13034
+INFO 2026-05-16 19:09:54,904 basehttp 10064 10272 "GET /hr-dashboard/ HTTP/1.1" 200 13034
+INFO 2026-05-16 19:09:56,804 basehttp 10064 10272 "GET /analytics/ HTTP/1.1" 200 3532
+INFO 2026-05-16 19:10:04,485 basehttp 10064 10272 "GET /employee-verification/ HTTP/1.1" 200 4159
+INFO 2026-05-16 19:10:13,011 basehttp 10064 10272 "GET /departments/ HTTP/1.1" 200 9501
+INFO 2026-05-16 19:10:19,419 basehttp 10064 10272 "GET /company-settings/ HTTP/1.1" 200 11961
+INFO 2026-05-16 19:11:19,902 basehttp 10064 10272 "POST /company-settings/ HTTP/1.1" 302 0
+INFO 2026-05-16 19:11:19,940 basehttp 10064 10272 "GET /company-settings/ HTTP/1.1" 200 12218
+ERROR 2026-05-16 19:11:28,595 log 10064 10272 Internal Server Error: /manage-shifts/
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\decorators.py", line 19, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\views.py", line 322, in manage_shifts
+    return render(request, "users/manage_shifts.html", {
+        "company": company,
+        "shifts": shifts,
+        "employees": employees
+    })
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: users/manage_shifts.html
+ERROR 2026-05-16 19:11:28,607 basehttp 10064 10272 "GET /manage-shifts/ HTTP/1.1" 500 98479
+ERROR 2026-05-16 19:12:03,156 log 10064 10272 Internal Server Error: /manage-shifts/
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\decorators.py", line 19, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\views.py", line 322, in manage_shifts
+    return render(request, "users/manage_shifts.html", {
+        "company": company,
+        "shifts": shifts,
+        "employees": employees
+    })
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: users/manage_shifts.html
+ERROR 2026-05-16 19:12:03,194 basehttp 10064 10272 "GET /manage-shifts/ HTTP/1.1" 500 98479
+ERROR 2026-05-16 19:14:53,254 log 10064 10272 Internal Server Error: /manage-shifts/
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\decorators.py", line 19, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\views.py", line 322, in manage_shifts
+    return render(request, "users/manage_shifts.html", {
+        "company": company,
+        "shifts": shifts,
+        "employees": employees
+    })
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: users/manage_shifts.html
+ERROR 2026-05-16 19:14:53,264 basehttp 10064 10272 "GET /manage-shifts/ HTTP/1.1" 500 98616
+ERROR 2026-05-16 19:14:54,442 log 10064 10272 Internal Server Error: /manage-shifts/
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\decorators.py", line 19, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\views.py", line 322, in manage_shifts
+    return render(request, "users/manage_shifts.html", {
+        "company": company,
+        "shifts": shifts,
+        "employees": employees
+    })
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: users/manage_shifts.html
+ERROR 2026-05-16 19:14:54,457 basehttp 10064 10272 "GET /manage-shifts/ HTTP/1.1" 500 98616
+ERROR 2026-05-16 19:14:55,743 log 10064 10272 Internal Server Error: /manage-shifts/
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\decorators.py", line 19, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\views.py", line 322, in manage_shifts
+    return render(request, "users/manage_shifts.html", {
+        "company": company,
+        "shifts": shifts,
+        "employees": employees
+    })
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: users/manage_shifts.html
+ERROR 2026-05-16 19:14:55,756 basehttp 10064 10272 "GET /manage-shifts/ HTTP/1.1" 500 98616
+ERROR 2026-05-16 19:14:59,453 log 10064 10272 Internal Server Error: /manage-shifts/
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\decorators.py", line 19, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\views.py", line 322, in manage_shifts
+    return render(request, "users/manage_shifts.html", {
+        "company": company,
+        "shifts": shifts,
+        "employees": employees
+    })
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: users/manage_shifts.html
+ERROR 2026-05-16 19:14:59,467 basehttp 10064 10272 "GET /manage-shifts/ HTTP/1.1" 500 98479
+INFO 2026-05-16 19:20:35,659 basehttp 10064 6460 "GET /manage-shifts/ HTTP/1.1" 200 10222
+INFO 2026-05-16 19:20:51,213 basehttp 10064 6460 "GET /company-settings/ HTTP/1.1" 200 12069
+INFO 2026-05-16 19:20:58,146 basehttp 10064 6460 "GET /hr-dashboard/ HTTP/1.1" 200 13085
+INFO 2026-05-16 19:21:28,933 basehttp 10064 6460 "GET /manage-shifts/ HTTP/1.1" 200 10222
+INFO 2026-05-16 19:21:32,680 basehttp 10064 6460 "GET /company-settings/ HTTP/1.1" 200 12069
+INFO 2026-05-16 19:21:38,164 basehttp 10064 6460 "GET /analytics/ HTTP/1.1" 200 3532
+INFO 2026-05-16 19:22:13,884 basehttp 10064 6460 "GET /analytics/ HTTP/1.1" 200 3532
+INFO 2026-05-16 19:43:27,782 autoreload 10064 1292 C:\Users\Administrator\Desktop\mylife\users\views.py changed, reloading.
+INFO 2026-05-16 19:43:31,083 autoreload 6696 2508 Watching for file changes with StatReloader
+INFO 2026-05-16 19:46:15,174 autoreload 6696 2508 C:\Users\Administrator\Desktop\mylife\users\models.py changed, reloading.
+INFO 2026-05-16 19:46:17,931 autoreload 8268 7092 Watching for file changes with StatReloader
+INFO 2026-05-16 19:46:23,245 basehttp 8268 1500 "GET / HTTP/1.1" 302 0
+ERROR 2026-05-16 19:46:23,868 log 8268 1500 Internal Server Error: /hr-dashboard/
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: users_employee.random_verify_count
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\decorators.py", line 19, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\views.py", line 386, in hr_dashboard
+    return render(request, "users/hr_dashboard.html", {
+        "company": company,
+    ...<8 lines>...
+        "dept_values": list(dept_count.values()),
+    })
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\defaulttags.py", line 199, in render
+    len_values = len(values)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: users_employee.random_verify_count
+ERROR 2026-05-16 19:46:23,912 basehttp 8268 1500 "GET /hr-dashboard/ HTTP/1.1" 500 193430
+INFO 2026-05-16 19:48:04,990 autoreload 10360 4964 Watching for file changes with StatReloader
+INFO 2026-05-16 19:48:13,243 basehttp 10360 2212 "GET / HTTP/1.1" 302 0
+INFO 2026-05-16 19:48:13,374 basehttp 10360 2212 "GET /hr-dashboard/ HTTP/1.1" 200 13085
+WARNING 2026-05-16 19:48:13,972 log 10360 2124 Not Found: /favicon.ico
+WARNING 2026-05-16 19:48:13,974 basehttp 10360 2124 "GET /favicon.ico HTTP/1.1" 404 16024
+INFO 2026-05-16 19:48:23,852 basehttp 10360 3912 "GET /company-settings/ HTTP/1.1" 200 12069
+INFO 2026-05-16 19:48:39,452 basehttp 10360 3912 "GET /leave/ HTTP/1.1" 200 5272
+INFO 2026-05-16 19:48:42,476 basehttp 10360 3912 "GET /employee-verification/ HTTP/1.1" 200 4159
+INFO 2026-05-16 19:52:43,270 basehttp 10360 3912 "GET /analytics/ HTTP/1.1" 200 3532
+INFO 2026-05-16 19:52:56,008 basehttp 10360 3912 "GET /hr-dashboard/ HTTP/1.1" 200 13085
+INFO 2026-05-16 19:52:58,107 basehttp 10360 3912 "GET /analytics/ HTTP/1.1" 200 3532
+INFO 2026-05-16 19:53:00,281 basehttp 10360 3912 "GET /employee-verification/ HTTP/1.1" 200 4159
+INFO 2026-05-16 19:56:34,223 basehttp 10360 3912 "GET /hr-dashboard/ HTTP/1.1" 200 15656
+INFO 2026-05-16 19:56:45,495 basehttp 10360 3912 "GET /analytics/ HTTP/1.1" 200 3532
+INFO 2026-05-16 20:01:25,153 basehttp 10360 3912 "GET /hr-dashboard/ HTTP/1.1" 200 19334
+INFO 2026-05-16 20:14:21,264 basehttp 10360 12048 "GET /analytics/ HTTP/1.1" 200 3532
+INFO 2026-05-16 20:15:35,124 basehttp 10360 12048 "GET /logout/ HTTP/1.1" 302 0
+INFO 2026-05-16 20:15:35,257 basehttp 10360 12048 "GET /login/ HTTP/1.1" 200 2425
+INFO 2026-05-16 20:15:51,183 autoreload 3476 396 Watching for file changes with StatReloader
+INFO 2026-05-16 20:16:01,881 basehttp 3476 6660 "GET / HTTP/1.1" 302 0
+INFO 2026-05-16 20:16:02,076 basehttp 3476 6660 "GET /hr-login/ HTTP/1.1" 200 3074
+WARNING 2026-05-16 20:16:02,434 log 3476 4012 Not Found: /favicon.ico
+WARNING 2026-05-16 20:16:02,437 basehttp 3476 4012 "GET /favicon.ico HTTP/1.1" 404 16024
+INFO 2026-05-16 20:18:52,562 basehttp 3476 11184 "POST /hr-login/ HTTP/1.1" 302 0
+INFO 2026-05-16 20:18:52,667 basehttp 3476 11184 "GET /hr-dashboard/ HTTP/1.1" 200 19334
+INFO 2026-05-16 20:19:20,758 basehttp 3476 11184 "GET /analytics/ HTTP/1.1" 200 3532
+INFO 2026-05-16 20:33:54,900 basehttp 3476 10628 "GET /manage-shifts/ HTTP/1.1" 200 10222
+INFO 2026-05-16 20:34:10,065 basehttp 3476 10628 "GET /company-settings/ HTTP/1.1" 200 12069
+INFO 2026-05-16 20:43:43,917 basehttp 3476 8780 "GET /logout/ HTTP/1.1" 302 0
+INFO 2026-05-16 20:43:43,929 basehttp 3476 8780 "GET /login/ HTTP/1.1" 200 2425
+INFO 2026-05-16 23:01:37,243 autoreload 3476 396 C:\Users\Administrator\Desktop\mylife\users\models.py changed, reloading.
+INFO 2026-05-16 23:01:41,120 autoreload 6336 11628 Watching for file changes with StatReloader
+INFO 2026-05-16 23:09:55,135 autoreload 6336 11628 C:\Users\Administrator\Desktop\mylife\users\views.py changed, reloading.
+INFO 2026-05-16 23:09:57,818 autoreload 1932 10084 Watching for file changes with StatReloader
+INFO 2026-05-16 23:11:43,929 autoreload 1932 10084 C:\Users\Administrator\Desktop\mylife\users\urls.py changed, reloading.
+INFO 2026-05-16 23:11:46,330 autoreload 10784 10072 Watching for file changes with StatReloader
+INFO 2026-05-18 20:41:55,709 autoreload 11824 12592 Watching for file changes with StatReloader
+INFO 2026-05-18 20:42:08,152 basehttp 11824 3028 "GET / HTTP/1.1" 302 0
+INFO 2026-05-18 20:42:08,236 basehttp 11824 3028 "GET /hr-login/ HTTP/1.1" 200 3621
+WARNING 2026-05-18 20:42:08,645 log 11824 3028 Not Found: /favicon.ico
+WARNING 2026-05-18 20:42:08,646 basehttp 11824 3028 "GET /favicon.ico HTTP/1.1" 404 18135
+INFO 2026-05-18 20:42:14,072 basehttp 11824 3080 "GET /hr-forgot-password/ HTTP/1.1" 200 3811
+INFO 2026-05-18 20:42:25,662 basehttp 11824 3080 "POST /hr-forgot-password/ HTTP/1.1" 200 3978
+INFO 2026-05-18 20:42:34,191 basehttp 11824 3080 "GET /hr-login/ HTTP/1.1" 200 3621
+INFO 2026-05-18 20:46:39,923 basehttp 11824 3080 "POST /hr-login/ HTTP/1.1" 302 0
+ERROR 2026-05-18 20:46:41,638 log 11824 3080 Internal Server Error: /hr-dashboard/
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: users_employee.reset_token
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\decorators.py", line 19, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\views.py", line 471, in hr_dashboard
+    return render(request, "users/hr_dashboard.html", {
+        "company": company,
+    ...<8 lines>...
+        "dept_values": list(dept_count.values()),
+    })
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\defaulttags.py", line 199, in render
+    len_values = len(values)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: users_employee.reset_token
+ERROR 2026-05-18 20:46:41,693 basehttp 11824 3080 "GET /hr-dashboard/ HTTP/1.1" 500 195524
+ERROR 2026-05-18 20:46:45,548 log 11824 3080 Internal Server Error: /hr-dashboard/
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: users_employee.reset_token
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\decorators.py", line 19, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\views.py", line 471, in hr_dashboard
+    return render(request, "users/hr_dashboard.html", {
+        "company": company,
+    ...<8 lines>...
+        "dept_values": list(dept_count.values()),
+    })
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\defaulttags.py", line 199, in render
+    len_values = len(values)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: users_employee.reset_token
+ERROR 2026-05-18 20:46:45,603 basehttp 11824 3080 "GET /hr-dashboard/ HTTP/1.1" 500 195524
+WARNING 2026-05-18 20:46:52,427 log 11824 3080 Forbidden (CSRF token from POST incorrect.): /hr-login/
+WARNING 2026-05-18 20:46:52,464 basehttp 11824 3080 "POST /hr-login/ HTTP/1.1" 403 2503
+INFO 2026-05-18 20:46:55,788 basehttp 11824 3080 "GET /hr-login/ HTTP/1.1" 200 3621
+INFO 2026-05-18 20:46:59,979 basehttp 11824 3080 "GET /hr-login/ HTTP/1.1" 200 3621
+INFO 2026-05-18 20:47:19,240 basehttp 11824 3080 "POST /hr-login/ HTTP/1.1" 302 0
+ERROR 2026-05-18 20:47:20,173 log 11824 3080 Internal Server Error: /hr-dashboard/
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: users_employee.reset_token
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\decorators.py", line 19, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\views.py", line 471, in hr_dashboard
+    return render(request, "users/hr_dashboard.html", {
+        "company": company,
+    ...<8 lines>...
+        "dept_values": list(dept_count.values()),
+    })
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\defaulttags.py", line 199, in render
+    len_values = len(values)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: users_employee.reset_token
+ERROR 2026-05-18 20:47:20,424 basehttp 11824 3080 "GET /hr-dashboard/ HTTP/1.1" 500 195524
+ERROR 2026-05-18 20:49:32,130 log 11824 3080 Internal Server Error: /hr-dashboard/
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: users_employee.reset_token
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\decorators.py", line 19, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\views.py", line 471, in hr_dashboard
+    return render(request, "users/hr_dashboard.html", {
+        "company": company,
+    ...<8 lines>...
+        "dept_values": list(dept_count.values()),
+    })
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\defaulttags.py", line 199, in render
+    len_values = len(values)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: users_employee.reset_token
+ERROR 2026-05-18 20:49:32,252 basehttp 11824 3080 "GET /hr-dashboard/ HTTP/1.1" 500 195524
+ERROR 2026-05-18 20:49:34,496 log 11824 3080 Internal Server Error: /hr-dashboard/
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: users_employee.reset_token
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\decorators.py", line 19, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\views.py", line 471, in hr_dashboard
+    return render(request, "users/hr_dashboard.html", {
+        "company": company,
+    ...<8 lines>...
+        "dept_values": list(dept_count.values()),
+    })
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\defaulttags.py", line 199, in render
+    len_values = len(values)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: users_employee.reset_token
+ERROR 2026-05-18 20:49:34,630 basehttp 11824 3080 "GET /hr-dashboard/ HTTP/1.1" 500 195524
+WARNING 2026-05-18 20:49:39,805 log 11824 3080 Forbidden (CSRF token from POST incorrect.): /hr-login/
+WARNING 2026-05-18 20:49:39,825 basehttp 11824 3080 "POST /hr-login/ HTTP/1.1" 403 2503
+INFO 2026-05-18 20:49:41,879 basehttp 11824 3080 "GET /hr-login/ HTTP/1.1" 200 3621
+INFO 2026-05-18 20:49:57,334 basehttp 11824 3080 - Broken pipe from ('127.0.0.1', 49907)
+INFO 2026-05-18 20:50:01,113 basehttp 11824 5056 - Broken pipe from ('127.0.0.1', 50354)
+INFO 2026-05-18 20:50:07,924 basehttp 11824 6204 "POST /hr-login/ HTTP/1.1" 302 0
+ERROR 2026-05-18 20:50:08,663 log 11824 6204 Internal Server Error: /hr-dashboard/
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: users_employee.reset_token
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\decorators.py", line 19, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\mylife\users\views.py", line 471, in hr_dashboard
+    return render(request, "users/hr_dashboard.html", {
+        "company": company,
+    ...<8 lines>...
+        "dept_values": list(dept_count.values()),
+    })
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\template\defaulttags.py", line 199, in render
+    len_values = len(values)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such column: users_employee.reset_token
+ERROR 2026-05-18 20:50:08,858 basehttp 11824 6204 "GET /hr-dashboard/ HTTP/1.1" 500 195524
+INFO 2026-05-18 21:36:26,704 autoreload 9544 11188 Watching for file changes with StatReloader
+INFO 2026-05-18 21:36:40,390 basehttp 9544 8544 "GET / HTTP/1.1" 302 0
+INFO 2026-05-18 21:36:40,471 basehttp 9544 8544 "GET /hr-login/ HTTP/1.1" 200 3621
+INFO 2026-05-18 21:36:47,155 basehttp 9544 8544 "GET /hr-register/ HTTP/1.1" 200 3545
+INFO 2026-05-18 21:38:40,174 basehttp 9544 2260 "POST /hr-register/ HTTP/1.1" 200 3675
+INFO 2026-05-18 21:38:43,098 basehttp 9544 8544 - Broken pipe from ('127.0.0.1', 51940)
+INFO 2026-05-18 21:38:47,878 basehttp 9544 2260 "GET /hr-register/ HTTP/1.1" 200 3545
+INFO 2026-05-18 21:38:51,930 basehttp 9544 2260 "GET /hr-login/ HTTP/1.1" 200 3621
+INFO 2026-05-18 21:39:07,127 basehttp 9544 2260 "POST /hr-login/ HTTP/1.1" 200 3673
+INFO 2026-05-18 21:39:21,810 basehttp 9544 2260 "GET / HTTP/1.1" 302 0
+INFO 2026-05-18 21:39:21,838 basehttp 9544 2260 "GET /hr-login/ HTTP/1.1" 200 3621
+INFO 2026-05-18 21:39:28,557 basehttp 9544 2260 "GET /login/ HTTP/1.1" 200 2425
+INFO 2026-05-18 21:39:49,988 basehttp 9544 2260 "POST /login/ HTTP/1.1" 302 0
+INFO 2026-05-18 21:39:50,161 basehttp 9544 2260 "GET /dashboard/ HTTP/1.1" 200 14106
+INFO 2026-05-18 21:39:58,294 basehttp 9544 2260 "POST /approve-company/1/ HTTP/1.1" 200 61
+INFO 2026-05-18 21:39:59,987 basehttp 9544 2260 "GET /dashboard/ HTTP/1.1" 200 13924
+WARNING 2026-05-18 21:40:13,590 log 9544 2260 Forbidden (CSRF token from POST incorrect.): /hr-login/
+WARNING 2026-05-18 21:40:13,618 basehttp 9544 2260 "POST /hr-login/ HTTP/1.1" 403 2503
+INFO 2026-05-18 21:40:16,391 basehttp 9544 2260 "GET /hr-login/ HTTP/1.1" 200 3621
+INFO 2026-05-18 21:40:23,640 basehttp 9544 2260 "GET /hr-login/ HTTP/1.1" 200 3621
+INFO 2026-05-18 21:40:41,654 basehttp 9544 2260 "POST /hr-login/ HTTP/1.1" 302 0
+INFO 2026-05-18 21:40:41,851 basehttp 9544 2260 "GET /hr-dashboard/ HTTP/1.1" 200 19192
+INFO 2026-05-18 21:41:45,656 basehttp 9544 2260 "GET /company-settings/ HTTP/1.1" 200 11961
+INFO 2026-05-18 21:55:12,508 basehttp 9544 4552 "GET /hr-dashboard/ HTTP/1.1" 200 12023
+INFO 2026-05-18 22:01:29,436 basehttp 9544 872 "GET /hr-dashboard/ HTTP/1.1" 200 21975
+INFO 2026-05-18 22:05:32,259 basehttp 9544 872 "GET /hr-dashboard/ HTTP/1.1" 200 21956
+INFO 2026-05-18 22:11:07,870 basehttp 9544 2396 "GET /analytics/ HTTP/1.1" 200 3532
+INFO 2026-05-18 22:11:14,402 basehttp 9544 2396 "GET /attendance/ HTTP/1.1" 200 3203
+INFO 2026-05-18 22:11:20,548 basehttp 9544 2396 "GET /leave/ HTTP/1.1" 200 5272
+INFO 2026-05-18 22:11:26,772 basehttp 9544 2396 "GET /employee-verification/ HTTP/1.1" 200 4159
+INFO 2026-05-18 22:11:33,998 basehttp 9544 2396 "GET /departments/ HTTP/1.1" 200 8725
+INFO 2026-05-18 22:11:39,888 basehttp 9544 2396 "GET /departments/ HTTP/1.1" 200 8725
+INFO 2026-05-18 22:11:43,141 basehttp 9544 2396 "GET /company-settings/ HTTP/1.1" 200 11961
+INFO 2026-05-18 22:13:21,957 basehttp 9544 4040 "GET /departments/ HTTP/1.1" 200 8725
+INFO 2026-05-18 22:13:27,536 basehttp 9544 4040 "GET /company-settings/ HTTP/1.1" 200 11961
+INFO 2026-05-18 22:13:31,093 basehttp 9544 4040 "GET /company-settings/ HTTP/1.1" 200 11961
+INFO 2026-05-19 22:01:19,132 autoreload 3216 8992 Watching for file changes with StatReloader
+INFO 2026-05-19 22:01:34,668 basehttp 3216 7816 "GET / HTTP/1.1" 302 0
+INFO 2026-05-19 22:01:34,923 basehttp 3216 7816 "GET /hr-dashboard/ HTTP/1.1" 200 22817
+WARNING 2026-05-19 22:01:38,087 log 3216 4764 Not Found: /favicon.ico
+WARNING 2026-05-19 22:01:38,089 basehttp 3216 4764 "GET /favicon.ico HTTP/1.1" 404 18135
+INFO 2026-05-19 22:04:22,583 autoreload 3216 8992 C:\Users\Administrator\Desktop\mylife\users\urls.py changed, reloading.
+INFO 2026-05-19 22:04:25,557 autoreload 6024 12456 Watching for file changes with StatReloader
+INFO 2026-05-19 22:08:28,036 basehttp 6024 1228 "GET /hr-dashboard/ HTTP/1.1" 200 22817
+INFO 2026-05-19 22:08:29,290 basehttp 6024 1228 "GET /hr-dashboard/ HTTP/1.1" 200 22817
+INFO 2026-05-19 22:08:30,275 basehttp 6024 1228 "GET /hr-dashboard/ HTTP/1.1" 200 22817
+INFO 2026-05-19 22:08:34,222 basehttp 6024 1228 "GET /company-settings/ HTTP/1.1" 200 14261
+INFO 2026-05-19 22:08:40,990 basehttp 6024 1228 "GET /logout/ HTTP/1.1" 302 0
+INFO 2026-05-19 22:08:41,046 basehttp 6024 1228 "GET /login/ HTTP/1.1" 200 5386
+INFO 2026-05-19 22:13:27,424 basehttp 6024 1228 "GET /hr-dashboard/ HTTP/1.1" 302 0
+INFO 2026-05-19 22:13:27,523 basehttp 6024 1228 "GET /hr-login/?next=/hr-dashboard/ HTTP/1.1" 200 6322
+INFO 2026-05-19 22:13:40,518 basehttp 6024 1228 "GET /hr-register/ HTTP/1.1" 200 5790
+INFO 2026-05-19 22:14:08,451 basehttp 6024 1228 "POST /hr-login/?next=/hr-dashboard/ HTTP/1.1" 302 0
+INFO 2026-05-19 22:14:08,498 basehttp 6024 1228 "GET /hr-dashboard/ HTTP/1.1" 200 22817
+INFO 2026-05-19 22:14:10,577 basehttp 6024 1228 "GET /analytics/ HTTP/1.1" 200 10773
+INFO 2026-05-19 22:14:18,542 basehttp 6024 1228 "GET /attendance/ HTTP/1.1" 200 7708
+INFO 2026-05-19 22:14:25,035 basehttp 6024 1228 "GET /leave/ HTTP/1.1" 200 9949
+INFO 2026-05-19 22:14:29,628 basehttp 6024 1228 "GET /employee-verification/ HTTP/1.1" 200 9130
+INFO 2026-05-19 22:14:42,037 basehttp 6024 1228 "GET /company-settings/ HTTP/1.1" 200 14261
+INFO 2026-05-19 22:14:59,123 basehttp 6024 1228 "GET /manage-shifts/ HTTP/1.1" 302 0
+INFO 2026-05-19 22:14:59,180 basehttp 6024 1228 "GET /company-settings/ HTTP/1.1" 200 14455
+INFO 2026-05-19 22:15:09,349 basehttp 6024 1228 "GET /hr-dashboard/ HTTP/1.1" 200 22817
+INFO 2026-05-19 22:15:13,630 basehttp 6024 1228 "GET /report/ HTTP/1.1" 200 12779
+INFO 2026-05-19 22:15:44,579 basehttp 6024 1228 "GET /hr-dashboard/ HTTP/1.1" 200 22817
+INFO 2026-05-19 22:15:49,119 basehttp 6024 1228 "GET /departments/ HTTP/1.1" 200 12657
+INFO 2026-05-19 22:15:58,356 basehttp 6024 1228 "GET /hr-login/?next=/hr-dashboard/ HTTP/1.1" 200 6322
+INFO 2026-05-19 22:16:01,589 basehttp 6024 1228 "GET /hr-forgot-password/ HTTP/1.1" 200 6590
+INFO 2026-05-19 22:16:32,205 basehttp 6024 1228 "GET /hr-login/ HTTP/1.1" 200 6322
+INFO 2026-05-19 22:16:36,618 basehttp 6024 1228 "GET /login/ HTTP/1.1" 200 5386
+INFO 2026-05-19 22:17:23,771 basehttp 6024 1228 "POST /login/ HTTP/1.1" 200 5444
+INFO 2026-05-19 22:17:46,681 basehttp 6024 1228 "POST /login/ HTTP/1.1" 302 0
+INFO 2026-05-19 22:17:46,850 basehttp 6024 1228 "GET /dashboard/ HTTP/1.1" 200 18436
+INFO 2026-05-19 22:17:54,771 basehttp 6024 1228 "GET /login/ HTTP/1.1" 200 5386
+INFO 2026-05-19 22:18:03,615 basehttp 6024 1228 "GET /hr-login/?next=/hr-dashboard/ HTTP/1.1" 200 6322
+INFO 2026-05-19 22:18:04,479 basehttp 6024 1228 "GET /hr-login/?next=/hr-dashboard/ HTTP/1.1" 200 6322
+INFO 2026-05-19 22:18:28,264 autoreload 7968 11772 Watching for file changes with StatReloader
+INFO 2026-05-19 22:18:36,391 basehttp 7968 3816 "GET / HTTP/1.1" 302 0
+INFO 2026-05-19 22:18:36,442 basehttp 7968 3816 "GET /login/ HTTP/1.1" 200 5386
+WARNING 2026-05-19 22:18:36,852 log 7968 6128 Not Found: /favicon.ico
+WARNING 2026-05-19 22:18:36,863 basehttp 7968 6128 "GET /favicon.ico HTTP/1.1" 404 18135
+INFO 2026-05-19 22:19:52,885 basehttp 7968 10156 "GET /hr-login/ HTTP/1.1" 200 6322
+INFO 2026-05-19 22:20:12,049 basehttp 7968 10156 "POST /hr-login/ HTTP/1.1" 302 0
+INFO 2026-05-19 22:20:12,126 basehttp 7968 10156 "GET /hr-dashboard/ HTTP/1.1" 200 22817
+INFO 2026-05-19 22:20:33,825 basehttp 7968 10156 "GET /analytics/ HTTP/1.1" 200 10773
+INFO 2026-05-19 23:10:56,896 autoreload 7968 11772 C:\Users\Administrator\Desktop\mylife\users\views.py changed, reloading.
+INFO 2026-05-19 23:10:59,363 autoreload 13308 264 Watching for file changes with StatReloader
+INFO 2026-05-19 23:13:09,152 autoreload 13308 264 C:\Users\Administrator\Desktop\mylife\mylife\settings.py changed, reloading.
+INFO 2026-05-19 23:13:11,527 autoreload 5436 10816 Watching for file changes with StatReloader
+INFO 2026-05-19 23:23:01,981 autoreload 5436 10816 C:\Users\Administrator\Desktop\mylife\users\urls.py changed, reloading.
+INFO 2026-05-19 23:23:03,883 autoreload 6320 3308 Watching for file changes with StatReloader
+INFO 2026-05-19 23:26:05,889 autoreload 6320 3308 C:\Users\Administrator\Desktop\mylife\users\urls.py changed, reloading.
+INFO 2026-05-19 23:26:07,805 autoreload 11328 7392 Watching for file changes with StatReloader
+INFO 2026-05-19 23:41:58,112 autoreload 11328 7392 C:\Users\Administrator\Desktop\mylife\users\views.py changed, reloading.
+INFO 2026-05-19 23:42:00,625 autoreload 5584 2300 Watching for file changes with StatReloader
+INFO 2026-05-19 23:43:06,600 autoreload 5584 2300 C:\Users\Administrator\Desktop\mylife\users\models.py changed, reloading.
+INFO 2026-05-19 23:43:08,903 autoreload 12308 9996 Watching for file changes with StatReloader
+INFO 2026-05-19 23:43:12,145 autoreload 12308 9996 C:\Users\Administrator\Desktop\mylife\users\models.py changed, reloading.
+INFO 2026-05-19 23:43:14,644 autoreload 8184 5792 Watching for file changes with StatReloader
+INFO 2026-05-19 23:43:22,487 autoreload 8184 5792 C:\Users\Administrator\Desktop\mylife\users\models.py changed, reloading.
+INFO 2026-05-19 23:43:25,198 autoreload 10072 4800 Watching for file changes with StatReloader
+INFO 2026-05-20 00:06:25,559 autoreload 7064 5128 Watching for file changes with StatReloader
+INFO 2026-05-20 00:06:33,010 basehttp 7064 6060 "GET / HTTP/1.1" 302 0
+INFO 2026-05-20 00:06:33,221 basehttp 7064 6060 "GET /hr-dashboard/ HTTP/1.1" 200 22817
+WARNING 2026-05-20 00:06:33,939 log 7064 12784 Not Found: /favicon.ico
+WARNING 2026-05-20 00:06:33,941 basehttp 7064 12784 "GET /favicon.ico HTTP/1.1" 404 18412
+INFO 2026-05-20 00:06:42,856 basehttp 7064 11064 "GET /analytics/ HTTP/1.1" 200 10773
+INFO 2026-05-20 00:08:10,785 autoreload 7064 5128 C:\Users\Administrator\Desktop\mylife\users\urls.py changed, reloading.
+INFO 2026-05-20 00:08:13,359 autoreload 600 7516 Watching for file changes with StatReloader
+INFO 2026-05-20 00:08:20,673 basehttp 600 7968 "GET / HTTP/1.1" 200 6322
+WARNING 2026-05-20 00:08:21,072 log 600 7968 Not Found: /favicon.ico
+WARNING 2026-05-20 00:08:21,073 basehttp 600 7968 "GET /favicon.ico HTTP/1.1" 404 18412
+INFO 2026-05-20 00:08:37,454 basehttp 600 10860 "POST / HTTP/1.1" 302 0
+INFO 2026-05-20 00:08:37,543 basehttp 600 10860 "GET /hr-dashboard/ HTTP/1.1" 200 22817
+INFO 2026-05-20 20:34:49,103 autoreload 13308 9488 Watching for file changes with StatReloader
+INFO 2026-05-20 20:35:04,459 basehttp 13308 5316 "GET / HTTP/1.1" 200 2411
+WARNING 2026-05-20 20:35:05,042 log 13308 3892 Not Found: /favicon.ico
+WARNING 2026-05-20 20:35:05,045 basehttp 13308 3892 "GET /favicon.ico HTTP/1.1" 404 1976
+INFO 2026-05-20 20:35:27,471 views 13308 1068 Successful HR login for user: anna from IP: 127.0.0.1
+INFO 2026-05-20 20:35:27,494 basehttp 13308 1068 "POST / HTTP/1.1" 302 0
+INFO 2026-05-20 20:35:27,655 basehttp 13308 1068 "GET /hr-dashboard/ HTTP/1.1" 200 5785
+INFO 2026-05-20 20:35:56,310 basehttp 13308 1068 "GET / HTTP/1.1" 200 2442
+INFO 2026-05-21 17:10:19,021 autoreload 6996 7072 Watching for file changes with StatReloader
+INFO 2026-05-21 17:14:24,028 autoreload 13208 10840 Watching for file changes with StatReloader
+INFO 2026-05-21 19:39:23,132 autoreload 1388 11180 Watching for file changes with StatReloader
+INFO 2026-05-21 19:40:17,159 basehttp 1388 1332 "GET / HTTP/1.1" 200 2417
+WARNING 2026-05-21 19:40:17,583 log 1388 1332 Not Found: /favicon.ico
+WARNING 2026-05-21 19:40:17,585 basehttp 1388 1332 "GET /favicon.ico HTTP/1.1" 404 1965
