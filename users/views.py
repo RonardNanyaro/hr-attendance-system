@@ -372,8 +372,15 @@ def hr_register(request):
         username = request.POST.get("username")
         email = request.POST.get("email")
         password = request.POST.get("password")
+        confirm_password = request.POST.get("confirm_password")  # ADDED
         phone = request.POST.get("phone")
         ip = get_client_ip(request)
+        
+        # ADDED: Check if passwords match
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match!")
+            return render(request, "users/hr_register.html")
+        
         if cache.get(f"register_{ip}", 0) >= 3:
             messages.error(request, "Too many registration attempts. Try again later.")
             return render(request, "users/hr_register.html")
@@ -1067,11 +1074,31 @@ def api_employee_reset_password(request):
 
 # ================= MOBILE API VIEWS =================
 
+# ================= PUBLIC API FOR EMPLOYEE REGISTRATION =================
+
 @require_http_methods(["GET"])
 def api_get_companies(request):
+    """Public endpoint - Get all companies approved by admin for employee registration"""
     try:
-        companies = Company.objects.filter(status='approved').values('id', 'name')
+        companies = Company.objects.filter(status='approved').values('id', 'name', 'company_code')
         return JsonResponse({'success': True, 'companies': list(companies)})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@require_http_methods(["GET"])
+def api_get_departments_by_company(request, company_id):
+    """Public endpoint - Get departments created by HR for a specific company"""
+    try:
+        # Check if company exists and is approved
+        company = get_object_or_404(Company, id=company_id, status='approved')
+        
+        # Get all departments for this company
+        departments = Department.objects.filter(company=company).values('id', 'name')
+        
+        return JsonResponse({'success': True, 'departments': list(departments)})
+    except Company.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Company not found'}, status=404)
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
 

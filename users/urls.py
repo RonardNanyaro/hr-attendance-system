@@ -63,8 +63,10 @@ urlpatterns = [
     path("api/departments/create/", views.api_create_department, name="api_create_department"),
     path("api/departments/delete/<int:dept_id>/", views.api_delete_department, name="api_delete_department"),
     
-    # ================= COMPANY API URLs (For Flutter) =================
+    # ================= PUBLIC API FOR EMPLOYEE REGISTRATION (NEW) =================
+    # These endpoints do NOT require login - for employee registration
     path("api/companies/", views.api_get_companies, name="api_get_companies"),
+    path("api/companies/<int:company_id>/departments/", views.api_get_departments_by_company, name="api_get_departments_by_company"),
     
     # ================= EMPLOYEE SCHEDULE API URLs =================
     path("api/my-schedule/", views.api_my_schedule, name="api_my_schedule"),
@@ -102,14 +104,9 @@ urlpatterns = [
     path("api/stats/dashboard/", views.api_dashboard_stats, name="api_dashboard_stats"),
     path("api/stats/monthly/", views.api_monthly_stats, name="api_monthly_stats"),
     
-    # Add these lines to your urlpatterns (after existing imports)
-
-# ================= API VERSIONING (LOW PRIORITY) =================
-# Keep existing APIs for backward compatibility
-# Add versioned APIs for future
-
-path("api/v1/employee/register/", views.api_employee_register, name="api_employee_register_v1"),
-path("api/v1/employee/login/", views.api_employee_login, name="api_employee_login_v1"),
-path("api/v1/attendance/check-in/", views.api_check_in, name="api_check_in_v1"),
-path("api/v1/attendance/check-out/", views.api_check_out, name="api_check_out_v1"),
+    # ================= API VERSIONING =================
+    path("api/v1/employee/register/", views.api_employee_register, name="api_employee_register_v1"),
+    path("api/v1/employee/login/", views.api_employee_login, name="api_employee_login_v1"),
+    path("api/v1/attendance/check-in/", views.api_check_in, name="api_check_in_v1"),
+    path("api/v1/attendance/check-out/", views.api_check_out, name="api_check_out_v1"),
 ]
