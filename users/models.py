@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from datetime import time
+from datetime import time, timedelta
+from django.utils import timezone as django_timezone
 
 
 # ================= COMPANY =================
@@ -32,6 +33,7 @@ class Company(models.Model):
     phone = models.CharField(max_length=20, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     address = models.TextField(blank=True, null=True)
+    company_code = models.CharField(max_length=20, blank=True, null=True, unique=True, help_text="Unique company identifier")
     
     # ========== SCHEDULE SETTINGS (Set by HR) ==========
     schedule_type = models.CharField(max_length=10, choices=SCHEDULE_TYPE_CHOICES, default='fixed')
@@ -59,6 +61,11 @@ class Company(models.Model):
     class Meta:
         verbose_name_plural = "Companies"
         ordering = ['-requested_at']
+        indexes = [
+            models.Index(fields=['status']),
+            models.Index(fields=['company_code']),
+            models.Index(fields=['name']),
+        ]
 
 
 # ================= DEPARTMENT =================
@@ -74,6 +81,9 @@ class Department(models.Model):
     class Meta:
         unique_together = ['name', 'company']
         ordering = ['name']
+        indexes = [
+            models.Index(fields=['company', 'name']),
+        ]
 
 
 # ================= SHIFT (For companies using shift schedule) =================
@@ -93,6 +103,9 @@ class Shift(models.Model):
     class Meta:
         unique_together = ['company', 'name']
         ordering = ['start_time']
+        indexes = [
+            models.Index(fields=['company', 'is_active']),
+        ]
 
 
 # ================= PROFILE =================
@@ -117,6 +130,13 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user.username} ({self.role})"
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['role', 'status']),
+            models.Index(fields=['company', 'role']),
+            models.Index(fields=['user', 'role']),
+        ]
 
 
 # ================= EMPLOYEE =================
@@ -148,17 +168,45 @@ class Employee(models.Model):
     random_verify_count = models.IntegerField(default=0, help_text="Number of random verifications completed today")
     last_random_verify_time = models.DateTimeField(null=True, blank=True)
     
-    # ========== PASSWORD RESET FIELDS ==========
-    reset_token = models.CharField(max_length=100, blank=True, null=True, help_text="Password reset token")
+    # ========== SECURITY & AUTHENTICATION FIELDS ==========
+    # FIX 1: Store face encoding for real face recognition
+    face_encoding = models.BinaryField(null=True, blank=True, help_text="Stored face encoding for verification")
+    
+    # FIX 2: Store fingerprint hash instead of raw data
+    fingerprint_hash = models.CharField(max_length=128, null=True, blank=True, help_text="SHA256 hash of fingerprint data")
+    
+    # FIX 3: Store reset token as HASH (not plain text)
+    reset_token_hash = models.CharField(max_length=128, null=True, blank=True, help_text="SHA256 hash of reset token")
     reset_token_expires = models.DateTimeField(null=True, blank=True, help_text="Token expiration time")
     
     # Additional info
     email = models.EmailField(blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     joined_date = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return self.user.username if self.user else self.name
+    
+    # FIX 3: Secure token methods
+    def set_reset_token(self, raw_token):
+        """Hash and store reset token securely"""
+        import hashlib
+        self.reset_token_hash = hashlib.sha256(raw_token.encode()).hexdigest()
+        self.reset_token_expires = django_timezone.now() + timedelta(hours=1)
+    
+    def verify_reset_token(self, raw_token):
+        """Verify reset token"""
+        import hashlib
+        from django.utils import timezone
+        
+        if not self.reset_token_hash or not self.reset_token_expires:
+            return False
+        if timezone.now() > self.reset_token_expires:
+            return False
+        token_hash = hashlib.sha256(raw_token.encode()).hexdigest()
+        return token_hash == self.reset_token_hash
     
     def get_work_schedule(self):
         """Get employee's work schedule based on company settings"""
@@ -189,6 +237,17 @@ class Employee(models.Model):
                 'late_threshold': 15,
                 'early_threshold': 15,
             }
+    
+    class Meta:
+        indexes = [
+            # FIX 4: Database indexes for performance
+            models.Index(fields=['email']),
+            models.Index(fields=['phone']),
+            models.Index(fields=['company', 'status']),
+            models.Index(fields=['user', 'company']),
+            models.Index(fields=['-created_at']),
+            models.Index(fields=['reset_token_hash', 'reset_token_expires']),
+        ]
 
 
 # ================= RANDOM VERIFICATION =================
@@ -328,7 +387,7 @@ class Attendance(models.Model):
         return f"{self.employee.name} - {self.date} - {self.status}"
 
 
-# ================= PASSWORD RESET TOKEN =================
+# ================= PASSWORD RESET TOKEN (For HR/Admin web) =================
 class PasswordResetToken(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reset_tokens')
     token = models.CharField(max_length=100, unique=True)
@@ -346,6 +405,10 @@ class PasswordResetToken(models.Model):
     
     class Meta:
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['token', 'expires_at']),
+            models.Index(fields=['user', 'is_used']),
+        ]
 
 
 # ================= NOTIFICATIONS =================
@@ -366,6 +429,9 @@ class Notification(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['user', 'is_read', '-created_at']),
+        ]
 
     def __str__(self):
         return f"{self.user.username}: {self.message[:50]}"
@@ -399,6 +465,10 @@ class ActivityLog(models.Model):
     class Meta:
         ordering = ['-created_at']
         verbose_name_plural = "Activity Logs"
+        indexes = [
+            models.Index(fields=['user', 'action', '-created_at']),
+            models.Index(fields=['created_at']),
+        ]
     
     def __str__(self):
         return f"{self.user} - {self.action} - {self.model_name} at {self.created_at}"
@@ -417,6 +487,7 @@ class IdempotencyKey(models.Model):
     class Meta:
         indexes = [
             models.Index(fields=['key', 'expires_at']),
+            models.Index(fields=['user_id', 'created_at']),
         ]
     
     def __str__(self):

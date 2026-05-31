@@ -183,10 +183,16 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# ================= SESSION SETTINGS =================
-SESSION_COOKIE_AGE = 3600  # 1 hour
-SESSION_SAVE_EVERY_REQUEST = True
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# ================= SESSION SETTINGS (FIXED FOR MULTIPLE SESSIONS) =================
+# These settings allow users to be logged in on multiple devices/networks simultaneously
+SESSION_COOKIE_AGE = 86400  # Changed: 24 hours (was 3600 = 1 hour)
+SESSION_SAVE_EVERY_REQUEST = True  # Keeps session alive with each request
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Changed: False so session persists after closing browser
+
+# These settings are critical for multiple sessions on different networks
+# Session cookie is NOT tied to IP address, so user can switch networks
+SESSION_COOKIE_HTTPONLY = True  # Prevents JavaScript access (security)
+SESSION_COOKIE_SAMESITE = 'Lax'  # Allows cross-site requests
 
 # ================= SECURITY HEADERS (Production Only) =================
 if not DEBUG:

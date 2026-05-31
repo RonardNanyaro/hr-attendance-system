@@ -127,8 +127,41 @@ input::placeholder {
     color: var(--text-secondary);
 }
 
+/* Password wrapper for toggle button */
+.password-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+}
+
+.password-wrapper input {
+    margin: 0;
+    flex: 1;
+}
+
+.toggle-password {
+    width: auto;
+    padding: 12px 16px;
+    margin: 0;
+    background: var(--background);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 18px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.toggle-password:hover {
+    background: var(--border);
+    transform: none;
+    box-shadow: none;
+    color: var(--primary);
+}
+
 /* BUTTON */
-button {
+button[type="submit"] {
     width: 100%;
     padding: 14px;
     margin-top: 16px;
@@ -143,7 +176,7 @@ button {
     transition: var(--transition);
 }
 
-button:hover {
+button[type="submit"]:hover {
     background: var(--secondary);
     transform: translateY(-2px);
     box-shadow: 0 10px 20px rgba(15,118,110,0.25);
@@ -203,7 +236,7 @@ button:hover {
         font-size: 22px;
     }
     
-    input, button {
+    input, button[type="submit"], .toggle-password {
         padding: 10px 14px;
     }
 }
@@ -242,13 +275,37 @@ button:hover {
         >
         <div class="phone-note">📱 Tanzanian format: +255 followed by 9 digits</div>
 
-        <input type="password" name="password" placeholder="Password" required>
+        <!-- PASSWORD FIELD WITH TOGGLE -->
+        <div class="password-wrapper">
+            <input type="password" name="password" id="password" placeholder="Password" required>
+            <button type="button" class="toggle-password" onclick="togglePassword('password')">👁️</button>
+        </div>
+
+        <!-- CONFIRM PASSWORD FIELD WITH TOGGLE -->
+        <div class="password-wrapper">
+            <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required>
+            <button type="button" class="toggle-password" onclick="togglePassword('confirm_password')">👁️</button>
+        </div>
 
         <button type="submit">Create Account</button>
     </form>
 
     <a href="{% url 'users:hr_login' %}" class="link">← Back to Login</a>
 </div>
+
+<script>
+function togglePassword(fieldId) {
+    const field = document.getElementById(fieldId);
+    const button = event.target;
+    if (field.type === "password") {
+        field.type = "text";
+        button.textContent = "🙈";
+    } else {
+        field.type = "password";
+        button.textContent = "👁️";
+    }
+}
+</script>
 
 </body>
 </html>

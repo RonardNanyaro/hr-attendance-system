@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.db import IntegrityError
+from django.db import transaction  # ADDED for race condition fix
 from django.core.cache import cache
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
@@ -32,6 +33,12 @@ from django.contrib.auth.hashers import make_password
 from reportlab.platypus import SimpleDocTemplate, Table
 from reportlab.lib.pagesizes import letter
 
+# ADDED for face recognition
+import face_recognition
+import numpy as np
+from io import BytesIO
+from PIL import Image
+
 from .models import Profile, Employee, Leave, Attendance, Company, Department, Shift, Notification, ActivityLog, RandomVerification, PasswordResetToken, IdempotencyKey
 from .decorators import hr_required, admin_required
 from .idempotency import idempotent
@@ -45,7 +52,10 @@ import africastalking
 
 AFRICA_TALKING_USERNAME = os.environ.get("AFRICA_TALKING_USERNAME", "")
 AFRICA_TALKING_API_KEY = os.environ.get("AFRICA_TALKING_API_KEY", "")
-ADMIN_PHONE = os.environ.get("ADMIN_PHONE", "+255782550284")
+# FIXED: Removed hardcoded phone number
+ADMIN_PHONE = os.environ.get("ADMIN_PHONE")
+if not ADMIN_PHONE:
+    logger.warning("ADMIN_PHONE environment variable not set")
 
 if AFRICA_TALKING_USERNAME and AFRICA_TALKING_API_KEY:
     africastalking.initialize(AFRICA_TALKING_USERNAME, AFRICA_TALKING_API_KEY)
@@ -196,22 +206,83 @@ def get_employee_schedule(employee):
         }
 
 
+# ================= REAL FACE VERIFICATION (FIXED) =================
 def verify_face(employee, photo_base64):
-    if not photo_base64:
-        return {'verified': False, 'message': 'Face photo required', 'score': 0}
-    if len(photo_base64) < 100:
-        return {'verified': False, 'message': 'Image too small', 'score': 0}
-    if not photo_base64.startswith('data:image'):
-        return {'verified': False, 'message': 'Invalid image format', 'score': 0}
-    return {'verified': True, 'message': 'Face verified', 'score': 95}
+    """Real face verification using face_recognition library"""
+    try:
+        if not photo_base64:
+            return {'verified': False, 'message': 'Face photo required', 'score': 0}
+        
+        # Remove data:image prefix if present
+        if 'base64,' in photo_base64:
+            photo_base64 = photo_base64.split('base64,')[1]
+        
+        # Decode base64 to image
+        image_data = base64.b64decode(photo_base64)
+        image = Image.open(BytesIO(image_data))
+        
+        # Convert PIL Image to numpy array
+        image_np = np.array(image)
+        
+        # Get face encodings from the submitted image
+        face_locations = face_recognition.face_locations(image_np)
+        
+        if len(face_locations) == 0:
+            return {'verified': False, 'message': 'No face detected in image', 'score': 0}
+        
+        if len(face_locations) > 1:
+            return {'verified': False, 'message': 'Multiple faces detected', 'score': 0}
+        
+        # Get face encoding
+        face_encoding = face_recognition.face_encodings(image_np, face_locations)[0]
+        
+        # Compare with stored employee face encoding
+        if employee.face_encoding:
+            stored_encoding = np.frombuffer(employee.face_encoding, dtype=np.float64)
+            distance = face_recognition.face_distance([stored_encoding], face_encoding)[0]
+            
+            # Lower distance = better match (0.6 is typical threshold)
+            if distance < 0.6:
+                confidence = (1 - distance) * 100
+                return {'verified': True, 'message': 'Face verified', 'score': confidence}
+            else:
+                return {'verified': False, 'message': 'Face does not match', 'score': 0}
+        else:
+            # First time - store the face encoding
+            employee.face_encoding = face_encoding.tobytes()
+            employee.save()
+            return {'verified': True, 'message': 'Face registered successfully', 'score': 95}
+            
+    except Exception as e:
+        logger.error(f"Face verification error: {str(e)}")
+        return {'verified': False, 'message': 'Face verification failed', 'score': 0}
 
 
+# ================= REAL FINGERPRINT VERIFICATION (FIXED) =================
 def verify_fingerprint(employee, fingerprint_data):
-    if not fingerprint_data:
-        return {'verified': False, 'message': 'Fingerprint data required', 'score': 0}
-    if len(fingerprint_data) < 10:
-        return {'verified': False, 'message': 'Invalid fingerprint data', 'score': 0}
-    return {'verified': True, 'message': 'Fingerprint verified', 'score': 98}
+    """Real fingerprint verification using SHA256 hashing"""
+    try:
+        if not fingerprint_data:
+            return {'verified': False, 'message': 'Fingerprint data required', 'score': 0}
+        
+        # Hash the incoming fingerprint data
+        fingerprint_hash = hashlib.sha256(fingerprint_data.encode()).hexdigest()
+        
+        # Compare with stored fingerprint hash
+        if employee.fingerprint_hash:
+            if fingerprint_hash == employee.fingerprint_hash:
+                return {'verified': True, 'message': 'Fingerprint verified', 'score': 98}
+            else:
+                return {'verified': False, 'message': 'Fingerprint does not match', 'score': 0}
+        else:
+            # First time - store fingerprint hash
+            employee.fingerprint_hash = fingerprint_hash
+            employee.save()
+            return {'verified': True, 'message': 'Fingerprint registered successfully', 'score': 98}
+            
+    except Exception as e:
+        logger.error(f"Fingerprint verification error: {str(e)}")
+        return {'verified': False, 'message': 'Fingerprint verification failed', 'score': 0}
 
 
 def generate_random_verification_times(employee, check_in_time):
@@ -372,11 +443,10 @@ def hr_register(request):
         username = request.POST.get("username")
         email = request.POST.get("email")
         password = request.POST.get("password")
-        confirm_password = request.POST.get("confirm_password")  # ADDED
+        confirm_password = request.POST.get("confirm_password")
         phone = request.POST.get("phone")
         ip = get_client_ip(request)
         
-        # ADDED: Check if passwords match
         if password != confirm_password:
             messages.error(request, "Passwords do not match!")
             return render(request, "users/hr_register.html")
@@ -1009,7 +1079,7 @@ def api_delete_department(request, dept_id):
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 
-# ================= EMPLOYEE PASSWORD RESET (Mobile API) =================
+# ================= EMPLOYEE PASSWORD RESET (Mobile API) - FIXED with HASHED TOKENS =================
 
 @csrf_exempt
 @require_http_methods(["POST"])
@@ -1027,12 +1097,13 @@ def api_employee_forgot_password(request):
             employee = Employee.objects.filter(phone=email_or_phone).first()
         if not employee or not employee.user:
             return JsonResponse({'success': False, 'error': 'No employee found with this email or phone'}, status=404)
-        token = generate_reset_token()
-        expires_at = timezone.now() + timedelta(hours=1)
-        employee.reset_token = token
-        employee.reset_token_expires = expires_at
+        
+        # Generate token and store hash (SECURE)
+        raw_token = secrets.token_urlsafe(50)
+        employee.set_reset_token(raw_token)  # This stores the HASH, not the token
         employee.save()
-        reset_link = f"yourapp://reset-password?token={token}"
+        
+        reset_link = f"yourapp://reset-password?token={raw_token}"
         if employee.email:
             send_password_reset_email(employee.user, employee.email, reset_link, is_hr=False)
         if employee.phone:
@@ -1040,7 +1111,8 @@ def api_employee_forgot_password(request):
             send_sms(sms_message, employee.phone)
         return JsonResponse({'success': True, 'message': 'Password reset link sent to your email/SMS'})
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Forgot password error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to process request'}, status=500)
 
 
 @csrf_exempt
@@ -1051,25 +1123,35 @@ def api_employee_reset_password(request):
         data = json.loads(request.body)
         token = data.get('token')
         new_password = data.get('new_password')
+        
+        # Find employee by token hash
+        token_hash = hashlib.sha256(token.encode()).hexdigest()
         employee = Employee.objects.filter(
-            reset_token=token,
+            reset_token_hash=token_hash,
             reset_token_expires__gt=timezone.now()
         ).first()
+        
         if not employee:
             return JsonResponse({'success': False, 'error': 'Invalid or expired reset token'}, status=400)
+        
         is_valid, errors = validate_password_strength(new_password)
         if not is_valid:
             return JsonResponse({'success': False, 'error': errors[0]}, status=400)
+        
         user = employee.user
-        user.password = make_password(new_password)
+        user.set_password(new_password)
         user.save()
-        employee.reset_token = None
+        
+        # Clear token
+        employee.reset_token_hash = None
         employee.reset_token_expires = None
         employee.save()
+        
         log_activity(user, 'password_reset', 'Employee', employee.id, employee.name, "Password reset via mobile", None)
         return JsonResponse({'success': True, 'message': 'Password reset successfully'})
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Reset password error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to reset password'}, status=500)
 
 
 # ================= MOBILE API VIEWS =================
@@ -1080,27 +1162,33 @@ def api_employee_reset_password(request):
 def api_get_companies(request):
     """Public endpoint - Get all companies approved by admin for employee registration"""
     try:
-        companies = Company.objects.filter(status='approved').values('id', 'name', 'company_code')
-        return JsonResponse({'success': True, 'companies': list(companies)})
+        companies = Company.objects.filter(status='approved').prefetch_related('department_set')
+        result = []
+        for company in companies:
+            result.append({
+                'id': company.id,
+                'name': company.name,
+                'company_code': company.company_code if hasattr(company, 'company_code') and company.company_code else f"COMP{company.id:03d}",
+                'departments': list(company.department_set.values('id', 'name'))
+            })
+        return JsonResponse({'success': True, 'companies': result})
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Error in api_get_companies: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Internal server error'}, status=500)
 
 
 @require_http_methods(["GET"])
 def api_get_departments_by_company(request, company_id):
     """Public endpoint - Get departments created by HR for a specific company"""
     try:
-        # Check if company exists and is approved
         company = get_object_or_404(Company, id=company_id, status='approved')
-        
-        # Get all departments for this company
         departments = Department.objects.filter(company=company).values('id', 'name')
-        
         return JsonResponse({'success': True, 'departments': list(departments)})
     except Company.DoesNotExist:
         return JsonResponse({'success': False, 'error': 'Company not found'}, status=404)
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Error in api_get_departments_by_company: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Internal server error'}, status=500)
 
 
 @login_required
@@ -1122,7 +1210,8 @@ def api_my_schedule(request):
             }
         })
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Error in api_my_schedule: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Internal server error'}, status=500)
 
 
 @login_required
@@ -1135,7 +1224,8 @@ def api_my_shift_info(request):
         shift_info = get_shift_info_for_employee(employee)
         return JsonResponse({'success': True, 'shift_info': shift_info})
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Error in api_my_shift_info: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Internal server error'}, status=500)
 
 
 @login_required
@@ -1154,7 +1244,8 @@ def api_get_shifts_for_employee(request):
                 'end_time': employee.company.fixed_end_time.strftime('%H:%M') if employee.company.fixed_end_time else '17:00'
             }})
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Error in api_get_shifts_for_employee: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Internal server error'}, status=500)
 
 
 @csrf_exempt
@@ -1163,6 +1254,21 @@ def api_get_shifts_for_employee(request):
 def api_employee_register(request):
     try:
         data = json.loads(request.body)
+        
+        # Input validation
+        required_fields = ['username', 'email', 'password', 'name', 'phone', 'company_id']
+        for field in required_fields:
+            if not data.get(field):
+                return JsonResponse({'success': False, 'error': f'{field} is required'}, status=400)
+        
+        # Validate email format
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', data['email']):
+            return JsonResponse({'success': False, 'error': 'Invalid email format'}, status=400)
+        
+        # Validate phone format
+        if not re.match(r'^\+?[0-9]{10,15}$', data['phone']):
+            return JsonResponse({'success': False, 'error': 'Invalid phone number format'}, status=400)
+        
         if User.objects.filter(username=data.get('username')).exists():
             return JsonResponse({'success': False, 'error': 'Username already exists'}, status=400)
         if User.objects.filter(email=data.get('email')).exists():
@@ -1192,7 +1298,8 @@ def api_employee_register(request):
         Profile.objects.create(user=user, role='employee', status='pending', phone_number=data.get('phone'), company=company)
         return JsonResponse({'success': True, 'message': 'Registration successful. Waiting for HR approval.', 'user_id': user.id, 'employee_id': employee.id})
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Registration error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Registration failed'}, status=500)
 
 
 @csrf_exempt
@@ -1244,7 +1351,8 @@ def api_employee_login(request):
             }
         })
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Login error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Login failed'}, status=500)
 
 
 @login_required
@@ -1267,22 +1375,31 @@ def api_employee_profile(request):
             }
         })
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Profile error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to fetch profile'}, status=500)
 
 
+# ================= CHECK-IN WITH RACE CONDITION FIX =================
 @csrf_exempt
 @login_required
 @require_http_methods(["POST"])
+@transaction.atomic
 @rate_limit(lambda r: f"checkin_{r.user.id}", limit=2, period=60)
 @idempotent(key_func=lambda r: r.headers.get('X-Idempotency-Key'))
 def api_check_in(request):
     try:
         data = json.loads(request.body)
-        employee = Employee.objects.filter(user=request.user).first()
+        
+        # LOCK the employee row to prevent race conditions
+        employee = Employee.objects.select_for_update().filter(user=request.user).first()
         if not employee:
             return JsonResponse({'success': False, 'error': 'Employee not found'}, status=404)
         
-        existing_attendance = Attendance.objects.filter(employee=employee, date=timezone.now().date()).first()
+        # LOCK the attendance row
+        existing_attendance = Attendance.objects.select_for_update().filter(
+            employee=employee, date=timezone.now().date()
+        ).first()
+        
         if existing_attendance and existing_attendance.check_in:
             return JsonResponse({'success': False, 'error': 'Already checked in today'}, status=400)
         
@@ -1339,7 +1456,8 @@ def api_check_in(request):
             'shift_info': shift_info
         })
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Check-in error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to process check-in'}, status=500)
 
 
 @csrf_exempt
@@ -1385,7 +1503,8 @@ def api_check_random_verification(request):
             'completed_verifications': completed_count
         })
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Random verification check error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to check verification'}, status=500)
 
 
 @csrf_exempt
@@ -1461,7 +1580,8 @@ def api_submit_random_verification(request, verification_id):
                 return JsonResponse({'success': False, 'error': result['message']}, status=400)
         return JsonResponse({'success': False, 'error': 'Invalid verification type'}, status=400)
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Submit verification error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to submit verification'}, status=500)
 
 
 @login_required
@@ -1499,21 +1619,28 @@ def api_verification_status(request):
             }
         })
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Verification status error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to get verification status'}, status=500)
 
 
+# ================= CHECK-OUT WITH RACE CONDITION FIX =================
 @csrf_exempt
 @login_required
 @require_http_methods(["POST"])
+@transaction.atomic
 @rate_limit(lambda r: f"checkout_{r.user.id}", limit=2, period=60)
 @idempotent(key_func=lambda r: r.headers.get('X-Idempotency-Key'))
 def api_check_out(request):
     try:
         data = json.loads(request.body)
-        employee = Employee.objects.filter(user=request.user).first()
+        
+        # LOCK the employee row
+        employee = Employee.objects.select_for_update().filter(user=request.user).first()
         if not employee:
             return JsonResponse({'success': False, 'error': 'Employee not found'}, status=404)
-        attendance = Attendance.objects.filter(employee=employee, date=timezone.now().date()).first()
+        
+        # LOCK the attendance row
+        attendance = Attendance.objects.select_for_update().filter(employee=employee, date=timezone.now().date()).first()
         if not attendance:
             return JsonResponse({'success': False, 'error': 'No check-in record found'}, status=400)
         if attendance.check_out:
@@ -1572,7 +1699,8 @@ def api_check_out(request):
             'all_verifications_completed': True
         })
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Check-out error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to process check-out'}, status=500)
 
 
 # ================= OTHER MOBILE APIs =================
@@ -1596,7 +1724,8 @@ def api_attendance_history(request):
             } for att in attendances]
         })
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Attendance history error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to fetch attendance history'}, status=500)
 
 
 @login_required
@@ -1615,7 +1744,8 @@ def api_today_attendance(request):
             'check_out_time': attendance.check_out.strftime('%I:%M %p') if attendance and attendance.check_out else None,
         })
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Today attendance error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to fetch today\'s attendance'}, status=500)
 
 
 @csrf_exempt
@@ -1639,7 +1769,8 @@ def api_apply_leave(request):
         leave = Leave.objects.create(employee=employee, leave_type=data.get('leave_type'), reason=data.get('reason'), status='pending')
         return JsonResponse({'success': True, 'leave_id': leave.id, 'message': 'Leave request submitted successfully'})
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Apply leave error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to apply for leave'}, status=500)
 
 
 @login_required
@@ -1660,7 +1791,8 @@ def api_leave_history(request):
             } for leave in leaves]
         })
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Leave history error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to fetch leave history'}, status=500)
 
 
 @login_required
@@ -1679,7 +1811,8 @@ def api_leave_balance(request):
             }
         })
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Leave balance error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to fetch leave balance'}, status=500)
 
 
 @csrf_exempt
@@ -1697,7 +1830,8 @@ def api_cancel_leave(request, leave_id):
         leave.save()
         return JsonResponse({'success': True, 'message': 'Leave cancelled successfully'})
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Cancel leave error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to cancel leave'}, status=500)
 
 
 @csrf_exempt
@@ -1722,7 +1856,8 @@ def api_sync_attendance(request):
                 synced_count += 1
         return JsonResponse({'success': True, 'synced_count': synced_count, 'message': f'Successfully synced {synced_count} records'})
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Sync attendance error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to sync attendance'}, status=500)
 
 
 @csrf_exempt
@@ -1742,7 +1877,8 @@ def api_sync_leaves(request):
             synced_count += 1
         return JsonResponse({'success': True, 'synced_count': synced_count, 'message': f'Successfully synced {synced_count} leave requests'})
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Sync leaves error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to sync leaves'}, status=500)
 
 
 @login_required
@@ -1780,7 +1916,8 @@ def api_dashboard_stats(request):
             }
         })
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Dashboard stats error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to fetch dashboard stats'}, status=500)
 
 
 @login_required
@@ -1811,7 +1948,8 @@ def api_monthly_stats(request):
             }
         })
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        logger.error(f"Monthly stats error: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'Unable to fetch monthly stats'}, status=500)
 
 
 # ================= HEALTH CHECK =================
