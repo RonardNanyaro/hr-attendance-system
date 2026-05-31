@@ -1137,16 +1137,21 @@ def api_get_companies(request):
         companies = Company.objects.filter(status='approved').prefetch_related('department_set')
         result = []
         for company in companies:
+            # Safely get company_code
+            company_code = getattr(company, 'company_code', None)
+            if not company_code:
+                company_code = f"COMP{company.id:03d}"
+            
             result.append({
                 'id': company.id,
                 'name': company.name,
-                'company_code': company.company_code if hasattr(company, 'company_code') and company.company_code else f"COMP{company.id:03d}",
+                'company_code': company_code,
                 'departments': list(company.department_set.values('id', 'name'))
             })
         return JsonResponse({'success': True, 'companies': result})
     except Exception as e:
-        logger.error(f"Error in api_get_companies: {str(e)}")
-        return JsonResponse({'success': False, 'error': 'Internal server error'}, status=500)
+        print(f"Error in api_get_companies: {str(e)}")  # This will appear in Render logs
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)  # Shows actual error
 
 
 @require_http_methods(["GET"])
