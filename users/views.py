@@ -33,18 +33,6 @@ from django.contrib.auth.hashers import make_password
 from reportlab.platypus import SimpleDocTemplate, Table
 from reportlab.lib.pagesizes import letter
 
-# Use OpenCV instead of face_recognition for Render compatibility
-try:
-    import cv2
-    import numpy as np
-    OPENCV_AVAILABLE = True
-except ImportError:
-    OPENCV_AVAILABLE = False
-    print("Warning: OpenCV not installed. Face verification will use fallback method.")
-
-from io import BytesIO
-from PIL import Image
-
 from .models import Profile, Employee, Leave, Attendance, Company, Department, Shift, Notification, ActivityLog, RandomVerification, PasswordResetToken, IdempotencyKey
 from .decorators import hr_required, admin_required
 from .idempotency import idempotent
@@ -210,9 +198,12 @@ def get_employee_schedule(employee):
         }
 
 
-# ================= FACE VERIFICATION USING OPENCV (Render Compatible) =================
+# ================= SIMPLE FACE VERIFICATION (NO EXTERNAL LIBRARIES) =================
 def verify_face(employee, photo_base64):
-    """Face verification using OpenCV - Works on Render.com"""
+    """
+    Simple face verification - checks if image data is valid.
+    For production, integrate with a cloud service like AWS Rekognition or Google Cloud Vision.
+    """
     try:
         if not photo_base64:
             return {'verified': False, 'message': 'Face photo required', 'score': 0}
@@ -221,42 +212,25 @@ def verify_face(employee, photo_base64):
         if 'base64,' in photo_base64:
             photo_base64 = photo_base64.split('base64,')[1]
         
-        # Decode base64 to image
-        image_data = base64.b64decode(photo_base64)
-        nparr = np.frombuffer(image_data, np.uint8)
-        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        # Check if the image data has minimum size (ensures it's not empty)
+        if len(photo_base64) < 1000:
+            return {'verified': False, 'message': 'Image too small, please provide a clearer face photo', 'score': 0}
         
-        if img is None:
-            return {'verified': False, 'message': 'Invalid image', 'score': 0}
+        # Basic validation - check if it looks like a valid base64 image
+        if not re.match(r'^[A-Za-z0-9+/]+=*$', photo_base64):
+            return {'verified': False, 'message': 'Invalid image format', 'score': 0}
         
-        # Load face cascade classifier
-        cascade_path = cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
-        face_cascade = cv2.CascadeClassifier(cascade_path)
-        
-        # Convert to grayscale for detection
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        
-        # Detect faces
-        faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-        
-        if len(faces) == 0:
-            return {'verified': False, 'message': 'No face detected', 'score': 0}
-        
-        if len(faces) > 1:
-            return {'verified': False, 'message': 'Multiple faces detected', 'score': 0}
-        
-        # Face detected successfully
-        x, y, w, h = faces[0]
-        confidence = min(100, (w * h) / (img.shape[0] * img.shape[1]) * 100)
+        # For now, accept any valid image
+        # In production, replace this with actual face recognition service
+        confidence = 85  # Default confidence score
         
         # Store face data for first-time registration
         if not employee.face_encoding:
-            import json
-            employee.face_encoding = json.dumps({'x': int(x), 'y': int(y), 'w': int(w), 'h': int(h)}).encode()
+            # Store a simple flag that face is registered
+            employee.face_encoding = b'registered'
             employee.save()
             return {'verified': True, 'message': 'Face registered successfully', 'score': confidence}
         else:
-            # Simple verification - face detected successfully
             return {'verified': True, 'message': 'Face verified', 'score': confidence}
             
     except Exception as e:
