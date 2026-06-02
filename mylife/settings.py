@@ -80,19 +80,14 @@ TEMPLATES = [
 # ================= WSGI =================
 WSGI_APPLICATION = 'mylife.wsgi.application'
 
-# ================= DATABASE - SUPABASE POSTGRESQL =================
+# ================= DATABASE - Railway PostgreSQL =================
+# Use DATABASE_URL environment variable (Railway sets this automatically)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres.gpqvltdmhufhvfeyfyuu',
-        'PASSWORD': 'MyNewPassword12312',
-        'HOST': 'aws-0-eu-west-1.pooler.supabase.com',
-        'PORT': '5432',
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3',
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
 # ================= PASSWORD VALIDATION =================
@@ -153,7 +148,8 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
     'https://*.onrender.com',
-    'https://hr-attendance-system-gojk.onrender.com',  # Your actual Render URL
+    'https://hr-attendance-system-gojk.onrender.com',
+    'https://*.up.railway.app',  # Railway domain
 ]
 
 # ================= REST FRAMEWORK =================
