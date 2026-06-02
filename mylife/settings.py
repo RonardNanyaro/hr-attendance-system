@@ -149,7 +149,9 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
     'https://*.onrender.com',
     'https://hr-attendance-system-gojk.onrender.com',
-    'https://*.up.railway.app',  # Railway domain
+    'https://*.railway.app',
+    'https://hr-attendance-system.up.railway.app',
+    'http://hr-attendance-system.up.railway.app',
 ]
 
 # ================= REST FRAMEWORK =================
@@ -191,13 +193,15 @@ SESSION_COOKIE_HTTPONLY = True  # Prevents JavaScript access (security)
 SESSION_COOKIE_SAMESITE = 'Lax'  # Allows cross-site requests
 
 # ================= SECURITY HEADERS (Production Only) =================
+# IMPORTANT: Disabled SSL redirect on Railway to avoid redirect loops
 if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
-    SECURE_SSL_REDIRECT = True
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
-    SECURE_HSTS_SECONDS = 47304000  # 1.5 years
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
+    # The following settings are commented out to fix redirect loop on Railway
+    # SECURE_SSL_REDIRECT = True
+    # CSRF_COOKIE_SECURE = True
+    # SESSION_COOKIE_SECURE = True
+    # SECURE_HSTS_SECONDS = 47304000
+    # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    # SECURE_HSTS_PRELOAD = True
