@@ -29,9 +29,14 @@ import logging
 from django.core.files.base import ContentFile
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password
+from urllib.parse import urlencode
+import requests
 
 from reportlab.platypus import SimpleDocTemplate, Table
 from reportlab.lib.pagesizes import letter
+
+from urllib.parse import urlencode
+import requests
 
 from .models import Profile, Employee, Leave, Attendance, Company, Department, Shift, Notification, ActivityLog, RandomVerification, PasswordResetToken, IdempotencyKey
 from .decorators import hr_required, admin_required
@@ -1150,8 +1155,8 @@ def api_get_companies(request):
             })
         return JsonResponse({'success': True, 'companies': result})
     except Exception as e:
-        print(f"Error in api_get_companies: {str(e)}")  # This will appear in Render logs
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)  # Shows actual error
+        print(f"Error in api_get_companies: {str(e)}")
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 
 @require_http_methods(["GET"])
@@ -1232,7 +1237,7 @@ def api_employee_register(request):
     try:
         data = json.loads(request.body)
         
-        required_fields = ['username', 'email', 'password', 'name', 'phone', 'company_id']
+        required_fields = ['email', 'password', 'name', 'phone', 'company_id']
         for field in required_fields:
             if not data.get(field):
                 return JsonResponse({'success': False, 'error': f'{field} is required'}, status=400)
@@ -1243,9 +1248,13 @@ def api_employee_register(request):
         if not re.match(r'^\+?[0-9]{10,15}$', data['phone']):
             return JsonResponse({'success': False, 'error': 'Invalid phone number format'}, status=400)
         
-        if User.objects.filter(username=data.get('username')).exists():
-            return JsonResponse({'success': False, 'error': 'Username already exists'}, status=400)
-        if User.objects.filter(email=data.get('email')).exists():
+        # Generate username from email (remove @ and special chars)
+        username = data['email'].split('@')[0]
+        # Make sure username is unique
+        if User.objects.filter(username=username).exists():
+            username = f"{username}{secrets.token_hex(3)}"
+        
+        if User.objects.filter(email=data['email']).exists():
             return JsonResponse({'success': False, 'error': 'Email already exists'}, status=400)
         
         password = data.get('password')
@@ -1254,7 +1263,9 @@ def api_employee_register(request):
             return JsonResponse({'success': False, 'error': errors[0]}, status=400)
         
         user = User.objects.create_user(
-            username=data.get('username'), email=data.get('email'), password=password,
+            username=username,
+            email=data['email'],
+            password=password,
             first_name=data.get('name', '').split()[0] if data.get('name') else '',
             last_name=data.get('name', '').split()[-1] if len(data.get('name', '').split()) > 1 else ''
         )
@@ -1265,9 +1276,15 @@ def api_employee_register(request):
         department = Department.objects.filter(id=department_id).first() if department_id else None
         shift = Shift.objects.filter(id=shift_id, company=company).first() if shift_id and company else None
         employee = Employee.objects.create(
-            user=user, name=data.get('name'), department=data.get('department', 'General'),
-            company=company, department_obj=department, assigned_shift=shift,
-            status='absent', email=data.get('email'), phone=data.get('phone')
+            user=user,
+            name=data.get('name'),
+            department=data.get('department', 'General'),
+            company=company,
+            department_obj=department,
+            assigned_shift=shift,
+            status='absent',
+            email=data['email'],
+            phone=data.get('phone')
         )
         Profile.objects.create(user=user, role='employee', status='pending', phone_number=data.get('phone'), company=company)
         return JsonResponse({'success': True, 'message': 'Registration successful. Waiting for HR approval.', 'user_id': user.id, 'employee_id': employee.id})
@@ -1283,10 +1300,36 @@ def api_employee_login(request):
     try:
         data = json.loads(request.body)
         ip = get_client_ip(request)
+        
         if cache.get(f"api_blocked_{ip}", False):
             return JsonResponse({'success': False, 'error': 'Too many failed attempts. Try again later.'}, status=429)
         
-        user = authenticate(username=data.get('username'), password=data.get('password'))
+        email = data.get('email')
+        password = data.get('password')
+        
+        if not email or not password:
+            return JsonResponse({'success': False, 'error': 'Email and password are required'}, status=400)
+        
+        # Find user by email
+        try:
+            user_obj = User.objects.get(email=email)
+        except User.DoesNotExist:
+            # Try to find by username (for backward compatibility)
+            user_obj = User.objects.filter(username=email).first()
+            if not user_obj:
+                # Rate limit failed attempts
+                fails = cache.get(f"api_login_fails_{ip}", 0) + 1
+                cache.set(f"api_login_fails_{ip}", fails, 300)
+                if fails >= 5:
+                    cache.set(f"api_blocked_{ip}", True, 1800)
+                    logger.warning(f"Failed mobile login attempt from IP: {ip}")
+                    return JsonResponse({'success': False, 'error': 'Too many failed attempts. Account temporarily locked.'}, status=429)
+                logger.warning(f"Failed mobile login attempt for email: {email} from IP: {ip}")
+                return JsonResponse({'success': False, 'error': 'Invalid email or password'}, status=400)
+        
+        # Authenticate user
+        user = authenticate(request, username=user_obj.username, password=password)
+        
         if not user:
             fails = cache.get(f"api_login_fails_{ip}", 0) + 1
             cache.set(f"api_login_fails_{ip}", fails, 300)
@@ -1294,10 +1337,11 @@ def api_employee_login(request):
                 cache.set(f"api_blocked_{ip}", True, 1800)
                 logger.warning(f"Failed mobile login attempt from IP: {ip}")
                 return JsonResponse({'success': False, 'error': 'Too many failed attempts. Account temporarily locked.'}, status=429)
-            logger.warning(f"Failed mobile login attempt from IP: {ip}")
-            return JsonResponse({'success': False, 'error': 'Invalid credentials'}, status=400)
+            logger.warning(f"Failed mobile login attempt for email: {email} from IP: {ip}")
+            return JsonResponse({'success': False, 'error': 'Invalid email or password'}, status=400)
         
         cache.delete(f"api_login_fails_{ip}")
+        
         try:
             profile = Profile.objects.get(user=user)
         except ObjectDoesNotExist:
@@ -1311,13 +1355,15 @@ def api_employee_login(request):
         
         employee = Employee.objects.filter(user=user).first()
         refresh = RefreshToken.for_user(user)
-        logger.info(f"Successful mobile login for user: {user.username} from IP: {ip}")
+        logger.info(f"Successful mobile login for user: {user.email} from IP: {ip}")
+        
         return JsonResponse({
             'success': True,
             'access_token': str(refresh.access_token),
             'refresh_token': str(refresh),
             'user': {
-                'id': user.id, 'username': user.username, 'email': user.email,
+                'id': user.id,
+                'email': user.email,
                 'name': employee.name if employee else user.username,
                 'department': employee.department if employee else '',
                 'company_id': employee.company.id if employee and employee.company else None,
@@ -1340,7 +1386,9 @@ def api_employee_profile(request):
         return JsonResponse({
             'success': True,
             'profile': {
-                'id': employee.id, 'name': employee.name, 'email': request.user.email,
+                'id': employee.id,
+                'name': employee.name,
+                'email': request.user.email,
                 'department': employee.department,
                 'company_id': employee.company.id if employee.company else None,
                 'company_name': employee.company.name if employee.company else None,
@@ -1920,8 +1968,719 @@ def api_monthly_stats(request):
     except Exception as e:
         logger.error(f"Monthly stats error: {str(e)}")
         return JsonResponse({'success': False, 'error': 'Unable to fetch monthly stats'}, status=500)
+# ================= SOCIAL AUTH CONFIGURATION =================
+# Add this near the top of your views.py with other constants (around line 50-60)
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "")
+GOOGLE_REDIRECT_URI = os.environ.get("GOOGLE_REDIRECT_URI", "http://localhost:8000/users/auth/callback/google/")
+
+APPLE_CLIENT_ID = os.environ.get("APPLE_CLIENT_ID", "")
+APPLE_CLIENT_SECRET = os.environ.get("APPLE_CLIENT_SECRET", "")
+APPLE_REDIRECT_URI = os.environ.get("APPLE_REDIRECT_URI", "http://localhost:8000/users/auth/callback/apple/")
 
 
+# ================= API SOCIAL AUTH VIEWS =================
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def api_google_auth(request):
+    """API endpoint for Google OAuth - returns auth URL"""
+    try:
+        params = {
+            'client_id': GOOGLE_CLIENT_ID,
+            'redirect_uri': GOOGLE_REDIRECT_URI,
+            'response_type': 'code',
+            'scope': 'email profile',
+        }
+        auth_url = f"https://accounts.google.com/o/oauth2/v2/auth?{urlencode(params)}"
+        return JsonResponse({'success': True, 'auth_url': auth_url})
+    except Exception as e:
+        logger.error(f"Google auth API error: {str(e)}")
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def api_apple_auth(request):
+    """API endpoint for Apple OAuth - returns auth URL"""
+    try:
+        params = {
+            'client_id': APPLE_CLIENT_ID,
+            'redirect_uri': APPLE_REDIRECT_URI,
+            'response_type': 'code',
+            'scope': 'name email',
+            'response_mode': 'form_post'
+        }
+        auth_url = f"https://appleid.apple.com/auth/authorize?{urlencode(params)}"
+        return JsonResponse({'success': True, 'auth_url': auth_url})
+    except Exception as e:
+        logger.error(f"Apple auth API error: {str(e)}")
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def api_complete_social_profile(request):
+    """API endpoint to complete company profile after social auth"""
+    try:
+        data = json.loads(request.body)
+        
+        social_email = data.get('social_email')
+        social_provider = data.get('social_provider')
+        company_name = data.get('company_name')
+        username = data.get('username')
+        phone = data.get('phone')
+        
+        if not all([social_email, company_name, username, phone]):
+            return JsonResponse({'success': False, 'error': 'All fields are required'}, status=400)
+        
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'success': False, 'error': 'Username already exists'}, status=400)
+        
+        if not re.match(r'^\+?[0-9]{10,15}$', phone):
+            return JsonResponse({'success': False, 'error': 'Invalid phone number format'}, status=400)
+        
+        if User.objects.filter(email=social_email).exists():
+            return JsonResponse({'success': False, 'error': 'Email already registered'}, status=400)
+        
+        with transaction.atomic():
+            user = User.objects.create_user(
+                username=username,
+                email=social_email,
+                password=None
+            )
+            
+            company = Company.objects.create(
+                name=company_name,
+                status='pending',
+                requested_by=user
+            )
+            
+            Profile.objects.create(
+                user=user,
+                role="hr",
+                status="pending",
+                phone_number=phone,
+                company=company
+            )
+            
+            refresh = RefreshToken.for_user(user)
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Registration successful. Waiting for admin approval.',
+                'access_token': str(refresh.access_token),
+                'refresh_token': str(refresh),
+                'user_id': user.id
+            })
+            
+    except Exception as e:
+        logger.error(f"Complete social profile error: {str(e)}")
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+# ================= WEB SOCIAL AUTH VIEWS =================
+
+def google_auth(request):
+    """Redirect to Google OAuth for web"""
+    try:
+        params = {
+            'client_id': GOOGLE_CLIENT_ID,
+            'redirect_uri': GOOGLE_REDIRECT_URI,
+            'response_type': 'code',
+            'scope': 'email profile',
+            'access_type': 'offline',
+            'prompt': 'consent'
+        }
+        auth_url = f"https://accounts.google.com/o/oauth2/v2/auth?{urlencode(params)}"
+        return redirect(auth_url)
+    except Exception as e:
+        logger.error(f"Google auth error: {str(e)}")
+        messages.error(request, "Unable to initiate Google login. Please try again.")
+        return redirect('users:hr_register')
+
+
+def google_auth_callback(request):
+    """Handle Google OAuth callback for web"""
+    try:
+        code = request.GET.get('code')
+        if not code:
+            messages.error(request, "Google authentication failed.")
+            return redirect('users:hr_register')
+        
+        token_url = "https://oauth2.googleapis.com/token"
+        token_data = {
+            'code': code,
+            'client_id': GOOGLE_CLIENT_ID,
+            'client_secret': GOOGLE_CLIENT_SECRET,
+            'redirect_uri': GOOGLE_REDIRECT_URI,
+            'grant_type': 'authorization_code'
+        }
+        
+        token_response = requests.post(token_url, data=token_data)
+        token_json = token_response.json()
+        
+        if 'access_token' not in token_json:
+            messages.error(request, "Failed to get access token from Google.")
+            return redirect('users:hr_register')
+        
+        user_info_url = "https://www.googleapis.com/oauth2/v2/userinfo"
+        headers = {'Authorization': f"Bearer {token_json['access_token']}"}
+        user_response = requests.get(user_info_url, headers=headers)
+        user_info = user_response.json()
+        
+        email = user_info.get('email')
+        name = user_info.get('name', email.split('@')[0])
+        
+        if not email:
+            messages.error(request, "Could not retrieve email from Google.")
+            return redirect('users:hr_register')
+        
+        user = User.objects.filter(email=email).first()
+        
+        if user:
+            profile = Profile.objects.filter(user=user, role='hr').first()
+            if profile:
+                if profile.status == 'approved':
+                    login(request, user)
+                    return redirect('users:hr_dashboard')
+                elif profile.status == 'pending':
+                    messages.warning(request, "Your HR account is pending approval.")
+                    return redirect('users:hr_login')
+                else:
+                    messages.error(request, "Your account has been rejected.")
+                    return redirect('users:hr_register')
+            else:
+                request.session['social_email'] = email
+                request.session['social_name'] = name
+                request.session['social_provider'] = 'google'
+                return redirect('users:complete_company_profile')
+        else:
+            request.session['social_email'] = email
+            request.session['social_name'] = name
+            request.session['social_provider'] = 'google'
+            return redirect('users:complete_company_profile')
+            
+    except Exception as e:
+        logger.error(f"Google callback error: {str(e)}")
+        messages.error(request, f"Google authentication failed: {str(e)}")
+        return redirect('users:hr_register')
+
+
+def apple_auth(request):
+    """Redirect to Apple OAuth for web"""
+    try:
+        params = {
+            'client_id': APPLE_CLIENT_ID,
+            'redirect_uri': APPLE_REDIRECT_URI,
+            'response_type': 'code',
+            'scope': 'name email',
+            'response_mode': 'form_post'
+        }
+        auth_url = f"https://appleid.apple.com/auth/authorize?{urlencode(params)}"
+        return redirect(auth_url)
+    except Exception as e:
+        logger.error(f"Apple auth error: {str(e)}")
+        messages.error(request, "Unable to initiate Apple login. Please try again.")
+        return redirect('users:hr_register')
+
+
+@csrf_exempt
+def apple_auth_callback(request):
+    """Handle Apple OAuth callback for web"""
+    try:
+        if request.method == 'POST':
+            code = request.POST.get('code')
+            user_email = request.POST.get('email', '')
+            user_name = request.POST.get('name', '')
+        else:
+            code = request.GET.get('code')
+            user_email = request.GET.get('email', '')
+            user_name = request.GET.get('name', '')
+        
+        if not code:
+            messages.error(request, "Apple authentication failed.")
+            return redirect('users:hr_register')
+        
+        email = user_email
+        name = user_name if user_name else email.split('@')[0] if email else 'user'
+        
+        if not email:
+            messages.error(request, "Could not retrieve email from Apple.")
+            return redirect('users:hr_register')
+        
+        user = User.objects.filter(email=email).first()
+        
+        if user:
+            profile = Profile.objects.filter(user=user, role='hr').first()
+            if profile and profile.status == 'approved':
+                login(request, user)
+                return redirect('users:hr_dashboard')
+            elif profile and profile.status == 'pending':
+                messages.warning(request, "Your HR account is pending approval.")
+                return redirect('users:hr_login')
+            else:
+                request.session['social_email'] = email
+                request.session['social_name'] = name
+                request.session['social_provider'] = 'apple'
+                return redirect('users:complete_company_profile')
+        else:
+            request.session['social_email'] = email
+            request.session['social_name'] = name
+            request.session['social_provider'] = 'apple'
+            return redirect('users:complete_company_profile')
+            
+    except Exception as e:
+        logger.error(f"Apple callback error: {str(e)}")
+        messages.error(request, f"Apple authentication failed: {str(e)}")
+        return redirect('users:hr_register')
+
+
+def complete_company_profile(request):
+    """Complete company profile after social authentication"""
+    social_email = request.session.get('social_email')
+    social_name = request.session.get('social_name')
+    social_provider = request.session.get('social_provider')
+    
+    if not social_email:
+        messages.error(request, "Please register using Google or Apple first.")
+        return redirect('users:hr_register')
+    
+    if request.method == "POST":
+        company_name = request.POST.get("company_name")
+        username = request.POST.get("username")
+        phone = request.POST.get("phone")
+        
+        if not company_name or not username or not phone:
+            messages.error(request, "All fields are required.")
+            return render(request, "users/complete_profile.html", {
+                'social_email': social_email,
+                'social_name': social_name,
+                'social_provider': social_provider
+            })
+        
+        if User.objects.filter(username=username).exists():
+            messages.error(request, f"Username '{username}' is already taken.")
+            return render(request, "users/complete_profile.html", {
+                'social_email': social_email,
+                'social_name': social_name,
+                'social_provider': social_provider
+            })
+        
+        if not re.match(r'^\+?[0-9]{10,15}$', phone):
+            messages.error(request, "Invalid phone number format. Use +255XXXXXXXXX")
+            return render(request, "users/complete_profile.html", {
+                'social_email': social_email,
+                'social_name': social_name,
+                'social_provider': social_provider
+            })
+        
+        if User.objects.filter(email=social_email).exists():
+            messages.error(request, "Email already registered.")
+            return render(request, "users/complete_profile.html", {
+                'social_email': social_email,
+                'social_name': social_name,
+                'social_provider': social_provider
+            })
+        
+        try:
+            with transaction.atomic():
+                user = User.objects.create_user(
+                    username=username,
+                    email=social_email,
+                    password=None
+                )
+                
+                company = Company.objects.create(
+                    name=company_name,
+                    status='pending',
+                    requested_by=user
+                )
+                
+                Profile.objects.create(
+                    user=user,
+                    role="hr",
+                    status="pending",
+                    phone_number=phone,
+                    company=company
+                )
+                
+                del request.session['social_email']
+                del request.session['social_name']
+                del request.session['social_provider']
+                
+                messages.success(request, f"Registration successful via {social_provider.title()}! Waiting for admin approval.")
+                return redirect("users:hr_login")
+                
+        except IntegrityError as e:
+            messages.error(request, f"Registration failed: {str(e)}")
+            return render(request, "users/complete_profile.html", {
+                'social_email': social_email,
+                'social_name': social_name,
+                'social_provider': social_provider
+            })
+    
+    return render(request, "users/complete_profile.html", {
+        'social_email': social_email,
+        'social_name': social_name,
+        'social_provider': social_provider
+    })
+# ================= SOCIAL AUTH CONFIGURATION =================
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "")
+GOOGLE_REDIRECT_URI = os.environ.get("GOOGLE_REDIRECT_URI", "http://localhost:8000/users/auth/callback/google/")
+
+APPLE_CLIENT_ID = os.environ.get("APPLE_CLIENT_ID", "")
+APPLE_CLIENT_SECRET = os.environ.get("APPLE_CLIENT_SECRET", "")
+APPLE_REDIRECT_URI = os.environ.get("APPLE_REDIRECT_URI", "http://localhost:8000/users/auth/callback/apple/")
+
+
+# ================= API SOCIAL AUTH VIEWS =================
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def api_google_auth(request):
+    """API endpoint for Google OAuth - returns auth URL"""
+    try:
+        params = {
+            'client_id': GOOGLE_CLIENT_ID,
+            'redirect_uri': GOOGLE_REDIRECT_URI,
+            'response_type': 'code',
+            'scope': 'email profile',
+        }
+        auth_url = f"https://accounts.google.com/o/oauth2/v2/auth?{urlencode(params)}"
+        return JsonResponse({'success': True, 'auth_url': auth_url})
+    except Exception as e:
+        logger.error(f"Google auth API error: {str(e)}")
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def api_apple_auth(request):
+    """API endpoint for Apple OAuth - returns auth URL"""
+    try:
+        params = {
+            'client_id': APPLE_CLIENT_ID,
+            'redirect_uri': APPLE_REDIRECT_URI,
+            'response_type': 'code',
+            'scope': 'name email',
+            'response_mode': 'form_post'
+        }
+        auth_url = f"https://appleid.apple.com/auth/authorize?{urlencode(params)}"
+        return JsonResponse({'success': True, 'auth_url': auth_url})
+    except Exception as e:
+        logger.error(f"Apple auth API error: {str(e)}")
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def api_complete_social_profile(request):
+    """API endpoint to complete company profile after social auth"""
+    try:
+        data = json.loads(request.body)
+        
+        social_email = data.get('social_email')
+        social_provider = data.get('social_provider')
+        company_name = data.get('company_name')
+        username = data.get('username')
+        phone = data.get('phone')
+        
+        if not all([social_email, company_name, username, phone]):
+            return JsonResponse({'success': False, 'error': 'All fields are required'}, status=400)
+        
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'success': False, 'error': 'Username already exists'}, status=400)
+        
+        if not re.match(r'^\+?[0-9]{10,15}$', phone):
+            return JsonResponse({'success': False, 'error': 'Invalid phone number format'}, status=400)
+        
+        if User.objects.filter(email=social_email).exists():
+            return JsonResponse({'success': False, 'error': 'Email already registered'}, status=400)
+        
+        with transaction.atomic():
+            user = User.objects.create_user(
+                username=username,
+                email=social_email,
+                password=None
+            )
+            
+            company = Company.objects.create(
+                name=company_name,
+                status='pending',
+                requested_by=user
+            )
+            
+            Profile.objects.create(
+                user=user,
+                role="hr",
+                status="pending",
+                phone_number=phone,
+                company=company
+            )
+            
+            refresh = RefreshToken.for_user(user)
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Registration successful. Waiting for admin approval.',
+                'access_token': str(refresh.access_token),
+                'refresh_token': str(refresh),
+                'user_id': user.id
+            })
+            
+    except Exception as e:
+        logger.error(f"Complete social profile error: {str(e)}")
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+# ================= WEB SOCIAL AUTH VIEWS =================
+
+def google_auth(request):
+    """Redirect to Google OAuth for web"""
+    try:
+        params = {
+            'client_id': GOOGLE_CLIENT_ID,
+            'redirect_uri': GOOGLE_REDIRECT_URI,
+            'response_type': 'code',
+            'scope': 'email profile',
+            'access_type': 'offline',
+            'prompt': 'consent'
+        }
+        auth_url = f"https://accounts.google.com/o/oauth2/v2/auth?{urlencode(params)}"
+        return redirect(auth_url)
+    except Exception as e:
+        logger.error(f"Google auth error: {str(e)}")
+        messages.error(request, "Unable to initiate Google login. Please try again.")
+        return redirect('users:hr_register')
+
+
+def google_auth_callback(request):
+    """Handle Google OAuth callback for web"""
+    try:
+        code = request.GET.get('code')
+        if not code:
+            messages.error(request, "Google authentication failed.")
+            return redirect('users:hr_register')
+        
+        token_url = "https://oauth2.googleapis.com/token"
+        token_data = {
+            'code': code,
+            'client_id': GOOGLE_CLIENT_ID,
+            'client_secret': GOOGLE_CLIENT_SECRET,
+            'redirect_uri': GOOGLE_REDIRECT_URI,
+            'grant_type': 'authorization_code'
+        }
+        
+        token_response = requests.post(token_url, data=token_data)
+        token_json = token_response.json()
+        
+        if 'access_token' not in token_json:
+            messages.error(request, "Failed to get access token from Google.")
+            return redirect('users:hr_register')
+        
+        user_info_url = "https://www.googleapis.com/oauth2/v2/userinfo"
+        headers = {'Authorization': f"Bearer {token_json['access_token']}"}
+        user_response = requests.get(user_info_url, headers=headers)
+        user_info = user_response.json()
+        
+        email = user_info.get('email')
+        name = user_info.get('name', email.split('@')[0])
+        
+        if not email:
+            messages.error(request, "Could not retrieve email from Google.")
+            return redirect('users:hr_register')
+        
+        user = User.objects.filter(email=email).first()
+        
+        if user:
+            profile = Profile.objects.filter(user=user, role='hr').first()
+            if profile:
+                if profile.status == 'approved':
+                    login(request, user)
+                    return redirect('users:hr_dashboard')
+                elif profile.status == 'pending':
+                    messages.warning(request, "Your HR account is pending approval.")
+                    return redirect('users:hr_login')
+                else:
+                    messages.error(request, "Your account has been rejected.")
+                    return redirect('users:hr_register')
+            else:
+                request.session['social_email'] = email
+                request.session['social_name'] = name
+                request.session['social_provider'] = 'google'
+                return redirect('users:complete_company_profile')
+        else:
+            request.session['social_email'] = email
+            request.session['social_name'] = name
+            request.session['social_provider'] = 'google'
+            return redirect('users:complete_company_profile')
+            
+    except Exception as e:
+        logger.error(f"Google callback error: {str(e)}")
+        messages.error(request, f"Google authentication failed: {str(e)}")
+        return redirect('users:hr_register')
+
+
+def apple_auth(request):
+    """Redirect to Apple OAuth for web"""
+    try:
+        params = {
+            'client_id': APPLE_CLIENT_ID,
+            'redirect_uri': APPLE_REDIRECT_URI,
+            'response_type': 'code',
+            'scope': 'name email',
+            'response_mode': 'form_post'
+        }
+        auth_url = f"https://appleid.apple.com/auth/authorize?{urlencode(params)}"
+        return redirect(auth_url)
+    except Exception as e:
+        logger.error(f"Apple auth error: {str(e)}")
+        messages.error(request, "Unable to initiate Apple login. Please try again.")
+        return redirect('users:hr_register')
+
+
+@csrf_exempt
+def apple_auth_callback(request):
+    """Handle Apple OAuth callback for web"""
+    try:
+        if request.method == 'POST':
+            code = request.POST.get('code')
+            user_email = request.POST.get('email', '')
+            user_name = request.POST.get('name', '')
+        else:
+            code = request.GET.get('code')
+            user_email = request.GET.get('email', '')
+            user_name = request.GET.get('name', '')
+        
+        if not code:
+            messages.error(request, "Apple authentication failed.")
+            return redirect('users:hr_register')
+        
+        email = user_email
+        name = user_name if user_name else email.split('@')[0] if email else 'user'
+        
+        if not email:
+            messages.error(request, "Could not retrieve email from Apple.")
+            return redirect('users:hr_register')
+        
+        user = User.objects.filter(email=email).first()
+        
+        if user:
+            profile = Profile.objects.filter(user=user, role='hr').first()
+            if profile and profile.status == 'approved':
+                login(request, user)
+                return redirect('users:hr_dashboard')
+            elif profile and profile.status == 'pending':
+                messages.warning(request, "Your HR account is pending approval.")
+                return redirect('users:hr_login')
+            else:
+                request.session['social_email'] = email
+                request.session['social_name'] = name
+                request.session['social_provider'] = 'apple'
+                return redirect('users:complete_company_profile')
+        else:
+            request.session['social_email'] = email
+            request.session['social_name'] = name
+            request.session['social_provider'] = 'apple'
+            return redirect('users:complete_company_profile')
+            
+    except Exception as e:
+        logger.error(f"Apple callback error: {str(e)}")
+        messages.error(request, f"Apple authentication failed: {str(e)}")
+        return redirect('users:hr_register')
+
+
+def complete_company_profile(request):
+    """Complete company profile after social authentication"""
+    social_email = request.session.get('social_email')
+    social_name = request.session.get('social_name')
+    social_provider = request.session.get('social_provider')
+    
+    if not social_email:
+        messages.error(request, "Please register using Google or Apple first.")
+        return redirect('users:hr_register')
+    
+    if request.method == "POST":
+        company_name = request.POST.get("company_name")
+        username = request.POST.get("username")
+        phone = request.POST.get("phone")
+        
+        if not company_name or not username or not phone:
+            messages.error(request, "All fields are required.")
+            return render(request, "users/complete_profile.html", {
+                'social_email': social_email,
+                'social_name': social_name,
+                'social_provider': social_provider
+            })
+        
+        if User.objects.filter(username=username).exists():
+            messages.error(request, f"Username '{username}' is already taken.")
+            return render(request, "users/complete_profile.html", {
+                'social_email': social_email,
+                'social_name': social_name,
+                'social_provider': social_provider
+            })
+        
+        if not re.match(r'^\+?[0-9]{10,15}$', phone):
+            messages.error(request, "Invalid phone number format. Use +255XXXXXXXXX")
+            return render(request, "users/complete_profile.html", {
+                'social_email': social_email,
+                'social_name': social_name,
+                'social_provider': social_provider
+            })
+        
+        if User.objects.filter(email=social_email).exists():
+            messages.error(request, "Email already registered.")
+            return render(request, "users/complete_profile.html", {
+                'social_email': social_email,
+                'social_name': social_name,
+                'social_provider': social_provider
+            })
+        
+        try:
+            with transaction.atomic():
+                user = User.objects.create_user(
+                    username=username,
+                    email=social_email,
+                    password=None
+                )
+                
+                company = Company.objects.create(
+                    name=company_name,
+                    status='pending',
+                    requested_by=user
+                )
+                
+                Profile.objects.create(
+                    user=user,
+                    role="hr",
+                    status="pending",
+                    phone_number=phone,
+                    company=company
+                )
+                
+                del request.session['social_email']
+                del request.session['social_name']
+                del request.session['social_provider']
+                
+                messages.success(request, f"Registration successful via {social_provider.title()}! Waiting for admin approval.")
+                return redirect("users:hr_login")
+                
+        except IntegrityError as e:
+            messages.error(request, f"Registration failed: {str(e)}")
+            return render(request, "users/complete_profile.html", {
+                'social_email': social_email,
+                'social_name': social_name,
+                'social_provider': social_provider
+            })
+    
+    return render(request, "users/complete_profile.html", {
+        'social_email': social_email,
+        'social_name': social_name,
+        'social_provider': social_provider
+    })
 # ================= HEALTH CHECK =================
 def health_check(request):
     """Simple health check endpoint for monitoring"""

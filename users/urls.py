@@ -13,6 +13,11 @@ urlpatterns = [
     path("api/employee/forgot-password/", views.api_employee_forgot_password, name="api_employee_forgot_password"),
     path("api/employee/reset-password/", views.api_employee_reset_password, name="api_employee_reset_password"),
     
+    # Social Auth APIs (New)
+    path("api/auth/google/", views.api_google_auth, name="api_google_auth"),
+    path("api/auth/apple/", views.api_apple_auth, name="api_apple_auth"),
+    path("api/auth/complete-profile/", views.api_complete_social_profile, name="api_complete_social_profile"),
+    
     # Protected APIs (Require login)
     path("api/attendance/check-in/", views.api_check_in, name="api_check_in"),
     path("api/attendance/check-out/", views.api_check_out, name="api_check_out"),
@@ -46,6 +51,13 @@ urlpatterns = [
     path("hr-register/", views.hr_register, name="hr_register"),
     path("hr-dashboard/", views.hr_dashboard, name="hr_dashboard"),
     path("dashboard/", views.dashboard, name="dashboard"),
+    
+    # Social Auth Web Views (New)
+    path("auth/google/", views.google_auth, name="google_auth"),
+    path("auth/apple/", views.apple_auth, name="apple_auth"),
+    path("auth/callback/google/", views.google_auth_callback, name="google_auth_callback"),
+    path("auth/callback/apple/", views.apple_auth_callback, name="apple_auth_callback"),
+    path("complete-profile/", views.complete_company_profile, name="complete_company_profile"),
     
     # Password Reset (Web)
     path("hr-forgot-password/", views.hr_forgot_password, name="hr_forgot_password"),

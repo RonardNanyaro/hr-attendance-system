@@ -1,341 +1,453 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HR Login - Attendance System</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-:root {
-    --primary: #0F766E;      /* Deep Teal - Main brand color */
-    --secondary: #14B8A6;    /* Soft Teal - Hover states */
-    --background: #FFFAFA;   /* Snow White - Main background */
-    --card-bg: #FFFFFF;      /* Pure White - Card background */
-    --text-primary: #1E293B;  /* Dark Slate - Main text */
-    --text-secondary: #64748B; /* Gray - Secondary text */
-    --border: #E2E8F0;        /* Light gray border */
-    --shadow-luxury: 0 20px 35px -10px rgba(0,0,0,0.1);
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 20px;
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-/* GLOBAL FLUID BASE */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+body{
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#dfe5f5;
+    padding:20px;
 }
 
-body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--background);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-    color: var(--text-primary);
-    position: relative;
+/* MAIN CONTAINER */
+.container{
+    width:900px;
+    max-width:100%;
+    height:540px;
+    background:white;
+    border-radius:25px;
+    overflow:hidden;
+    display:flex;
+    box-shadow:0 15px 40px rgba(0,0,0,0.12);
 }
 
-/* Subtle background pattern for luxury feel */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: radial-gradient(circle at 25% 50%, rgba(15,118,110,0.03) 0%, transparent 50%),
-                      radial-gradient(circle at 75% 80%, rgba(15,118,110,0.02) 0%, transparent 50%);
-    pointer-events: none;
+/* LEFT SIDE */
+.left-side{
+    width:45%;
+    background:linear-gradient(135deg,#0F766E,#14B8A6);
+    border-top-right-radius:120px;
+    border-bottom-right-radius:120px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:white;
+    padding:40px;
 }
 
-/* LOGIN CARD */
-.box {
-    width: min(400px, 95vw);
-    padding: 40px 36px;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-luxury);
-    text-align: center;
-    animation: fadeIn 0.5s ease;
-    position: relative;
-    z-index: 1;
+.left-content h1{
+    font-size:42px;
+    font-weight:700;
+    margin-bottom:12px;
 }
 
-/* Top accent line */
-.box::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 10%;
-    right: 10%;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), var(--primary), transparent);
-    border-radius: 3px;
+.left-content p{
+    font-size:15px;
+    margin-bottom:32px;
+    opacity:0.95;
 }
 
-/* ANIMATION */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+.register-btn{
+    width:170px;
+    height:50px;
+    border:2px solid white;
+    background:transparent;
+    color:white;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
 }
 
-/* ICON */
-.login-icon {
-    margin-bottom: 20px;
+.register-btn:hover{
+    background:white;
+    color:#0F766E;
 }
 
-/* TITLE */
-h2 {
-    margin-bottom: 8px;
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: -0.3px;
+/* RIGHT SIDE */
+.right-side{
+    width:55%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:50px;
 }
 
-.subtitle {
-    color: var(--text-secondary);
-    font-size: 14px;
-    margin-bottom: 32px;
+.form-box{
+    width:100%;
+    max-width:350px;
+}
+
+.login-title{
+    text-align:center;
+    font-size:42px;
+    font-weight:700;
+    color:#1e293b;
+    margin-bottom:35px;
 }
 
 /* INPUTS */
-input {
-    width: 100%;
-    padding: 14px 16px;
-    margin: 8px 0;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border);
-    background: var(--background);
-    color: var(--text-primary);
-    outline: none;
-    font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    transition: var(--transition);
+.input-group{
+    position:relative;
+    margin-bottom:18px;
 }
 
-input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(15,118,110,0.1);
+.input-field{
+    width:100%;
+    height:52px;
+    border:none;
+    outline:none;
+    background:#f1f5f9;
+    border-radius:8px;
+    padding:0 48px 0 16px;
+    font-size:14px;
+    transition:0.3s;
+    font-family:inherit;
 }
 
-input::placeholder {
-    color: var(--text-secondary);
-    font-weight: 400;
+.input-field:focus{
+    background:white;
+    border:2px solid #14B8A6;
+    box-shadow:0 0 0 3px rgba(20,184,166,0.10);
 }
 
-/* Password wrapper for toggle button */
-.password-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 8px 0;
+.icon{
+    position:absolute;
+    right:16px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:15px;
+    color:#64748b;
 }
 
-.password-wrapper input {
-    margin: 0;
-    flex: 1;
+.toggle-btn{
+    position:absolute;
+    right:14px;
+    top:50%;
+    transform:translateY(-50%);
+    border:none;
+    background:none;
+    cursor:pointer;
+    font-size:16px;
 }
 
-.toggle-password {
-    width: auto;
-    padding: 14px 16px;
-    margin: 0;
-    background: var(--background);
-    color: var(--text-secondary);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    font-size: 18px;
-    cursor: pointer;
-    transition: var(--transition);
-    font-family: 'Inter', sans-serif;
+/* FORGOT */
+.forgot-row{
+    text-align:right;
+    margin-bottom:24px;
 }
 
-.toggle-password:hover {
-    background: var(--border);
-    transform: none;
-    box-shadow: none;
-    color: var(--primary);
+.forgot-link{
+    text-decoration:none;
+    color:#64748b;
+    font-size:13px;
 }
 
-/* BUTTON */
-button[type="submit"] {
-    width: 100%;
-    padding: 14px;
-    margin-top: 16px;
-    background: var(--primary);
-    border: none;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    font-size: 15px;
-    cursor: pointer;
-    transition: var(--transition);
-    color: white;
-    font-family: 'Inter', sans-serif;
+.forgot-link:hover{
+    color:#0F766E;
 }
 
-button[type="submit"]:hover {
-    background: var(--secondary);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(15,118,110,0.25);
+/* LOGIN BUTTON */
+.login-btn{
+    width:100%;
+    height:52px;
+    border:none;
+    border-radius:8px;
+    background:#0F766E;
+    color:white;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
 }
 
-/* LINKS */
-.link {
-    margin-top: 16px;
-    display: inline-block;
-    color: var(--text-secondary);
-    font-size: 13px;
-    text-decoration: none;
-    transition: var(--transition);
+.login-btn:hover{
+    background:#14B8A6;
 }
 
-.link:hover {
-    color: var(--primary);
-    text-decoration: none;
+.login-btn:disabled{
+    opacity:0.7;
+    cursor:not-allowed;
 }
 
-/* Forgot password link */
-.forgot-link {
-    display: block;
-    color: var(--text-secondary);
-    font-size: 13px;
-    text-decoration: none;
-    margin-top: 12px;
-    transition: var(--transition);
+/* ALERTS */
+.error-msg{
+    background:#fef2f2;
+    color:#dc2626;
+    padding:10px 14px;
+    border-radius:8px;
+    font-size:13px;
+    margin-bottom:18px;
+    border:1px solid #fee2e2;
 }
 
-.forgot-link:hover {
-    color: var(--primary);
+.success-msg{
+    background:#f0fdf4;
+    color:#16a34a;
+    padding:10px 14px;
+    border-radius:8px;
+    font-size:13px;
+    margin-bottom:18px;
+    border:1px solid #dcfce7;
 }
 
-/* MESSAGES */
-.error, .success {
-    padding: 10px 14px;
-    border-radius: var(--radius-md);
-    font-size: 13px;
-    margin-bottom: 20px;
-    text-align: left;
+/* SOCIAL TEXT */
+.social-text{
+    text-align:center;
+    margin:24px 0 18px;
+    color:#94a3b8;
+    font-size:13px;
 }
 
-.error {
-    background: rgba(239,68,68,0.1);
-    color: #EF4444;
-    border: 1px solid rgba(239,68,68,0.2);
+/* SOCIAL ICONS */
+.social-row{
+    display:flex;
+    justify-content:center;
+    gap:14px;
 }
 
-.success {
-    background: rgba(16,185,129,0.1);
-    color: #10B981;
-    border: 1px solid rgba(16,185,129,0.2);
+.social-btn{
+    width:46px;
+    height:46px;
+    border:1px solid #e2e8f0;
+    background:white;
+    border-radius:8px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    transition:0.3s;
 }
 
-/* Divider */
-.divider {
-    margin: 20px 0 12px;
-    height: 1px;
-    background: var(--border);
+.social-btn:hover{
+    border-color:#14B8A6;
+    background:#f0fdfa;
+    transform:translateY(-2px);
 }
 
-/* Info text */
-.info-text {
-    margin-top: 24px;
-    font-size: 11px;
-    color: var(--text-secondary);
-}
+/* RESPONSIVE */
+@media(max-width:768px){
 
-/* Responsive */
-@media (max-width: 480px) {
-    .box {
-        padding: 28px 20px;
+    .container{
+        flex-direction:column;
+        height:auto;
     }
-    
-    h2 {
-        font-size: 22px;
+
+    .left-side{
+        width:100%;
+        height:240px;
+        border-radius:0 0 80px 80px;
     }
-    
-    .subtitle {
-        font-size: 13px;
-        margin-bottom: 24px;
+
+    .right-side{
+        width:100%;
+        padding:40px 24px;
     }
-    
-    input, button[type="submit"], .toggle-password {
-        padding: 11px 14px;
+
+    .left-content h1{
+        font-size:34px;
+    }
+
+    .login-title{
+        font-size:34px;
     }
 }
+
 </style>
 </head>
 
 <body>
 
-<div class="box">
-    <div class="login-icon">
-        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="#0F766E"/>
-            <circle cx="12" cy="8" r="2.5" fill="#14B8A6"/>
-        </svg>
-    </div>
-    
-    <h2>HR Access</h2>
-    <div class="subtitle">Secure login for HR personnel</div>
+<div class="container">
 
-    {% if error %}
-        <div class="error">{{ error }}</div>
-    {% endif %}
+    <!-- LEFT SIDE -->
+    <div class="left-side">
 
-    {% if success %}
-        <div class="success">{{ success }}</div>
-    {% endif %}
+        <div class="left-content">
 
-    <form method="POST">
-        {% csrf_token %}
+            <h1>Hello, Welcome!</h1>
 
-        <input type="text" name="username" placeholder="Username" required>
+            <p>Don't have an account?</p>
 
-        <!-- PASSWORD FIELD WITH TOGGLE -->
-        <div class="password-wrapper">
-            <input type="password" name="password" id="password" placeholder="Password" required>
-            <button type="button" class="toggle-password" onclick="togglePassword('password')">👁️</button>
+            <button 
+                class="register-btn"
+                onclick="window.location.href='{% url 'users:hr_register' %}'"
+            >
+                Register
+            </button>
+
         </div>
 
-        <button type="submit">Login</button>
-    </form>
-
-    <a href="{% url 'users:hr_forgot_password' %}" class="forgot-link">
-        Forgot Password?
-    </a>
-
-    <div class="divider"></div>
-
-    <a href="{% url 'users:hr_register' %}" class="link">
-        Create HR Account →
-    </a>
-    
-    <div class="info-text">
-        Secure HR portal • Attendance Management System
     </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="right-side">
+
+        <div class="form-box">
+
+            <h1 class="login-title">Login</h1>
+
+            {% if error %}
+                <div class="error-msg">{{ error }}</div>
+            {% endif %}
+
+            {% if success %}
+                <div class="success-msg">{{ success }}</div>
+            {% endif %}
+
+            <form method="POST" id="loginForm">
+
+                {% csrf_token %}
+
+                <!-- USERNAME -->
+                <div class="input-group">
+
+                    <input 
+                        type="text"
+                        name="username"
+                        class="input-field"
+                        placeholder="Username"
+                        required
+                        autocomplete="username"
+                    >
+
+                    <span class="icon">👤</span>
+
+                </div>
+
+                <!-- PASSWORD -->
+                <div class="input-group">
+
+                    <input 
+                        type="password"
+                        name="password"
+                        id="password"
+                        class="input-field"
+                        placeholder="Password"
+                        required
+                        autocomplete="current-password"
+                    >
+
+                    <button 
+                        type="button"
+                        class="toggle-btn"
+                        onclick="togglePassword()"
+                    >
+                        👁️
+                    </button>
+
+                </div>
+
+                <!-- FORGOT -->
+                <div class="forgot-row">
+
+                    <a href="{% url 'users:hr_forgot_password' %}" class="forgot-link">
+                        Forgot Password?
+                    </a>
+
+                </div>
+
+                <!-- LOGIN -->
+                <button type="submit" class="login-btn" id="submitBtn">
+                    Login
+                </button>
+
+            </form>
+
+            <!-- SOCIAL -->
+            <div class="social-text">
+                or login with social platforms
+            </div>
+
+            <div class="social-row">
+
+                <!-- GOOGLE -->
+                <button class="social-btn" onclick="alert('Google login')">
+
+                    <svg width="18" height="18" viewBox="0 0 24 24">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+
+                </button>
+
+                <!-- APPLE -->
+                <button class="social-btn" onclick="alert('Apple login')">
+
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#000">
+                        <path d="M16.365 1.43c0 1.14-.415 2.05-1.245 2.73-.83.68-1.83 1.02-3 .99-.03-1.11.4-2.04 1.22-2.78.82-.74 1.81-1.12 3.025-1.15zM20.5 17.28c-.55 1.25-1.22 2.37-2.02 3.34-.8.98-1.63 1.47-2.5 1.47-.36 0-.86-.12-1.48-.36-.63-.24-1.2-.36-1.72-.36-.55 0-1.16.12-1.83.36-.67.24-1.2.37-1.6.39-.83.03-1.7-.48-2.61-1.54-.91-1.05-1.67-2.28-2.29-3.69-.67-1.53-1-3.01-1-4.43 0-1.63.35-3.04 1.06-4.22.56-.95 1.31-1.7 2.25-2.24.94-.54 1.96-.82 3.05-.84.48 0 1.11.15 1.89.44.78.29 1.28.44 1.5.44.16 0 .71-.17 1.65-.5.89-.31 1.65-.44 2.28-.39 1.71.14 2.99.82 3.85 2.03-1.53.93-2.29 2.23-2.27 3.9.02 1.3.48 2.38 1.39 3.24.41.39.87.69 1.38.89-.11.33-.23.64-.36.93z"/>
+                    </svg>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
 <script>
-function togglePassword(fieldId) {
-    const field = document.getElementById(fieldId);
-    const button = event.target;
-    if (field.type === "password") {
+
+function togglePassword(){
+
+    const field = document.getElementById('password');
+    const button = document.querySelector('.toggle-btn');
+
+    if(field.type === "password"){
+
         field.type = "text";
-        button.textContent = "🙈";
-    } else {
+        button.innerHTML = "🙈";
+
+    }else{
+
         field.type = "password";
-        button.textContent = "👁️";
+        button.innerHTML = "👁️";
     }
 }
+
+document.getElementById('loginForm').addEventListener('submit', function(){
+
+    const btn = document.getElementById('submitBtn');
+
+    if(btn.disabled) return;
+
+    btn.disabled = true;
+    btn.innerText = 'Logging in...';
+});
+
+window.addEventListener('pageshow', function(){
+
+    const btn = document.getElementById('submitBtn');
+
+    if(btn){
+
+        btn.disabled = false;
+        btn.innerText = 'Login';
+    }
+});
+
 </script>
 
 </body>
