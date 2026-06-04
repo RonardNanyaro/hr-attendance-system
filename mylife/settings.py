@@ -26,7 +26,7 @@ if not DEBUG and not SECRET_KEY:
 if not SECRET_KEY:
     SECRET_KEY = 'django-insecure-abc123def456ghi789jkl012mno345pqr678stu'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,*.onrender.com').split(',')
 
 # ================= APPLICATIONS =================
 INSTALLED_APPS = [
@@ -80,13 +80,14 @@ TEMPLATES = [
 # ================= WSGI =================
 WSGI_APPLICATION = 'mylife.wsgi.application'
 
-# ================= DATABASE - Railway PostgreSQL =================
-# Use DATABASE_URL environment variable (Railway sets this automatically)
+# ================= DATABASE - Supabase PostgreSQL (via Render) =================
+# Use DATABASE_URL environment variable (set in Render dashboard)
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///db.sqlite3',
         conn_max_age=600,
         conn_health_checks=True,
+        ssl_require=True,  # Required for Supabase
     )
 }
 
@@ -148,10 +149,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
     'https://*.onrender.com',
-    'https://hr-attendance-system-gojk.onrender.com',
-    'https://*.railway.app',
-    'https://hr-attendance-system.up.railway.app',
-    'http://hr-attendance-system.up.railway.app',
+    'https://hr-attendance-system.onrender.com',
 ]
 
 # ================= REST FRAMEWORK =================
@@ -193,12 +191,12 @@ SESSION_COOKIE_HTTPONLY = True  # Prevents JavaScript access (security)
 SESSION_COOKIE_SAMESITE = 'Lax'  # Allows cross-site requests
 
 # ================= SECURITY HEADERS (Production Only) =================
-# IMPORTANT: Disabled SSL redirect on Railway to avoid redirect loops
+# IMPORTANT: Disabled SSL redirect to avoid redirect loops on Render
 if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
-    # The following settings are commented out to fix redirect loop on Railway
+    # The following settings are commented out to fix redirect loop on Render
     # SECURE_SSL_REDIRECT = True
     # CSRF_COOKIE_SECURE = True
     # SESSION_COOKIE_SECURE = True
