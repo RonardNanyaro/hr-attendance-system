@@ -441,7 +441,7 @@ button:hover {
 
 <!-- HEADER -->
 <div class="header">
-    <h2>🏢 Admin Dashboard</h2>
+    <h2>Admin Dashboard</h2>
     <div class="badges">
         <div class="badge total">Total HR: <span id="total">{{ total_hr }}</span></div>
         <div class="badge total">Total Companies: <span id="total-companies">{{ total_companies }}</span></div>
@@ -478,7 +478,7 @@ button:hover {
 
 <!-- PENDING COMPANIES -->
 <div class="card">
-    <h3>🏢 Pending Companies <span style="color: var(--pending); font-size: 13px;">(Need Approval)</span></h3>
+    <h3> Pending Companies <span style="color: var(--pending); font-size: 13px;">(Need Approval)</span></h3>
     <div style="overflow-x: auto;">
         <table>
             <thead>
@@ -506,7 +506,7 @@ button:hover {
             </tr>
             {% empty %}
             <tr>
-                <td colspan="6" style="text-align: center; color: var(--text-secondary); padding: 40px;">🎉 No pending companies - All companies approved!</td>
+                <td colspan="6" style="text-align: center; color: var(--text-secondary); padding: 40px;"> No pending companies - All companies approved!</td>
             </tr>
             {% endfor %}
             </tbody>
@@ -575,7 +575,7 @@ button:hover {
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 40px;">🎉 No pending HR approvals!</td>
+                <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 40px;"> No pending HR approvals!</td>
             </tr>
             {% endfor %}
             </tbody>

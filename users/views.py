@@ -15,6 +15,9 @@ from django.db import transaction
 from django.core.cache import cache
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from datetime import date, timedelta, datetime, time
 from collections import Counter
 import json
@@ -1130,7 +1133,7 @@ def api_employee_reset_password(request):
         return JsonResponse({'success': False, 'error': 'Unable to reset password'}, status=500)
 
 
-# ================= MOBILE API VIEWS =================
+# ================= MOBILE API VIEWS (UPDATED WITH JWT AUTH) =================
 
 @require_http_methods(["GET"])
 def api_get_companies(request):
@@ -1171,8 +1174,9 @@ def api_get_departments_by_company(request, company_id):
         return JsonResponse({'success': False, 'error': 'Internal server error'}, status=500)
 
 
-@login_required
-@require_http_methods(["GET"])
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def api_my_schedule(request):
     try:
         employee = Employee.objects.filter(user=request.user).first()
@@ -1194,8 +1198,9 @@ def api_my_schedule(request):
         return JsonResponse({'success': False, 'error': 'Internal server error'}, status=500)
 
 
-@login_required
-@require_http_methods(["GET"])
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def api_my_shift_info(request):
     try:
         employee = Employee.objects.filter(user=request.user).first()
@@ -1208,8 +1213,9 @@ def api_my_shift_info(request):
         return JsonResponse({'success': False, 'error': 'Internal server error'}, status=500)
 
 
-@login_required
-@require_http_methods(["GET"])
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def api_get_shifts_for_employee(request):
     try:
         employee = Employee.objects.filter(user=request.user).first()
@@ -1367,8 +1373,9 @@ def api_employee_login(request):
         return JsonResponse({'success': False, 'error': 'Login failed'}, status=500)
 
 
-@login_required
-@require_http_methods(["GET"])
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def api_employee_profile(request):
     try:
         employee = Employee.objects.filter(user=request.user).first()
@@ -1395,8 +1402,9 @@ def api_employee_profile(request):
 
 # ================= CHECK-IN WITH RACE CONDITION FIX =================
 @csrf_exempt
-@login_required
-@require_http_methods(["POST"])
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 @transaction.atomic
 @rate_limit(lambda r: f"checkin_{r.user.id}", limit=2, period=60)
 @idempotent(key_func=lambda r: r.headers.get('X-Idempotency-Key'))
@@ -1472,9 +1480,9 @@ def api_check_in(request):
         return JsonResponse({'success': False, 'error': 'Unable to process check-in'}, status=500)
 
 
-@csrf_exempt
-@login_required
-@require_http_methods(["GET"])
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def api_check_random_verification(request):
     try:
         employee = Employee.objects.filter(user=request.user).first()
@@ -1519,9 +1527,9 @@ def api_check_random_verification(request):
         return JsonResponse({'success': False, 'error': 'Unable to check verification'}, status=500)
 
 
-@csrf_exempt
-@login_required
-@require_http_methods(["POST"])
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def api_submit_random_verification(request, verification_id):
     try:
         data = json.loads(request.body)
@@ -1596,8 +1604,9 @@ def api_submit_random_verification(request, verification_id):
         return JsonResponse({'success': False, 'error': 'Unable to submit verification'}, status=500)
 
 
-@login_required
-@require_http_methods(["GET"])
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def api_verification_status(request):
     try:
         employee = Employee.objects.filter(user=request.user).first()
@@ -1637,8 +1646,9 @@ def api_verification_status(request):
 
 # ================= CHECK-OUT WITH RACE CONDITION FIX =================
 @csrf_exempt
-@login_required
-@require_http_methods(["POST"])
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 @transaction.atomic
 @rate_limit(lambda r: f"checkout_{r.user.id}", limit=2, period=60)
 @idempotent(key_func=lambda r: r.headers.get('X-Idempotency-Key'))
@@ -1715,8 +1725,9 @@ def api_check_out(request):
 
 # ================= OTHER MOBILE APIs =================
 
-@login_required
-@require_http_methods(["GET"])
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def api_attendance_history(request):
     try:
         employee = Employee.objects.filter(user=request.user).first()
@@ -1738,8 +1749,9 @@ def api_attendance_history(request):
         return JsonResponse({'success': False, 'error': 'Unable to fetch attendance history'}, status=500)
 
 
-@login_required
-@require_http_methods(["GET"])
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def api_today_attendance(request):
     try:
         employee = Employee.objects.filter(user=request.user).first()
@@ -1759,8 +1771,9 @@ def api_today_attendance(request):
 
 
 @csrf_exempt
-@login_required
-@require_http_methods(["POST"])
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 @rate_limit(lambda r: f"apply_leave_{r.user.id}", limit=3, period=3600)
 def api_apply_leave(request):
     try:
@@ -1783,8 +1796,9 @@ def api_apply_leave(request):
         return JsonResponse({'success': False, 'error': 'Unable to apply for leave'}, status=500)
 
 
-@login_required
-@require_http_methods(["GET"])
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def api_leave_history(request):
     try:
         employee = Employee.objects.filter(user=request.user).first()
@@ -1805,8 +1819,9 @@ def api_leave_history(request):
         return JsonResponse({'success': False, 'error': 'Unable to fetch leave history'}, status=500)
 
 
-@login_required
-@require_http_methods(["GET"])
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def api_leave_balance(request):
     try:
         employee = Employee.objects.filter(user=request.user).first()
@@ -1825,9 +1840,9 @@ def api_leave_balance(request):
         return JsonResponse({'success': False, 'error': 'Unable to fetch leave balance'}, status=500)
 
 
-@csrf_exempt
-@login_required
-@require_http_methods(["POST"])
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def api_cancel_leave(request, leave_id):
     try:
         employee = Employee.objects.filter(user=request.user).first()
@@ -1844,9 +1859,9 @@ def api_cancel_leave(request, leave_id):
         return JsonResponse({'success': False, 'error': 'Unable to cancel leave'}, status=500)
 
 
-@csrf_exempt
-@login_required
-@require_http_methods(["POST"])
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 @rate_limit(lambda r: f"sync_attendance_{r.user.id}", limit=5, period=60)
 def api_sync_attendance(request):
     try:
@@ -1870,9 +1885,9 @@ def api_sync_attendance(request):
         return JsonResponse({'success': False, 'error': 'Unable to sync attendance'}, status=500)
 
 
-@csrf_exempt
-@login_required
-@require_http_methods(["POST"])
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 @rate_limit(lambda r: f"sync_leaves_{r.user.id}", limit=5, period=60)
 def api_sync_leaves(request):
     try:
@@ -1891,8 +1906,9 @@ def api_sync_leaves(request):
         return JsonResponse({'success': False, 'error': 'Unable to sync leaves'}, status=500)
 
 
-@login_required
-@require_http_methods(["GET"])
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def api_get_beacons(request):
     return JsonResponse({
         'success': True,
@@ -1904,8 +1920,9 @@ def api_get_beacons(request):
     })
 
 
-@login_required
-@require_http_methods(["GET"])
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def api_dashboard_stats(request):
     try:
         employee = Employee.objects.filter(user=request.user).first()
@@ -1930,8 +1947,9 @@ def api_dashboard_stats(request):
         return JsonResponse({'success': False, 'error': 'Unable to fetch dashboard stats'}, status=500)
 
 
-@login_required
-@require_http_methods(["GET"])
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def api_monthly_stats(request):
     try:
         employee = Employee.objects.filter(user=request.user).first()
@@ -1965,11 +1983,11 @@ def api_monthly_stats(request):
 # ================= SOCIAL AUTH CONFIGURATION =================
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "")
-GOOGLE_REDIRECT_URI = os.environ.get("GOOGLE_REDIRECT_URI", "https://hr-attendance-system.up.railway.app/users/auth/callback/google/")
+GOOGLE_REDIRECT_URI = os.environ.get("GOOGLE_REDIRECT_URI", "https://hr-attendance-system-gojk.onrender.com/users/auth/callback/google/")
 
 APPLE_CLIENT_ID = os.environ.get("APPLE_CLIENT_ID", "")
 APPLE_CLIENT_SECRET = os.environ.get("APPLE_CLIENT_SECRET", "")
-APPLE_REDIRECT_URI = os.environ.get("APPLE_REDIRECT_URI", "https://hr-attendance-system.up.railway.app/users/auth/callback/apple/")
+APPLE_REDIRECT_URI = os.environ.get("APPLE_REDIRECT_URI", "https://hr-attendance-system-gojk.onrender.com/users/auth/callback/apple/")
 
 
 # ================= API SOCIAL AUTH VIEWS =================

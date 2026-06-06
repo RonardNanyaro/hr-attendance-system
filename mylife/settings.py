@@ -142,6 +142,14 @@ CORS_ALLOW_HEADERS = [
     'x-idempotency-key'
 ]
 
+# ADD your specific origins
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://localhost:8081',
+    'http://10.0.2.2:8080',  # Android emulator
+    'https://hr-attendance-system-gojk.onrender.com',  # YOUR Render URL
+]
+
 # ================= CSRF SETTINGS =================
 CSRF_COOKIE_NAME = 'csrftoken'
 CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
@@ -149,9 +157,8 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
     'https://*.onrender.com',
-    'https://hr-attendance-system.onrender.com',
+    'https://hr-attendance-system-gojk.onrender.com',  # YOUR Render URL
 ]
-
 # ================= REST FRAMEWORK =================
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
