@@ -1,30 +1,26 @@
+# render.yaml
 services:
   - type: web
     name: hr-attendance-system
-    runtime: python
-    plan: free
-    autoDeploy: true
-    buildCommand: |
-      pip install -r requirements.txt
-      python manage.py collectstatic --noinput
-      python manage.py migrate
+    env: python
+    buildCommand: ./build.sh
     startCommand: gunicorn mylife.wsgi:application
     envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: hr-db
-          property: connectionString
+      - key: PYTHON_VERSION
+        value: 3.11.0
       - key: SECRET_KEY
         generateValue: true
       - key: DEBUG
         value: false
-      - key: ALLOWED_HOSTS
-        value: .onrender.com
-      - key: PYTHON_VERSION
-        value: 3.11
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hr-attendance-db
+          property: connectionString
+    plan: starter
+    healthCheckPath: /health-check/
 
 databases:
-  - name: hr-db
-    plan: free
+  - name: hr-attendance-db
+    plan: starter
     databaseName: hr_attendance
     user: hr_user

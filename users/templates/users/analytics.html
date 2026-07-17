@@ -10,27 +10,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --primary: #0F766E;      /* Deep Teal - Main brand color */
-    --secondary: #14B8A6;    /* Soft Teal - Hover states */
-    --background: #FFFAFA;   /* Snow White - Main background */
-    --card-bg: #FFFFFF;      /* Pure White - Cards */
-    --text-primary: #1E293B;  /* Dark Slate - Main text */
-    --text-secondary: #64748B; /* Gray - Secondary text */
-    --border: #E2E8F0;        /* Light gray border */
+    --primary: #0F766E;
+    --secondary: #14B8A6;
+    --background: #F8FAFC;
+    --card-bg: #FFFFFF;
+    --text-primary: #1E293B;
+    --text-secondary: #64748B;
+    --border: #E2E8F0;
     --green: #10B981;
     --red: #EF4444;
     --yellow: #F59E0B;
-    --blue: #0F766E;
+    --orange: #F97316;
+    --purple: #8B5CF6;
     
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
     --shadow-luxury: 0 6px 24px rgba(15,23,42,0.08);
     --radius-sm: 8px;
     --radius-md: 12px;
-    --radius-lg: 18px;
+    --radius-lg: 16px;
     --radius-xl: 24px;
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition: all 0.2s ease;
 }
 
 * {
@@ -40,123 +41,189 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Inter', -apple-system, sans-serif;
     background: var(--background);
     color: var(--text-primary);
     line-height: 1.5;
     min-height: 100vh;
-    position: relative;
 }
 
-/* Subtle background pattern */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: radial-gradient(circle at 25% 50%, rgba(15,118,110,0.03) 0%, transparent 50%),
-                      radial-gradient(circle at 75% 80%, rgba(15,118,110,0.02) 0%, transparent 50%);
-    pointer-events: none;
-}
-
-/* HEADER */
-.header {
-    padding: 32px 24px;
-    text-align: center;
+/* ================= TOP BAR ================= */
+.top-bar {
     background: var(--card-bg);
     border-bottom: 1px solid var(--border);
-    box-shadow: var(--shadow-luxury);
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: var(--shadow-sm);
 }
 
-.header h2 {
-    margin: 0;
-    font-size: 28px;
+.top-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 64px;
+}
+
+/* Logo Section */
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.logo {
+    font-size: 18px;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--text-primary), var(--primary));
+    color: var(--primary);
+    letter-spacing: -0.3px;
+}
+
+.logo span {
+    background: linear-gradient(135deg, var(--primary), var(--purple));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-.header p {
-    color: var(--text-secondary);
-    margin-top: 8px;
-    font-size: 14px;
+.company-badge {
+    background: rgba(15,118,110,0.08);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--primary);
 }
 
-/* STATS GRID */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 24px;
-    padding: 24px;
+/* Horizontal Navigation - Text Only */
+.nav-menu {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.nav-menu a:hover {
+    background: rgba(15,118,110,0.06);
+    color: var(--primary);
+}
+
+.nav-menu a.active {
+    background: rgba(15,118,110,0.1);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Orange Logout Button */
+.logout-nav {
+    background: linear-gradient(135deg, var(--orange), #EA580C);
+    color: white !important;
+    padding: 8px 22px !important;
+    border-radius: 30px !important;
+    margin-left: 12px;
+    font-weight: 600 !important;
+}
+
+.logout-nav:hover {
+    background: linear-gradient(135deg, #EA580C, var(--orange));
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Mobile Menu */
+.mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-primary);
+    padding: 8px;
+}
+
+/* ================= MAIN CONTENT ================= */
+.main-container {
+    padding: 32px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-/* CARDS */
-.card {
-    padding: 24px;
-    border-radius: var(--radius-lg);
-    text-align: center;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-luxury);
-    transition: var(--transition);
+/* STATS GRID */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
+/* STAT CARDS */
+.stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    text-align: center;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
     border-color: rgba(15,118,110,0.2);
 }
 
-.card h3 {
-    margin: 0;
-    font-size: 14px;
+.stat-card h3 {
+    font-size: 13px;
     font-weight: 500;
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    margin-bottom: 12px;
 }
 
-.card p {
+.stat-card .stat-value {
     font-size: 42px;
-    margin: 12px 0 0;
     font-weight: 700;
+    margin: 0;
 }
 
-/* COLORS */
 .present { color: var(--green); }
 .absent { color: var(--red); }
 .late { color: var(--yellow); }
 .out { color: var(--primary); }
 
-/* CHART CONTAINER */
-.chart-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 24px;
+/* CHART SECTION */
+.chart-section {
+    margin-bottom: 32px;
 }
 
-.chart-box {
+.chart-card {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: 24px;
-    box-shadow: var(--shadow-luxury);
+    box-shadow: var(--shadow-sm);
     transition: var(--transition);
 }
 
-.chart-box:hover {
+.chart-card:hover {
+    box-shadow: var(--shadow-md);
     border-color: rgba(15,118,110,0.2);
 }
 
-.chart-box h3 {
+.chart-card h3 {
     margin-bottom: 20px;
     color: var(--primary);
     font-size: 18px;
@@ -170,35 +237,37 @@ canvas {
 
 /* TABLE SECTION */
 .table-section {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px 24px 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
 }
 
 .table-section h3 {
     margin: 0 0 20px 0;
     color: var(--primary);
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
-    display: inline-block;
     padding-bottom: 8px;
     border-bottom: 2px solid var(--primary);
+    display: inline-block;
 }
 
 /* TABLE */
+.table-wrapper {
+    overflow-x: auto;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
-    background: var(--card-bg);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-luxury);
 }
 
 th {
-    background: rgba(15,118,110,0.05);
+    background: rgba(15,118,110,0.04);
     color: var(--primary);
-    padding: 16px;
+    padding: 14px 16px;
     text-align: center;
     font-weight: 600;
     font-size: 13px;
@@ -207,27 +276,31 @@ th {
 }
 
 td {
-    padding: 14px;
+    padding: 12px 16px;
     text-align: center;
     border-bottom: 1px solid var(--border);
     font-size: 14px;
     color: var(--text-primary);
 }
 
-tbody tr:hover {
-    background: rgba(15,118,110,0.03);
+tbody tr {
+    transition: var(--transition);
 }
 
-.empty-row td {
+tbody tr:hover {
+    background: rgba(15,118,110,0.02);
+}
+
+.empty-state {
     text-align: center;
-    padding: 40px;
+    padding: 48px;
     color: var(--text-secondary);
 }
 
 /* BADGE */
 .badge-count {
     display: inline-block;
-    padding: 4px 12px;
+    padding: 4px 14px;
     border-radius: 30px;
     font-size: 12px;
     font-weight: 600;
@@ -235,35 +308,73 @@ tbody tr:hover {
     color: var(--red);
 }
 
-/* RESPONSIVE */
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+    .top-bar-container {
+        padding: 0 20px;
+    }
+    
+    .nav-menu {
+        gap: 4px;
+    }
+    
+    .nav-menu a {
+        padding: 6px 14px;
+        font-size: 13px;
+    }
+}
+
 @media (max-width: 768px) {
-    .header {
-        padding: 20px 16px;
+    .mobile-toggle {
+        display: block;
     }
     
-    .header h2 {
-        font-size: 22px;
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 20px;
+        gap: 8px;
+        box-shadow: var(--shadow-md);
     }
     
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
+    .nav-menu.show {
+        display: flex;
+    }
+    
+    .nav-menu a {
+        width: 100%;
+        padding: 10px 16px;
+    }
+    
+    .logout-nav {
+        margin-left: 0;
+        margin-top: 4px;
+        text-align: center;
+    }
+    
+    .main-container {
+        padding: 20px;
+    }
+    
+    .stats-grid {
         gap: 16px;
+    }
+    
+    .stat-card {
         padding: 16px;
     }
     
-    .card {
-        padding: 16px;
-    }
-    
-    .card p {
+    .stat-card .stat-value {
         font-size: 32px;
     }
     
-    .chart-container, .table-section {
-        padding: 16px;
-    }
-    
-    .chart-box {
+    .chart-card, .table-section {
         padding: 16px;
     }
     
@@ -274,12 +385,25 @@ tbody tr:hover {
 }
 
 @media (max-width: 480px) {
-    .grid {
-        grid-template-columns: 1fr;
+    .top-bar-container {
+        padding: 0 16px;
     }
     
-    .header h2 {
-        font-size: 18px;
+    .logo {
+        font-size: 16px;
+    }
+    
+    .company-badge {
+        font-size: 10px;
+        padding: 4px 10px;
+    }
+    
+    .logo-section {
+        gap: 12px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
     }
 }
 </style>
@@ -287,65 +411,110 @@ tbody tr:hover {
 
 <body>
 
-<div class="header">
-    <h2>Analytics Dashboard</h2>
-    <p>Yearly Attendance Overview — {{ year }}</p>
-</div>
-
-<!-- STATS CARDS -->
-<div class="grid">
-    <div class="card">
-        <h3>Present</h3>
-        <p class="present">{{ present|default:"0" }}</p>
-    </div>
-    <div class="card">
-        <h3>Absent</h3>
-        <p class="absent">{{ absent|default:"0" }}</p>
-    </div>
-    <div class="card">
-        <h3>Late</h3>
-        <p class="late">{{ late|default:"0" }}</p>
-    </div>
-    <div class="card">
-        <h3>Early Departure</h3>
-        <p class="out">{{ out|default:"0" }}</p>
-    </div>
-</div>
-
-<!-- CHART SECTION -->
-<div class="chart-container">
-    <div class="chart-box">
-        <h3>📈 Monthly Attendance Trends</h3>
-        <canvas id="attendanceChart"></canvas>
+<!-- TOP BAR WITH HORIZONTAL NAVIGATION -->
+<div class="top-bar">
+    <div class="top-bar-container">
+        <div class="logo-section">
+            <div class="logo"><span>HR SYSTEM</span></div>
+            <div class="company-badge">{{ company.name|default:"HR Portal" }}</div>
+        </div>
+        
+        <div class="nav-menu" id="navMenu">
+            <a href="{% url 'users:hr_dashboard' %}">Dashboard</a>
+            <a href="{% url 'users:attendance_page' %}">Attendance</a>
+            <a href="{% url 'users:leave_page' %}">Leave</a>
+            <a href="{% url 'users:departments_page' %}">Departments</a>
+            <a href="{% url 'users:employee_verification' %}">Verification</a>
+            <a href="{% url 'users:report_page' %}">Reports</a>
+            <a href="{% url 'users:analytics_page' %}" class="active">Analytics</a>
+            <a href="{% url 'users:company_settings' %}">Settings</a>
+            <a href="{% url 'users:logout' %}" class="logout-nav">Logout</a>
+        </div>
+        
+        <button class="mobile-toggle" onclick="toggleMenu()">☰</button>
     </div>
 </div>
 
-<!-- TOP LATE EMPLOYEES TABLE -->
-<div class="table-section">
-    <h3>🔥 Top Late Employees</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Employee Name</th>
-                <th>Late Count</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for emp in top_late %}
-            <tr>
-                <td><strong>{{ emp.employee__name }}</strong></td>
-                <td><span class="badge-count">{{ emp.total }} times</span></td>
-            </tr>
-            {% empty %}
-            <tr class="empty-row">
-                <td colspan="2">No late records found</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<!-- MAIN CONTENT -->
+<div class="main-container">
+
+    <!-- Header Section -->
+    <div style="margin-bottom: 32px;">
+        <h1 style="font-size: 28px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">Analytics Dashboard</h1>
+        <p style="color: var(--text-secondary); font-size: 14px;">Yearly Attendance Overview — {{ year|default:"2024" }}</p>
+    </div>
+
+    <!-- STATS CARDS -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Present</h3>
+            <p class="stat-value present">{{ present|default:"0" }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Absent</h3>
+            <p class="stat-value absent">{{ absent|default:"0" }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Late</h3>
+            <p class="stat-value late">{{ late|default:"0" }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Early Departure</h3>
+            <p class="stat-value out">{{ out|default:"0" }}</p>
+        </div>
+    </div>
+
+    <!-- CHART SECTION -->
+    <div class="chart-section">
+        <div class="chart-card">
+            <h3>📈 Monthly Attendance Trends</h3>
+            <canvas id="attendanceChart"></canvas>
+        </div>
+    </div>
+
+    <!-- TOP LATE EMPLOYEES TABLE -->
+    <div class="table-section">
+        <h3>🔥 Top Late Employees</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Employee Name</th>
+                        <th>Late Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for emp in top_late %}
+                    <tr>
+                        <td><strong>{{ emp.employee__name }}</strong></td>
+                        <td><span class="badge-count">{{ emp.total }} times</span></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="empty-state">No late records found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 
 <script>
+function toggleMenu() {
+    document.getElementById("navMenu").classList.toggle("show");
+}
+
+// Close mobile menu on link click
+document.querySelectorAll('.nav-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            document.getElementById("navMenu").classList.remove("show");
+        }
+    });
+});
+
 const chartData = {{ monthly|safe }};
 
 const labels = chartData.map(d => {

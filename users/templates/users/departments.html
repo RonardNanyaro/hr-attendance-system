@@ -10,26 +10,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --primary: #0F766E;      /* Deep Teal - Main brand color */
-    --secondary: #14B8A6;    /* Soft Teal - Hover states */
-    --accent: #0F172A;       /* Luxury Navy - Navbar background */
-    --background: #FFFAFA;   /* Snow White - Main background */
-    --card-bg: #FFFFFF;      /* Pure White - Cards */
-    --text-primary: #1E293B;  /* Dark Slate - Main text */
-    --text-secondary: #64748B; /* Gray - Secondary text */
-    --border: #E2E8F0;        /* Light gray border */
+    --primary: #0F766E;
+    --secondary: #14B8A6;
+    --background: #F8FAFC;
+    --card-bg: #FFFFFF;
+    --text-primary: #1E293B;
+    --text-secondary: #64748B;
+    --border: #E2E8F0;
     --green: #10B981;
     --red: #EF4444;
-    --blue: #0F766E;
+    --orange: #F97316;
+    --purple: #8B5CF6;
     
-    --shadow-luxury: 0 6px 24px rgba(15,23,42,0.08);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
     --radius-sm: 8px;
     --radius-md: 12px;
-    --radius-lg: 18px;
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius-lg: 16px;
+    --transition: all 0.2s ease;
 }
 
-/* GLOBAL */
 * {
     margin: 0;
     padding: 0;
@@ -37,205 +38,283 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Inter', -apple-system, sans-serif;
     background: var(--background);
     color: var(--text-primary);
     min-height: 100vh;
 }
 
-/* NAVBAR */
-.navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 24px;
+/* ================= TOP BAR ================= */
+.top-bar {
     background: var(--card-bg);
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
-    z-index: 1000;
-    box-shadow: var(--shadow-luxury);
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+}
+
+.top-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 64px;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 24px;
 }
 
 .logo {
     font-size: 18px;
     font-weight: 700;
     color: var(--primary);
+    letter-spacing: -0.3px;
+}
+
+.logo span {
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .company-badge {
-    background: rgba(15,118,110,0.1);
-    border: 1px solid var(--border);
-    border-radius: 30px;
-    padding: 6px 14px;
+    background: rgba(15,118,110,0.08);
+    border-radius: 20px;
+    padding: 5px 12px;
     font-size: 12px;
-    color: var(--primary);
     font-weight: 500;
+    color: var(--primary);
 }
 
-.nav-links {
+.nav-menu {
     display: flex;
-    gap: 12px;
+    gap: 6px;
     align-items: center;
 }
 
-.nav-links a {
+.nav-menu a {
     text-decoration: none;
     color: var(--text-secondary);
-    padding: 8px 12px;
-    border-radius: var(--radius-md);
+    padding: 8px 18px;
+    border-radius: 30px;
     font-size: 14px;
+    font-weight: 500;
     transition: var(--transition);
 }
 
-.nav-links a:hover {
-    background: rgba(15,118,110,0.08);
+.nav-menu a:hover {
+    background: rgba(15,118,110,0.06);
     color: var(--primary);
 }
 
-.logout {
-    background: rgba(239,68,68,0.1);
-    color: var(--red) !important;
-    border: 1px solid rgba(239,68,68,0.2);
+.nav-menu a.active {
+    background: rgba(15,118,110,0.1);
+    color: var(--primary);
+    font-weight: 600;
 }
 
-.logout:hover {
-    background: rgba(239,68,68,0.15);
+.logout-nav {
+    background: linear-gradient(135deg, var(--orange), #EA580C);
+    color: white !important;
+    padding: 8px 22px !important;
+    border-radius: 30px !important;
+    margin-left: 12px;
+    font-weight: 600 !important;
 }
 
-.menu-toggle {
+.logout-nav:hover {
+    background: linear-gradient(135deg, #EA580C, var(--orange));
+    transform: translateY(-1px);
+}
+
+.mobile-toggle {
     display: none;
+    background: none;
+    border: none;
     font-size: 24px;
     cursor: pointer;
     color: var(--text-primary);
+    padding: 8px;
 }
 
-/* MAIN */
-.main {
-    padding: 24px;
+/* ================= MAIN CONTENT ================= */
+.main-container {
+    padding: 32px;
     max-width: 1000px;
     margin: 0 auto;
 }
 
-/* CARD */
 .card {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: 28px;
-    margin-bottom: 24px;
-    box-shadow: var(--shadow-luxury);
+    padding: 28px 32px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
 }
 
-.card h2 {
-    color: var(--primary);
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    letter-spacing: -0.3px;
+.card:hover {
+    box-shadow: var(--shadow-md);
 }
 
-.card > p {
-    color: var(--text-secondary);
-    font-size: 14px;
+.card-header {
     margin-bottom: 24px;
     padding-bottom: 16px;
     border-bottom: 1px solid var(--border);
 }
 
-.card h3 {
+.card-header h2 {
     color: var(--text-primary);
-    font-size: 16px;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.card-header p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.card-section-title {
+    font-size: 15px;
     font-weight: 600;
-    margin-bottom: 16px;
+    color: var(--text-primary);
+    margin-bottom: 20px;
 }
 
-/* FORM */
-.form-group {
+/* Add Department Button (Full Width) */
+.add-dept-btn {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 24px;
+    transition: var(--transition);
     display: flex;
-    gap: 12px;
-    margin-bottom: 28px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
-.form-group input {
-    flex: 1;
+.add-dept-btn:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1001;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: var(--shadow-lg);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-content h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.modal-content p {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.modal-input {
+    width: 100%;
     padding: 12px 16px;
     border-radius: var(--radius-md);
     border: 1px solid var(--border);
     background: var(--background);
-    color: var(--text-primary);
     font-size: 14px;
-    font-family: 'Inter', sans-serif;
+    margin-bottom: 24px;
     outline: none;
-    transition: var(--transition);
 }
 
-.form-group input:focus {
+.modal-input:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(15,118,110,0.1);
+    box-shadow: 0 0 0 3px rgba(15,118,110,0.08);
 }
 
-.form-group input::placeholder {
-    color: var(--text-secondary);
+.modal-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
 }
 
-/* BUTTONS */
-.btn-add {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
-    transition: var(--transition);
-}
-
-.btn-add:hover {
-    background: var(--secondary);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(15,118,110,0.3);
-}
-
-.btn-delete {
-    background: rgba(239,68,68,0.1);
-    color: var(--red);
-    border: 1px solid rgba(239,68,68,0.2);
-    padding: 6px 14px;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 500;
-    transition: var(--transition);
-}
-
-.btn-delete:hover {
-    background: var(--red);
-    color: white;
-    transform: translateY(-1px);
-}
-
-.btn-back {
+.modal-btn-cancel {
     background: transparent;
-    color: var(--primary);
     border: 1px solid var(--border);
     padding: 10px 20px;
     border-radius: var(--radius-md);
     cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
     font-weight: 500;
     transition: var(--transition);
 }
 
-.btn-back:hover {
-    background: rgba(15,118,110,0.08);
-    border-color: var(--primary);
+.modal-btn-cancel:hover {
+    background: rgba(0,0,0,0.05);
 }
 
-/* TABLE */
+.modal-btn-add {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.modal-btn-add:hover {
+    background: var(--secondary);
+}
+
+/* Table */
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 8px;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -248,11 +327,11 @@ th, td {
 }
 
 th {
-    color: var(--primary);
+    color: var(--text-secondary);
     font-weight: 600;
     font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
 }
 
 td {
@@ -261,135 +340,136 @@ td {
 }
 
 tbody tr:hover {
-    background: rgba(15,118,110,0.03);
+    background: rgba(15,118,110,0.02);
 }
 
-/* TOAST */
-.toast {
-    position: fixed;
-    top: 20px;
-    right: -350px;
-    padding: 14px 20px;
-    border-radius: var(--radius-md);
-    transition: 0.4s ease;
-    z-index: 9999;
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    box-shadow: var(--shadow-luxury);
-}
-
-.toast.show { 
-    right: 20px; 
-}
-
-.toast.success { 
-    background: var(--green); 
-}
-
-.toast.error { 
-    background: var(--red); 
-}
-
-/* Empty state */
-.empty-row td {
+.empty-state {
     text-align: center;
-    padding: 40px;
+    padding: 48px;
     color: var(--text-secondary);
 }
 
-/* RESPONSIVE */
+.btn-delete {
+    background: rgba(239,68,68,0.08);
+    color: var(--red);
+    border: 1px solid rgba(239,68,68,0.2);
+    padding: 6px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.btn-delete:hover {
+    background: var(--red);
+    color: white;
+}
+
+/* Toast */
+.toast {
+    position: fixed;
+    top: 80px;
+    right: -400px;
+    padding: 12px 24px;
+    border-radius: 40px;
+    transition: 0.3s ease;
+    z-index: 1000;
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: var(--shadow-md);
+}
+
+.toast.show {
+    right: 24px;
+}
+
+.toast.success {
+    background: var(--green);
+}
+
+.toast.error {
+    background: var(--red);
+}
+
 @media (max-width: 768px) {
-    .menu-toggle {
+    .mobile-toggle {
         display: block;
     }
-    
-    .nav-links {
+    .nav-menu {
         display: none;
         position: absolute;
-        top: 65px;
-        right: 16px;
+        top: 64px;
+        left: 0;
+        right: 0;
         flex-direction: column;
         background: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-md);
-        padding: 12px;
-        width: 180px;
-        box-shadow: var(--shadow-luxury);
+        padding: 16px;
+        border-bottom: 1px solid var(--border);
     }
-    
-    .nav-links.show {
+    .nav-menu.show {
         display: flex;
     }
-    
-    .form-group {
-        flex-direction: column;
+    .nav-menu a {
+        width: 100%;
     }
-    
-    .main {
-        padding: 16px;
+    .logout-nav {
+        margin-left: 0;
+        margin-top: 4px;
+        text-align: center;
     }
-    
+    .main-container {
+        padding: 20px;
+    }
     .card {
         padding: 20px;
     }
-    
-    th, td {
-        padding: 10px 8px;
-        font-size: 12px;
-    }
-    
-    .btn-add {
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .navbar {
-        padding: 12px 16px;
-    }
-    
-    .logo {
-        font-size: 16px;
-    }
-    
-    .company-badge {
-        font-size: 10px;
-        padding: 4px 10px;
+    .modal-content {
+        padding: 20px;
     }
 }
 </style>
 </head>
-
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-    <div class="logo">🏢 HR SYSTEM</div>
-    <div class="company-badge">{{ company.name }}</div>
-    <div class="nav-links" id="navLinks">
-        <a href="{% url 'users:logout' %}" class="logout">Logout</a>
+<!-- TOP BAR -->
+<div class="top-bar">
+    <div class="top-bar-container">
+        <div class="logo-section">
+            <div class="logo"><span>HR SYSTEM</span></div>
+            <div class="company-badge">{{ company.name }}</div>
+        </div>
+        <div class="nav-menu" id="navMenu">
+            <a href="{% url 'users:hr_dashboard' %}">Dashboard</a>
+            <a href="{% url 'users:attendance_page' %}">Attendance</a>
+            <a href="{% url 'users:leave_page' %}">Leave</a>
+            <a href="{% url 'users:departments_page' %}" class="active">Departments</a>
+            <a href="{% url 'users:employee_verification' %}">Verification</a>
+            <a href="{% url 'users:report_page' %}">Reports</a>
+            <a href="{% url 'users:company_settings' %}">Settings</a>
+            <a href="{% url 'users:logout' %}" class="logout-nav">Logout</a>
+        </div>
+        <button class="mobile-toggle" onclick="toggleMenu()">☰</button>
     </div>
-    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
 </div>
 
-<!-- MAIN -->
-<div class="main">
-
+<!-- MAIN CONTENT -->
+<div class="main-container">
     <div class="card">
-        <h2>Department Management</h2>
-        <p>Manage departments for {{ company.name }}</p>
-
-        <!-- ADD DEPARTMENT FORM -->
-        <div class="form-group">
-            <input type="text" id="deptName" placeholder="Enter department name (e.g., IT, HR, Finance)" autocomplete="off">
-            <button class="btn-add" onclick="addDepartment()">+ Add Department</button>
+        <div class="card-header">
+            <h2>🏢 Department Management</h2>
+            <p>Manage departments for {{ company.name }}</p>
         </div>
 
-        <!-- DEPARTMENTS LIST -->
-        <h3>Your Departments</h3>
+        <!-- Add Department Button (Opens Modal) -->
+        <button class="add-dept-btn" onclick="openModal()">
+             Add New Department
+        </button>
+
+        <div class="card-section-title">Your Departments</div>
         
-        <div style="overflow-x: auto;">
+        <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
@@ -411,18 +491,26 @@ tbody tr:hover {
                     </tr>
                     {% empty %}
                     <tr id="no-departments">
-                        <td colspan="4" class="empty-row">No departments yet. Add your first department above.</td>
+                        <td colspan="4" class="empty-state">No departments yet. Click "Add New Department" to create one.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
+</div>
 
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="{% url 'users:hr_dashboard' %}" class="btn-back">← Back to Dashboard</a>
+<!-- MODAL POPUP -->
+<div id="deptModal" class="modal">
+    <div class="modal-content">
+        <h3> Add New Department</h3>
+        <p>Enter the name of the department you want to create.</p>
+        <input type="text" id="modalDeptName" class="modal-input" placeholder="e.g., IT, Human Resources, Finance" autocomplete="off">
+        <div class="modal-buttons">
+            <button class="modal-btn-cancel" onclick="closeModal()">Cancel</button>
+            <button class="modal-btn-add" onclick="addDepartmentFromModal()">Add Department</button>
+        </div>
     </div>
-
 </div>
 
 <!-- TOAST -->
@@ -445,20 +533,53 @@ function getCSRF() {
 }
 
 function showToast(msg, type) {
-    let t = document.getElementById('toast');
-    t.innerText = msg;
-    t.className = 'toast show ' + (type === 'success' ? 'success' : 'error');
-    setTimeout(() => t.classList.remove('show'), 3000);
+    const toast = document.getElementById('toast');
+    toast.innerText = msg;
+    toast.className = 'toast show ' + type;
+    setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
 function toggleMenu() {
-    document.getElementById("navLinks").classList.toggle("show");
+    document.getElementById("navMenu").classList.toggle("show");
 }
 
-function addDepartment() {
-    const name = document.getElementById('deptName').value.trim();
+document.querySelectorAll('.nav-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            document.getElementById("navMenu").classList.remove("show");
+        }
+    });
+});
+
+// MODAL FUNCTIONS
+function openModal() {
+    document.getElementById('deptModal').classList.add('show');
+    document.getElementById('modalDeptName').value = '';
+    document.getElementById('modalDeptName').focus();
+}
+
+function closeModal() {
+    document.getElementById('deptModal').classList.remove('show');
+}
+
+// Close modal when clicking outside
+document.getElementById('deptModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+
+// Enter key in modal
+document.getElementById('modalDeptName').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        addDepartmentFromModal();
+    }
+});
+
+function addDepartmentFromModal() {
+    const name = document.getElementById('modalDeptName').value.trim();
     if (!name) {
-        showToast("Please enter department name", "error");
+        showToast("Please enter a department name", "error");
         return;
     }
 
@@ -474,12 +595,11 @@ function addDepartment() {
     .then(data => {
         if (data.success) {
             showToast("Department added successfully", "success");
+            closeModal();
             
-            // Remove empty row if exists
             const noDeptRow = document.getElementById('no-departments');
             if (noDeptRow) noDeptRow.remove();
             
-            // Add new row to table
             const tbody = document.getElementById('departmentsTable');
             const newRow = document.createElement('tr');
             newRow.id = `dept-${data.department.id}`;
@@ -491,19 +611,16 @@ function addDepartment() {
                 <td><button class="btn-delete" onclick="deleteDepartment(${data.department.id})">Delete</button></td>
             `;
             tbody.appendChild(newRow);
-            document.getElementById('deptName').value = '';
-            
-            // Renumber rows
             renumberRows();
         } else {
             showToast(data.error || "Failed to add department", "error");
         }
     })
-    .catch(err => showToast("Network error", "error"));
+    .catch(() => showToast("Network error. Please try again.", "error"));
 }
 
 function deleteDepartment(id) {
-    if (!confirm("Are you sure you want to delete this department?")) return;
+    if (!confirm("Delete this department? This action cannot be undone.")) return;
     
     fetch(`/api/departments/delete/${id}/`, {
         method: 'POST',
@@ -516,13 +633,10 @@ function deleteDepartment(id) {
             const row = document.getElementById(`dept-${id}`);
             if (row) row.remove();
             
-            // If no departments left, show empty message
             if (document.getElementById('departmentsTable').children.length === 0) {
                 const tbody = document.getElementById('departmentsTable');
-                tbody.innerHTML = '<tr id="no-departments"><td colspan="4" class="empty-row">No departments yet. Add your first department above.</td></tr>';
+                tbody.innerHTML = '<tr id="no-departments"><td colspan="4" class="empty-state">No departments yet. Click "Add New Department" to create one.</td></tr>';
             }
-            
-            // Renumber rows
             renumberRows();
         } else {
             showToast(data.error || "Failed to delete", "error");

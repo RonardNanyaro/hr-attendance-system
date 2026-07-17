@@ -2,36 +2,35 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Smart Attendance System</title>
-
+<title>Attendance Records - HR System</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --primary: #0F766E;      /* Deep Teal - Main brand color */
-    --secondary: #14B8A6;    /* Soft Teal - Hover states */
-    --background: #FFFAFA;   /* Snow White - Main background */
-    --card-bg: #FFFFFF;      /* Pure White - Cards */
-    --text-primary: #1E293B;  /* Dark Slate - Main text */
-    --text-secondary: #64748B; /* Gray - Secondary text */
-    --border: #E2E8F0;        /* Light gray border */
+    --primary: #0F766E;
+    --secondary: #14B8A6;
+    --background: #F8FAFC;
+    --card-bg: #FFFFFF;
+    --text-primary: #1E293B;
+    --text-secondary: #64748B;
+    --border: #E2E8F0;
     --green: #10B981;
     --red: #EF4444;
     --yellow: #F59E0B;
     --purple: #8B5CF6;
-    --blue: #0F766E;
+    --orange: #F97316;
     
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
     --shadow-luxury: 0 6px 24px rgba(15,23,42,0.08);
     --radius-sm: 8px;
     --radius-md: 12px;
-    --radius-lg: 18px;
+    --radius-lg: 16px;
     --radius-xl: 24px;
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition: all 0.2s ease;
 }
 
 * {
@@ -41,143 +40,284 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Inter', -apple-system, sans-serif;
     background: var(--background);
     color: var(--text-primary);
     line-height: 1.5;
     min-height: 100vh;
-    position: relative;
 }
 
-/* Subtle background pattern */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: radial-gradient(circle at 25% 50%, rgba(15,118,110,0.03) 0%, transparent 50%),
-                      radial-gradient(circle at 75% 80%, rgba(15,118,110,0.02) 0%, transparent 50%);
-    pointer-events: none;
-}
-
-/* HEADER */
-.header {
-    padding: 24px 32px;
+/* TOP BAR */
+.top-bar {
     background: var(--card-bg);
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: var(--shadow-luxury);
+    box-shadow: var(--shadow-sm);
 }
 
-.header h2 {
-    margin: 0;
-    color: var(--primary);
-    font-size: 28px;
+.top-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 64px;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.logo {
+    font-size: 18px;
     font-weight: 700;
+    color: var(--primary);
     letter-spacing: -0.3px;
 }
 
-/* RULES SECTION */
-.rules {
-    margin: 24px;
-    padding: 20px 24px;
-    border-radius: var(--radius-lg);
-    background: rgba(15,118,110,0.05);
-    border: 1px solid var(--border);
-    font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.8;
-    backdrop-filter: blur(4px);
+.logo span {
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.rules::before {
-    content: "📋 ";
-    font-weight: 600;
+.company-badge {
+    background: rgba(15,118,110,0.08);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 500;
     color: var(--primary);
 }
 
-/* CARDS */
-.cards {
+.nav-menu {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.nav-menu a:hover {
+    background: rgba(15,118,110,0.06);
+    color: var(--primary);
+}
+
+.nav-menu a.active {
+    background: rgba(15,118,110,0.1);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.logout-nav {
+    background: linear-gradient(135deg, var(--orange), #EA580C);
+    color: white !important;
+    padding: 8px 22px !important;
+    border-radius: 30px !important;
+    margin-left: 12px;
+    font-weight: 600 !important;
+}
+
+.logout-nav:hover {
+    background: linear-gradient(135deg, #EA580C, var(--orange));
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-primary);
+    padding: 8px;
+}
+
+/* MAIN CONTENT */
+.main-container {
+    padding: 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* FILTERS */
+.filters-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.filters-card label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.filters-card input,
+.filters-card select {
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    background: var(--background);
+    color: var(--text-primary);
+    transition: var(--transition);
+}
+
+.filters-card input:focus,
+.filters-card select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(15,118,110,0.1);
+}
+
+.filters-card .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-filter {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-filter:hover {
+    background: var(--secondary);
+}
+
+.btn-reset {
+    background: var(--border);
+    color: var(--text-secondary);
+    border: none;
+    padding: 8px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-reset:hover {
+    background: #d1d5db;
+}
+
+/* STATS CARDS */
+.stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
-    padding: 0 24px 24px 24px;
+    gap: 16px;
+    margin-bottom: 24px;
 }
 
-.card {
-    padding: 24px;
+.stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
     border-radius: var(--radius-lg);
+    padding: 20px;
     text-align: center;
-    font-weight: 600;
-    font-size: 16px;
     transition: var(--transition);
-    cursor: pointer;
-    box-shadow: var(--shadow-luxury);
+    box-shadow: var(--shadow-sm);
 }
 
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
-.card .number {
-    font-size: 36px;
+.stat-card .stat-number {
+    font-size: 28px;
     font-weight: 700;
-    margin-bottom: 8px;
 }
 
-.card .label {
-    font-size: 14px;
-    opacity: 0.9;
+.stat-card .stat-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-top: 4px;
 }
 
-/* COLORS */
-.green { background: var(--green); color: white; }
-.red { background: var(--red); color: white; }
-.yellow { background: var(--yellow); color: white; }
-.blue { background: var(--primary); color: white; }
+.stat-green .stat-number { color: var(--green); }
+.stat-red .stat-number { color: var(--red); }
+.stat-yellow .stat-number { color: var(--yellow); }
+.stat-teal .stat-number { color: var(--primary); }
 
-/* TABLE CONTAINER */
-.table-container {
-    padding: 0 24px 24px 24px;
+.stat-green { border-top: 3px solid var(--green); }
+.stat-red { border-top: 3px solid var(--red); }
+.stat-yellow { border-top: 3px solid var(--yellow); }
+.stat-teal { border-top: 3px solid var(--primary); }
+
+/* TABLE */
+.table-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.table-wrapper {
     overflow-x: auto;
 }
 
 table {
     width: 100%;
-    min-width: 800px;
     border-collapse: collapse;
-    background: var(--card-bg);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-luxury);
 }
 
 th {
-    background: rgba(15,118,110,0.05);
+    background: rgba(15,118,110,0.04);
     color: var(--primary);
-    padding: 16px;
+    padding: 14px 16px;
     text-align: left;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 td {
-    padding: 14px 16px;
+    padding: 12px 16px;
     text-align: left;
     border-bottom: 1px solid var(--border);
     font-size: 14px;
     color: var(--text-primary);
 }
 
+tbody tr {
+    transition: var(--transition);
+}
+
 tbody tr:hover {
-    background: rgba(15,118,110,0.03);
+    background: rgba(15,118,110,0.02);
 }
 
 /* STATUS BADGES */
@@ -207,85 +347,105 @@ tbody tr:hover {
     border: 1px solid rgba(245,158,11,0.2);
 }
 
+.status-early_departure {
+    background: rgba(249,115,22,0.1);
+    color: var(--orange);
+    border: 1px solid rgba(249,115,22,0.2);
+}
+
 .status-leave {
     background: rgba(139,92,246,0.1);
     color: var(--purple);
     border: 1px solid rgba(139,92,246,0.2);
 }
 
-/* VERIFICATION DOTS */
-.verification-dots {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-start;
-    margin-bottom: 8px;
-}
-
-.dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--border);
-    transition: var(--transition);
-}
-
-.dot.active {
-    background: var(--green);
-    box-shadow: 0 0 0 3px rgba(16,185,129,0.2);
-}
-
-.verification-text {
+/* SOURCE BADGE */
+.source-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
     font-size: 11px;
     font-weight: 500;
 }
 
-.warning-text {
-    color: var(--yellow);
+.source-app {
+    background: rgba(139,92,246,0.1);
+    color: var(--purple);
 }
 
-.good-text {
-    color: var(--green);
+.source-web {
+    background: rgba(15,118,110,0.1);
+    color: var(--primary);
+}
+
+.source-manual {
+    background: rgba(100,116,139,0.1);
+    color: var(--text-secondary);
 }
 
 /* EMPTY STATE */
 .empty-state {
     text-align: center;
-    padding: 48px;
+    padding: 40px;
     color: var(--text-secondary);
 }
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-    .header {
+    .mobile-toggle {
+        display: block;
+    }
+    
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border);
         padding: 16px 20px;
+        gap: 8px;
+        box-shadow: var(--shadow-md);
     }
     
-    .header h2 {
-        font-size: 22px;
+    .nav-menu.show {
+        display: flex;
     }
     
-    .rules {
-        margin: 16px;
+    .nav-menu a {
+        width: 100%;
+        padding: 10px 16px;
+    }
+    
+    .logout-nav {
+        margin-left: 0;
+        margin-top: 4px;
+        text-align: center;
+    }
+    
+    .main-container {
         padding: 16px;
-        font-size: 12px;
     }
     
-    .cards {
+    .filters-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filters-card .filter-group {
+        flex-wrap: wrap;
+    }
+    
+    .stats-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-        padding: 0 16px 16px 16px;
     }
-    
-    .card {
-        padding: 16px;
-    }
-    
-    .card .number {
-        font-size: 28px;
-    }
-    
-    .table-container {
-        padding: 0 16px 16px 16px;
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
     }
     
     th, td {
@@ -293,105 +453,174 @@ tbody tr:hover {
         font-size: 12px;
     }
 }
-
-@media (max-width: 480px) {
-    .cards {
-        grid-template-columns: 1fr;
-    }
-    
-    .header h2 {
-        font-size: 18px;
-    }
-}
 </style>
 </head>
-
 <body>
 
-<div class="header">
-    <h2>📊 Smart Attendance System</h2>
-</div>
-
-<div class="rules">
-    <strong>Attendance Tracking Rules</strong><br>
-    • Monday – Friday Working Days<br>
-    • Check-in / Check-out with Biometric Verification<br>
-    • 3-Step Random Verification System<br>
-    • Late arrivals recorded after shift start time<br>
-    • Early departures flagged before shift end time
-</div>
-
-<!-- SUMMARY CARDS -->
-<div class="cards">
-    <div class="card green">
-        <div class="number">{{ present|default:"0" }}</div>
-        <div class="label">Present Today</div>
-    </div>
-    <div class="card red">
-        <div class="number">{{ absent|default:"0" }}</div>
-        <div class="label">Absent Today</div>
-    </div>
-    <div class="card yellow">
-        <div class="number">{{ late|default:"0" }}</div>
-        <div class="label">Late Today</div>
-    </div>
-    <div class="card blue">
-        <div class="number">{{ out|default:"0" }}</div>
-        <div class="label">Early Departure</div>
+<!-- TOP BAR -->
+<div class="top-bar">
+    <div class="top-bar-container">
+        <div class="logo-section">
+            <div class="logo"><span>HR SYSTEM</span></div>
+            <div class="company-badge">{{ company.name|default:"HR Portal" }}</div>
+        </div>
+        
+        <div class="nav-menu" id="navMenu">
+            <a href="{% url 'users:hr_dashboard' %}">Dashboard</a>
+            <a href="{% url 'users:attendance_page' %}" class="active">Attendance</a>
+            <a href="{% url 'users:leave_page' %}">Leave</a>
+            <a href="{% url 'users:departments_page' %}">Departments</a>
+            <a href="{% url 'users:employee_verification' %}">Verification</a>
+            <a href="{% url 'users:report_page' %}">Reports</a>
+            <a href="{% url 'users:analytics_page' %}">Analytics</a>
+            <a href="{% url 'users:company_settings' %}">Settings</a>
+            <a href="{% url 'users:logout' %}" class="logout-nav">Logout</a>
+        </div>
+        
+        <button class="mobile-toggle" onclick="toggleMenu()">☰</button>
     </div>
 </div>
 
-<!-- TABLE -->
-<div class="table-container">
-    <table>
-        <thead>
-            <tr>
-                <th>Employee</th>
-                <th>Department</th>
-                <th>Status</th>
-                <th>Check-In</th>
-                <th>Check-Out</th>
-                <th>Verification</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for emp in employees %}
-            <tr>
-                <td><strong>{{ emp.name }}</strong></td>
-                <td>{{ emp.department|default:"—" }}</td>
-                <td>
-                    <span class="status-badge status-{{ emp.status|lower }}">
-                        {% if emp.status == 'present' %}✓ Present
-                        {% elif emp.status == 'late' %}⚠ Late
-                        {% elif emp.status == 'leave' %}📋 On Leave
-                        {% else %}✗ Absent{% endif %}
-                    </span>
-                </td>
-                <td>{{ emp.check_in_time|date:"H:i"|default:"—" }}</td>
-                <td>{{ emp.check_out_time|date:"H:i"|default:"—" }}</td>
-                <td>
-                    <div class="verification-dots">
-                        <div class="dot {% if emp.verification_count >= 1 %}active{% endif %}"></div>
-                        <div class="dot {% if emp.verification_count >= 2 %}active{% endif %}"></div>
-                        <div class="dot {% if emp.verification_count >= 3 %}active{% endif %}"></div>
-                    </div>
-                    <div class="verification-text">
-                        {% if emp.verification_count < 3 %}
-                            <span class="warning-text">⚠ {{ emp.verification_count|default:"0" }}/3 Verified</span>
-                        {% else %}
-                            <span class="good-text">✓ Fully Verified</span>
-                        {% endif %}
-                    </div>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6" class="empty-state">No employee data available</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<!-- MAIN CONTENT -->
+<div class="main-container">
+
+    <div style="margin-bottom: 24px;">
+        <h1 style="font-size: 28px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">📅 Attendance Records</h1>
+        <p style="color: var(--text-secondary); font-size: 14px;">View all attendance records from mobile app and web</p>
+    </div>
+
+    <!-- FILTERS -->
+    <form method="GET" class="filters-card">
+        <div class="filter-group">
+            <label>From:</label>
+            <input type="date" name="date_from" value="{{ date_from|default:today|date:'Y-m-d' }}">
+        </div>
+        <div class="filter-group">
+            <label>To:</label>
+            <input type="date" name="date_to" value="{{ date_to|default:today|date:'Y-m-d' }}">
+        </div>
+        <div class="filter-group">
+            <label>Status:</label>
+            <select name="status">
+                <option value="all">All</option>
+                {% for status in status_choices %}
+                <option value="{{ status }}" {% if status == status_filter %}selected{% endif %}>
+                    {{ status|title }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Employee:</label>
+            <select name="employee">
+                <option value="all">All</option>
+                {% for emp in employees %}
+                <option value="{{ emp.id }}" {% if emp.id|stringformat:"s" == employee_filter %}selected{% endif %}>
+                    {{ emp.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn-filter">Apply Filters</button>
+        <a href="{% url 'users:attendance_page' %}" class="btn-reset">Reset</a>
+        
+        <div style="margin-left: auto; font-size: 13px; color: var(--text-secondary);">
+            Total: <strong>{{ total_records }}</strong> records
+        </div>
+    </form>
+
+    <!-- STATS CARDS -->
+    <div class="stats-grid">
+        <div class="stat-card stat-green">
+            <div class="stat-number">{{ present|default:"0" }}</div>
+            <div class="stat-label">✅ Present</div>
+        </div>
+        <div class="stat-card stat-red">
+            <div class="stat-number">{{ absent|default:"0" }}</div>
+            <div class="stat-label">❌ Absent</div>
+        </div>
+        <div class="stat-card stat-yellow">
+            <div class="stat-number">{{ late|default:"0" }}</div>
+            <div class="stat-label">⚠️ Late</div>
+        </div>
+        <div class="stat-card stat-teal">
+            <div class="stat-number">{{ early_departure|default:"0" }}</div>
+            <div class="stat-label">🏃 Early Departure</div>
+        </div>
+    </div>
+
+    <!-- ATTENDANCE TABLE -->
+    <div class="table-card">
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Department</th>
+                        <th>Date</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Status</th>
+                        <th>Method</th>
+                        <th>Verified</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in attendance_records %}
+                    <tr>
+                        <td><strong>{{ record.employee.name }}</strong></td>
+                        <td>{{ record.employee.department|default:"—" }}</td>
+                        <td>{{ record.date|date:"M d, Y" }}</td>
+                        <td>{{ record.check_in|time:"g:i A"|default:"—" }}</td>
+                        <td>{{ record.check_out|time:"g:i A"|default:"—" }}</td>
+                        <td>
+                            <span class="status-badge status-{{ record.status|lower }}">
+                                {{ record.status|title }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="source-badge source-{% if record.verification_method in 'beacon,face_fingerprint,fingerprint' %}app{% elif record.verification_method == 'web' %}web{% else %}manual{% endif %}">
+                                {% if record.verification_method in 'beacon,face_fingerprint,fingerprint' %}
+                                    📱 App
+                                {% elif record.verification_method == 'web' %}
+                                    🌐 Web
+                                {% else %}
+                                    📋 Manual
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td>{{ record.verified_count|default:"0" }}×</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="empty-state">
+                            <div style="font-size: 48px; margin-bottom: 12px;">📭</div>
+                            <h3>No attendance records found</h3>
+                            <p style="color: var(--text-secondary); margin-top: 4px;">Try adjusting your filters or check back later.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
+
+<script>
+function toggleMenu() {
+    document.getElementById("navMenu").classList.toggle("show");
+}
+
+// Close mobile menu on link click
+document.querySelectorAll('.nav-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            document.getElementById("navMenu").classList.remove("show");
+        }
+    });
+});
+</script>
 
 </body>
 </html>

@@ -1,13 +1,41 @@
-Django==4.2.11
-djangorestframework==3.14.0
-djangorestframework-simplejwt==5.3.0
-django-cors-headers==4.3.1
-django-filter==23.5
-psycopg2-binary==2.9.9
+# Django Core
+Django==5.2.3
+djangorestframework==3.15.2
+djangorestframework-simplejwt==5.3.1
+django-cors-headers==4.4.0
+django-filter==24.3
+
+# Database
+psycopg2-binary==2.9.12
+dj-database-url==2.1.0
+
+# Server
 gunicorn==21.2.0
 whitenoise==6.6.0
-dj-database-url==2.1.0
-python-dotenv==1.0.0
-reportlab==4.0.9
-africastalking==2.0.2
-setuptools==70.0.0
+
+# Environment
+python-dotenv==1.0.1
+
+# Image Processing (Face Detection - No models needed!)
+opencv-python==4.10.0.84
+opencv-python-headless==4.10.0.84
+Pillow==10.4.0
+numpy==1.26.4
+
+# PDF Reports
+reportlab==4.2.5
+
+# SMS
+africastalking==2.0.0
+
+# 2FA
+pyotp==2.9.0
+qrcode==7.4.2
+
+# Push Notifications
+firebase-admin==6.4.0
+
+# WebSocket
+channels==4.0.0
+channels-redis==4.1.0
+redis==5.0.1

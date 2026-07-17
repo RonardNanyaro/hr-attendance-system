@@ -20,32 +20,49 @@ class Company(models.Model):
     name = models.CharField(max_length=200)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     
-    # Who requested this company
     requested_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requested_companies')
     requested_at = models.DateTimeField(auto_now_add=True)
     
-    # Who approved/rejected this company
-    approved_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='approved_companies')
+    approved_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,  related_name='approved_companies')
     approved_at = models.DateTimeField(null=True, blank=True)
     rejection_reason = models.TextField(blank=True, null=True)
     
-    # Additional company info
     phone = models.CharField(max_length=20, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     address = models.TextField(blank=True, null=True)
-    company_code = models.CharField(max_length=20, blank=True, null=True, unique=True, help_text="Unique company identifier")
+    company_code = models.CharField(max_length=20, blank=True, null=True, unique=True)
     
-    # ========== SCHEDULE SETTINGS (Set by HR) ==========
     schedule_type = models.CharField(max_length=10, choices=SCHEDULE_TYPE_CHOICES, default='fixed')
     
-    # For FIXED schedule (HR sets these)
-    fixed_start_time = models.TimeField(null=True, blank=True, default=time(9, 0), help_text="Work start time e.g., 09:00")
-    fixed_end_time = models.TimeField(null=True, blank=True, default=time(17, 0), help_text="Work end time e.g., 17:00")
-    fixed_late_threshold = models.IntegerField(default=15, help_text="Minutes after start time considered late")
-    fixed_early_departure_threshold = models.IntegerField(default=15, help_text="Minutes before end time considered early departure")
+    fixed_start_time = models.TimeField(null=True, blank=True, default=time(9, 0))
+    fixed_end_time = models.TimeField(null=True, blank=True, default=time(17, 0))
+    fixed_late_threshold = models.IntegerField(default=15)
+    fixed_early_departure_threshold = models.IntegerField(default=15)
     
-    # Working days (1=Monday, 7=Sunday)
-    working_days = models.JSONField(default=list, help_text="[1,2,3,4,5] for Mon-Fri")
+    working_days = models.JSONField(default=list)
+    
+    # ========== LUNCH SETTINGS ==========
+    lunch_enabled = models.BooleanField(default=True)
+    lunch_start = models.TimeField(null=True, blank=True, default=time(12, 0))
+    lunch_end = models.TimeField(null=True, blank=True, default=time(13, 0))
+    
+    # ========== VERIFICATION SETTINGS ==========
+    verification_min_interval = models.IntegerField(default=30)
+    verification_max_interval = models.IntegerField(default=90)
+    verification_window = models.IntegerField(default=5)
+    beacon_grace_period = models.IntegerField(default=2)
+    
+    # ========== BEACON WHITELIST ==========
+    def get_default_beacon():return ["E2C56DB5-DFFB-48D2-B060-D0F5A71096E0"]
+
+    office_beacon_uuids = models.JSONField(
+    default=get_default_beacon,
+    blank=True
+    )
+    
+    # ========== BIOMETRIC RULES ==========
+    require_face_with_beacon = models.BooleanField(default=True)
+    require_fingerprint_with_beacon = models.BooleanField(default=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -54,7 +71,6 @@ class Company(models.Model):
         return f"{self.name} ({self.status})"
     
     def get_working_days_display(self):
-        """Return readable working days"""
         days_map = {1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat', 7: 'Sun'}
         return ', '.join([days_map.get(d, '') for d in self.working_days])
     
@@ -86,19 +102,19 @@ class Department(models.Model):
         ]
 
 
-# ================= SHIFT (For companies using shift schedule) =================
+# ================= SHIFT =================
 class Shift(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='shifts')
-    name = models.CharField(max_length=50, help_text="e.g., Morning Shift, Night Shift")
-    start_time = models.TimeField(help_text="Shift start time")
-    end_time = models.TimeField(help_text="Shift end time")
-    late_threshold = models.IntegerField(default=15, help_text="Minutes after start time considered late")
-    early_departure_threshold = models.IntegerField(default=15, help_text="Minutes before end time considered early departure")
+    name = models.CharField(max_length=50)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    late_threshold = models.IntegerField(default=15)
+    early_departure_threshold = models.IntegerField(default=15)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"{self.company.name} - {self.name} ({self.start_time.strftime('%I:%M %p')} - {self.end_time.strftime('%I:%M %p')})"
+        return f"{self.company.name} - {self.name}"
     
     class Meta:
         unique_together = ['company', 'name']
@@ -152,34 +168,42 @@ class Employee(models.Model):
     name = models.CharField(max_length=100)
     department = models.CharField(max_length=50, blank=True, null=True)
     
-    # Relationships
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True, related_name='employees')
     department_obj = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True, related_name='employees')
-    
-    # Shift assignment (only used if company uses shift schedule)
     assigned_shift = models.ForeignKey(Shift, on_delete=models.SET_NULL, null=True, blank=True, related_name='employees')
     
-    # Attendance tracking
     check_in_time = models.DateTimeField(null=True, blank=True)
     check_out_time = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='absent')
     
-    # Random verification tracking
-    random_verify_count = models.IntegerField(default=0, help_text="Number of random verifications completed today")
+    random_verify_count = models.IntegerField(default=0)
     last_random_verify_time = models.DateTimeField(null=True, blank=True)
     
-    # ========== SECURITY & AUTHENTICATION FIELDS ==========
-    # FIX 1: Store face encoding for real face recognition
-    face_encoding = models.BinaryField(null=True, blank=True, help_text="Stored face encoding for verification")
+    # ========== FACE RECOGNITION FIELDS ==========
+    face_encoding = models.BinaryField(null=True, blank=True)
+    face_registered_at = models.DateTimeField(null=True, blank=True)
+    face_verification_count = models.IntegerField(default=0)
+    face_failures = models.IntegerField(default=0)
+    last_face_verified = models.DateTimeField(null=True, blank=True)
     
-    # FIX 2: Store fingerprint hash instead of raw data
-    fingerprint_hash = models.CharField(max_length=128, null=True, blank=True, help_text="SHA256 hash of fingerprint data")
+    # ========== FINGERPRINT FIELDS ==========
+    fingerprint_hash = models.CharField(max_length=128, null=True, blank=True)
+    fingerprint_verification_count = models.IntegerField(default=0)
+    fingerprint_failures = models.IntegerField(default=0)
+    last_fingerprint_verified = models.DateTimeField(null=True, blank=True)
+    fingerprint_registered_at = models.DateTimeField(null=True, blank=True)
     
-    # FIX 3: Store reset token as HASH (not plain text)
-    reset_token_hash = models.CharField(max_length=128, null=True, blank=True, help_text="SHA256 hash of reset token")
-    reset_token_expires = models.DateTimeField(null=True, blank=True, help_text="Token expiration time")
+    # ========== PUSH NOTIFICATIONS ==========
+    fcm_token = models.CharField(max_length=255, blank=True, null=True)
     
-    # Additional info
+    # ========== 2FA AUTHENTICATION ==========
+    two_factor_secret = models.CharField(max_length=255, blank=True, null=True)
+    two_factor_enabled = models.BooleanField(default=False)
+    
+    # ========== RESET TOKEN ==========
+    reset_token_hash = models.CharField(max_length=128, null=True, blank=True)
+    reset_token_expires = models.DateTimeField(null=True, blank=True)
+    
     email = models.EmailField(blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     joined_date = models.DateField(auto_now_add=True)
@@ -189,15 +213,12 @@ class Employee(models.Model):
     def __str__(self):
         return self.user.username if self.user else self.name
     
-    # FIX 3: Secure token methods
     def set_reset_token(self, raw_token):
-        """Hash and store reset token securely"""
         import hashlib
         self.reset_token_hash = hashlib.sha256(raw_token.encode()).hexdigest()
         self.reset_token_expires = django_timezone.now() + timedelta(hours=1)
     
     def verify_reset_token(self, raw_token):
-        """Verify reset token"""
         import hashlib
         from django.utils import timezone
         
@@ -209,7 +230,6 @@ class Employee(models.Model):
         return token_hash == self.reset_token_hash
     
     def get_work_schedule(self):
-        """Get employee's work schedule based on company settings"""
         if self.company and self.company.schedule_type == 'shifts' and self.assigned_shift:
             return {
                 'type': 'shift',
@@ -240,7 +260,6 @@ class Employee(models.Model):
     
     class Meta:
         indexes = [
-            # FIX 4: Database indexes for performance
             models.Index(fields=['email']),
             models.Index(fields=['phone']),
             models.Index(fields=['company', 'status']),
@@ -248,6 +267,72 @@ class Employee(models.Model):
             models.Index(fields=['-created_at']),
             models.Index(fields=['reset_token_hash', 'reset_token_expires']),
         ]
+
+
+# ================= EMPLOYEE FINGERPRINT (Multi-Fingerprint Support) =================
+class EmployeeFingerprint(models.Model):
+    FINGER_POSITIONS = [
+        ('RIGHT_THUMB', 'Right Thumb'),
+        ('RIGHT_INDEX', 'Right Index'),
+        ('RIGHT_MIDDLE', 'Right Middle'),
+        ('RIGHT_RING', 'Right Ring'),
+        ('RIGHT_PINKY', 'Right Pinky'),
+        ('LEFT_THUMB', 'Left Thumb'),
+        ('LEFT_INDEX', 'Left Index'),
+        ('LEFT_MIDDLE', 'Left Middle'),
+        ('LEFT_RING', 'Left Ring'),
+        ('LEFT_PINKY', 'Left Pinky'),
+    ]
+    
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='fingerprints')
+    fingerprint_hash = models.CharField(max_length=255)
+    finger_position = models.CharField(max_length=20, choices=FINGER_POSITIONS)
+    registered_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+    last_verified = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        unique_together = ('employee', 'finger_position')
+        ordering = ['finger_position']
+    
+    def __str__(self):
+        return f"{self.employee.name} - {self.get_finger_position_display()}"
+
+
+# ================= BIOMETRIC AUDIT TRAIL =================
+class BiometricAudit(models.Model):
+    BIOMETRIC_TYPES = [
+        ('face', 'Face'),
+        ('fingerprint', 'Fingerprint'),
+    ]
+    
+    ACTIONS = [
+        ('check_in', 'Check In'),
+        ('check_out', 'Check Out'),
+        ('random_verification', 'Random Verification'),
+        ('registration', 'Registration'),
+    ]
+    
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='biometric_audits')
+    biometric_type = models.CharField(max_length=20, choices=BIOMETRIC_TYPES)
+    action = models.CharField(max_length=30, choices=ACTIONS)
+    success = models.BooleanField()
+    confidence_score = models.FloatField(null=True, blank=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    location_lat = models.DecimalField(max_digits=10, decimal_places=7, null=True, blank=True)
+    location_lng = models.DecimalField(max_digits=10, decimal_places=7, null=True, blank=True)
+    details = models.TextField(blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-timestamp']
+        indexes = [
+            models.Index(fields=['employee', 'biometric_type']),
+            models.Index(fields=['timestamp']),
+        ]
+    
+    def __str__(self):
+        return f"{self.employee.name} - {self.biometric_type} - {self.action} - {'Success' if self.success else 'Failed'}"
 
 
 # ================= RANDOM VERIFICATION =================
@@ -270,7 +355,7 @@ class RandomVerification(models.Model):
     completed_time = models.DateTimeField(null=True, blank=True)
     verification_type = models.CharField(max_length=20, choices=VERIFICATION_TYPE)
     status = models.CharField(max_length=20, choices=VERIFICATION_STATUS, default='pending')
-    face_score = models.FloatField(null=True, blank=True, help_text="Face recognition confidence score")
+    face_score = models.FloatField(null=True, blank=True)
     location_lat = models.DecimalField(max_digits=10, decimal_places=7, null=True, blank=True)
     location_lng = models.DecimalField(max_digits=10, decimal_places=7, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -306,14 +391,10 @@ class Leave(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='leaves')
     leave_type = models.CharField(max_length=20, choices=LEAVE_TYPES)
     reason = models.TextField()
-    
-    # Date range for leave
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    
     document = models.FileField(upload_to='leave_docs/', null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
-    
     requested_at = models.DateTimeField(auto_now_add=True)
     approved_at = models.DateTimeField(null=True, blank=True)
     rejected_at = models.DateTimeField(null=True, blank=True)
@@ -345,6 +426,7 @@ class Attendance(models.Model):
         ('face', 'Face Only'),
         ('fingerprint', 'Fingerprint Only'),
         ('manual', 'Manual Entry'),
+        ('beacon', 'Beacon Auto Check-in'),
     )
 
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='attendances')
@@ -352,20 +434,13 @@ class Attendance(models.Model):
     check_in = models.TimeField(null=True, blank=True)
     check_out = models.TimeField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="absent")
-    
-    # Verification tracking
     verification_method = models.CharField(max_length=20, choices=VERIFICATION_METHODS, null=True, blank=True)
-    verified_count = models.PositiveIntegerField(default=0, help_text="Total number of verifications (check-in + random + check-out)")
-    
-    # Location tracking
+    verified_count = models.PositiveIntegerField(default=0)
     check_in_location = models.CharField(max_length=255, blank=True, null=True)
     check_out_location = models.CharField(max_length=255, blank=True, null=True)
-    
-    # Shift info for this attendance
     shift_name = models.CharField(max_length=50, blank=True, null=True)
     shift_start = models.TimeField(null=True, blank=True)
     shift_end = models.TimeField(null=True, blank=True)
-    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -387,7 +462,7 @@ class Attendance(models.Model):
         return f"{self.employee.name} - {self.date} - {self.status}"
 
 
-# ================= PASSWORD RESET TOKEN (For HR/Admin web) =================
+# ================= PASSWORD RESET TOKEN =================
 class PasswordResetToken(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reset_tokens')
     token = models.CharField(max_length=100, unique=True)
@@ -396,12 +471,11 @@ class PasswordResetToken(models.Model):
     is_used = models.BooleanField(default=False)
     
     def is_valid(self):
-        """Check if token is still valid (not expired and not used)"""
         from django.utils import timezone
         return not self.is_used and self.expires_at > timezone.now()
     
     def __str__(self):
-        return f"Reset token for {self.user.username} - Expires: {self.expires_at}"
+        return f"Reset token for {self.user.username}"
     
     class Meta:
         ordering = ['-created_at']

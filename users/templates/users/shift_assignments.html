@@ -21,6 +21,7 @@
             --purple: #8B5CF6;
             --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
             --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
@@ -41,7 +42,6 @@
             min-height: 100vh;
         }
 
-        /* ================= TOP BAR ================= */
         .top-bar {
             background: var(--card-bg);
             border-bottom: 1px solid var(--border);
@@ -140,102 +140,6 @@
             padding: 8px;
         }
 
-        /* ================= MESSAGES CONTAINER ================= */
-        .messages-container {
-            position: sticky;
-            top: 64px;
-            z-index: 99;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 32px;
-        }
-
-        /* ================= ALERTS WITH DISMISS ================= */
-        .alert {
-            padding: 14px 18px;
-            border-radius: var(--radius-md);
-            margin-bottom: 12px;
-            font-size: 14px;
-            position: relative;
-            animation: slideDown 0.3s ease;
-        }
-
-        .alert-dismissible {
-            padding-right: 48px;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-12px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-        }
-
-        .alert-info {
-            background: rgba(15,118,110,0.06);
-            border: 1px solid rgba(15,118,110,0.12);
-            color: var(--primary);
-        }
-
-        .alert-success {
-            background: rgba(16,185,129,0.1);
-            border: 1px solid rgba(16,185,129,0.2);
-            color: var(--green);
-        }
-
-        .alert-error {
-            background: rgba(239,68,68,0.1);
-            border: 1px solid rgba(239,68,68,0.2);
-            color: var(--red);
-        }
-
-        /* Dismiss button */
-        .alert .btn-close {
-            position: absolute;
-            top: 50%;
-            right: 12px;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            color: inherit;
-            opacity: 0.5;
-            padding: 4px 8px;
-            border-radius: 4px;
-            line-height: 1;
-            transition: opacity 0.2s, background 0.2s;
-        }
-
-        .alert .btn-close:hover {
-            opacity: 1;
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        .alert-success .btn-close:hover {
-            background: rgba(16, 185, 129, 0.1);
-        }
-
-        .alert-error .btn-close:hover {
-            background: rgba(239, 68, 68, 0.1);
-        }
-
-        /* ================= MAIN CONTENT ================= */
         .main-container {
             padding: 32px;
             max-width: 1400px;
@@ -258,7 +162,6 @@
             font-size: 14px;
         }
 
-        /* ================= CARDS ================= */
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -273,15 +176,6 @@
             box-shadow: var(--shadow-md);
         }
 
-        .card h2 {
-            color: var(--primary);
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 12px;
-        }
-
         .card h3 {
             color: var(--primary);
             margin: 0 0 20px 0;
@@ -291,7 +185,6 @@
             padding-bottom: 10px;
         }
 
-        /* ================= FORM ================= */
         .form-group {
             margin-bottom: 20px;
         }
@@ -329,7 +222,6 @@
             display: block;
         }
 
-        /* ================= BUTTONS ================= */
         .btn-primary {
             background: var(--primary);
             color: white;
@@ -345,7 +237,6 @@
         .btn-primary:hover {
             background: var(--secondary);
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(15,118,110,0.3);
         }
 
         .btn-danger {
@@ -383,7 +274,6 @@
             border-color: var(--primary);
         }
 
-        /* ================= TABLE ================= */
         .table-responsive {
             overflow-x: auto;
         }
@@ -416,18 +306,34 @@
             background: rgba(15,118,110,0.02);
         }
 
-        .badge {
-            background: var(--primary);
-            color: white;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 12px;
+        .alert {
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            font-size: 14px;
         }
 
-        /* ================= GRID ================= */
+        .alert-info {
+            background: rgba(15,118,110,0.06);
+            border: 1px solid rgba(15,118,110,0.12);
+            color: var(--primary);
+        }
+
+        .alert-success {
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.2);
+            color: var(--green);
+        }
+
+        .alert-error {
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.2);
+            color: var(--red);
+        }
+
         .grid-2 {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 28px;
         }
 
@@ -460,7 +366,19 @@
             color: var(--text-secondary);
         }
 
-        /* ================= RESPONSIVE ================= */
+        .debug-box {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+
+        .debug-box strong {
+            color: var(--primary);
+        }
+
         @media (max-width: 768px) {
             .top-bar-container {
                 padding: 0 16px;
@@ -488,10 +406,6 @@
             .main-container {
                 padding: 20px;
             }
-            .messages-container {
-                padding: 0 16px;
-                top: 56px;
-            }
             .card {
                 padding: 20px;
             }
@@ -505,20 +419,11 @@
             .assign-form select, .assign-form button {
                 width: 100%;
             }
-            .alert {
-                padding: 12px 14px;
-                font-size: 13px;
-            }
-            .alert .btn-close {
-                font-size: 18px;
-                right: 8px;
-            }
         }
     </style>
 </head>
 <body>
 
-<!-- ================= TOP BAR ================= -->
 <div class="top-bar">
     <div class="top-bar-container">
         <div class="logo-section">
@@ -541,69 +446,90 @@
     </div>
 </div>
 
-<!-- ================= MESSAGES (STAY UNTIL DISMISSED) ================= -->
-<div class="messages-container">
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{% if message.tags == 'success' %}success{% elif message.tags == 'error' %}error{% else %}info{% endif %} alert-dismissible" id="msg-{{ forloop.counter }}">
-                <span class="msg-text">{{ message }}</span>
-                <button class="btn-close" onclick="dismissMessage(this)" aria-label="Dismiss">✕</button>
-            </div>
-        {% endfor %}
-    {% endif %}
-</div>
-
-<!-- ================= MAIN CONTENT ================= -->
 <div class="main-container">
     <div class="page-header">
         <h1>🔄 Manage Shifts</h1>
         <p>Create work shifts, set times, and assign employees</p>
     </div>
 
+    <!-- ✅ DEBUG: Show what's in the database -->
+    <div class="debug-box">
+        <strong>🔍 Debug Info:</strong><br>
+        Company: <strong>{{ company.name }}</strong><br>
+        Schedule Type: <strong>{{ company.schedule_type }}</strong><br>
+        Total Shifts in DB: <strong>{{ shifts|length }}</strong><br>
+        Total Employees: <strong>{{ employees|length }}</strong><br>
+        {% if shifts %}
+            Shifts: 
+            {% for shift in shifts %}
+                <span style="background: #e8f5e9; padding: 2px 8px; border-radius: 4px; margin: 2px;">{{ shift.name }}</span>
+            {% endfor %}
+        {% else %}
+            <span style="color: red;">⚠️ NO SHIFTS FOUND IN DATABASE!</span>
+        {% endif %}
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'success' %}success{% elif message.tags == 'error' %}error{% else %}info{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     {% if company.schedule_type != 'shifts' %}
-        <div class="alert alert-error alert-dismissible">
+        <div class="alert alert-error">
             ⚠️ <strong>Your company is on "Fixed Schedule"</strong><br>
             You need to change to <strong>"Shift Schedule"</strong> in 
             <a href="{% url 'users:company_settings' %}" style="color: var(--primary); font-weight: bold;">Company Settings</a>
             to assign shifts.
-            <button class="btn-close" onclick="dismissMessage(this)" aria-label="Dismiss">✕</button>
         </div>
     {% endif %}
 
     <div class="grid-2">
-        <!-- LEFT: Create Shift -->
+        <!-- LEFT: Create Shift Form -->
         <div class="card">
-            <h2>➕ Create New Shift</h2>
+            <h3>➕ Create New Shift</h3>
             <form method="POST" action="{% url 'users:manage_shifts' %}">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="create">
+                
                 <div class="form-group">
                     <label>Shift Name</label>
-                    <input type="text" name="name" placeholder="e.g., Morning Shift" required>
+                    <input type="text" name="name" placeholder="e.g., Morning Shift, Night Shift" required>
                 </div>
+                
                 <div class="form-group">
                     <label>Start Time</label>
                     <input type="time" name="start_time" required>
+                    <small>When the shift begins</small>
                 </div>
+                
                 <div class="form-group">
                     <label>End Time</label>
                     <input type="time" name="end_time" required>
+                    <small>When the shift ends</small>
                 </div>
+                
                 <div class="form-group">
                     <label>Late After (minutes)</label>
                     <input type="number" name="late_threshold" value="15" min="0" max="120">
+                    <small>Employee marked late this many minutes after start time</small>
                 </div>
+                
                 <div class="form-group">
                     <label>Early Departure (minutes)</label>
                     <input type="number" name="early_departure_threshold" value="15" min="0" max="120">
+                    <small>Employee marked early departure this many minutes before end time</small>
                 </div>
+                
                 <button type="submit" class="btn-primary">Create Shift</button>
             </form>
         </div>
 
-        <!-- RIGHT: Existing Shifts -->
+        <!-- RIGHT: Existing Shifts List -->
         <div class="card">
-            <h2>📋 Existing Shifts</h2>
+            <h3>📋 Existing Shifts</h3>
             {% if shifts %}
                 <div class="table-responsive">
                     <table>
@@ -613,22 +539,28 @@
                                 <th>Start</th>
                                 <th>End</th>
                                 <th>Employees</th>
-                                <th>Action</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for shift in shifts %}
-                            <tr>
+                            <tr id="shift-row-{{ shift.id }}">
                                 <td><strong>{{ shift.name }}</strong></td>
                                 <td>{{ shift.start_time|time:"h:i A" }}</td>
                                 <td>{{ shift.end_time|time:"h:i A" }}</td>
-                                <td><span class="badge">{{ shift.employees.count }}</span></td>
                                 <td>
-                                    <form method="POST" action="{% url 'users:manage_shifts' %}" style="display:inline;">
+                                    {% with shift.employees.count as emp_count %}
+                                    <span style="color: {% if emp_count > 0 %}#10B981{% else %}#94A3B8{% endif %};">
+                                        {{ emp_count }} employee{{ emp_count|pluralize }}
+                                    </span>
+                                    {% endwith %}
+                                </td>
+                                <td>
+                                    <form method="POST" action="{% url 'users:manage_shifts' %}" style="display: inline;" onsubmit="return confirm('Delete {{ shift.name }} shift? This will unassign it from all employees.')">
                                         {% csrf_token %}
                                         <input type="hidden" name="action" value="delete">
                                         <input type="hidden" name="shift_id" value="{{ shift.id }}">
-                                        <button type="submit" class="btn-danger" onclick="return confirm('Delete {{ shift.name }}? This will unassign all employees.')">Delete</button>
+                                        <button type="submit" class="btn-danger">Delete</button>
                                     </form>
                                 </td>
                             </tr>
@@ -642,16 +574,17 @@
                     </table>
                 </div>
             {% else %}
-                <div class="alert alert-info" style="text-align: center; margin-bottom: 0;">
-                    No shifts created yet. Use the form on the left.
+                <div class="alert alert-info">
+                    📢 No shifts created yet. Use the form on the left to create your first shift.
                 </div>
             {% endif %}
         </div>
     </div>
 
-    <!-- Assign Shifts -->
+    <!-- BOTTOM: Assign Shifts to Employees -->
     <div class="card">
-        <h2>👥 Assign Shifts to Employees</h2>
+        <h3>👥 Assign Shifts to Employees</h3>
+        
         {% if employees %}
             <div class="table-responsive">
                 <table>
@@ -660,12 +593,12 @@
                             <th>Employee</th>
                             <th>Department</th>
                             <th>Current Shift</th>
-                            <th>Assign</th>
+                            <th>Assign New Shift</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for employee in employees %}
-                        <tr>
+                        <tr id="employee-row-{{ employee.id }}">
                             <td><strong>{{ employee.name }}</strong></td>
                             <td>{{ employee.department|default:"—" }}</td>
                             <td>
@@ -680,10 +613,10 @@
                                     {% csrf_token %}
                                     <input type="hidden" name="employee_id" value="{{ employee.id }}">
                                     <select name="shift_id">
-                                        <option value="">— No Shift —</option>
+                                        <option value="">-- No Shift (Fixed Schedule) --</option>
                                         {% for shift in shifts %}
                                         <option value="{{ shift.id }}" {% if employee.assigned_shift and employee.assigned_shift.id == shift.id %}selected{% endif %}>
-                                            {{ shift.name }}
+                                            {{ shift.name }} ({{ shift.start_time|time:"H:i" }} - {{ shift.end_time|time:"H:i" }})
                                         </option>
                                         {% endfor %}
                                     </select>
@@ -696,32 +629,32 @@
                 </table>
             </div>
         {% else %}
-            <div class="alert alert-info" style="text-align: center; margin-bottom: 0;">
-                No employees found. Register employees first.
+            <div class="alert alert-info">
+                No employees found. Register employees first via the mobile app or add test employees.
             </div>
         {% endif %}
     </div>
 
     <!-- Info Box -->
     <div class="card">
-        <div class="alert alert-info" style="margin-bottom: 0;">
+        <div class="alert alert-info">
             💡 <strong>How Shifts Work</strong>
             <ul style="margin-top: 10px; margin-left: 20px;">
-                <li>Employees with assigned shift follow that schedule</li>
-                <li>Employees without assigned shift follow Fixed Schedule</li>
-                <li>You can change employee's shift anytime</li>
+                <li>Employees with an assigned shift will follow that shift's schedule</li>
+                <li>Employees without an assigned shift will follow the company's Fixed Schedule</li>
+                <li>If your company uses Shift Schedule, you must assign shifts to employees</li>
+                <li>Late and early departure calculations are based on the assigned shift times</li>
+                <li>You can change an employee's shift at any time using the dropdown above</li>
             </ul>
         </div>
         <div style="text-align: center; margin-top: 20px;">
-            <a href="{% url 'users:company_settings' %}" class="btn-secondary">← Company Settings</a>
-            <a href="{% url 'users:hr_dashboard' %}" class="btn-secondary" style="margin-left: 12px;">Dashboard →</a>
+            <a href="{% url 'users:company_settings' %}" class="btn-secondary">← Back to Company Settings</a>
+            <a href="{% url 'users:hr_dashboard' %}" class="btn-secondary" style="margin-left: 12px;">Go to Dashboard →</a>
         </div>
     </div>
 </div>
 
-<!-- ================= JAVASCRIPT ================= -->
 <script>
-// ========== NAVIGATION TOGGLE ==========
 function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
 }
@@ -734,57 +667,21 @@ document.querySelectorAll('.nav-menu a').forEach(link => {
     });
 });
 
-// ========== DISMISS MESSAGES ==========
-function dismissMessage(button) {
-    const alert = button.closest('.alert');
-    if (alert) {
-        // Animate out
-        alert.style.animation = 'slideUp 0.3s ease forwards';
-        
-        // Remove after animation
-        setTimeout(function() {
-            alert.remove();
-        }, 300);
-    }
-}
-
-// ========== DISMISS BY CLICKING ANYWHERE ON MESSAGE (Optional) ==========
-// Click anywhere on the message to dismiss it (except buttons)
-document.querySelectorAll('.alert').forEach(function(alert) {
-    alert.addEventListener('click', function(e) {
-        // Don't dismiss if clicking a button, link, or the close button
-        if (!e.target.closest('button') && !e.target.closest('a') && !e.target.closest('.btn-close')) {
-            const btn = this.querySelector('.btn-close');
-            if (btn) {
-                dismissMessage(btn);
-            }
+// Auto-hide messages after 5 seconds
+setTimeout(function() {
+    const messages = document.querySelectorAll('.alert-success, .alert-error, .alert-info');
+    messages.forEach(function(msg) {
+        if (!msg.innerHTML.includes('How Shifts Work') && !msg.innerHTML.includes('Debug Info')) {
+            msg.style.transition = 'opacity 0.5s';
+            msg.style.opacity = '0';
+            setTimeout(function() {
+                if (msg.style.display !== 'none') {
+                    msg.style.display = 'none';
+                }
+            }, 500);
         }
     });
-});
-
-// ========== KEYBOARD SHORTCUT: ESC to dismiss all messages ==========
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        const alerts = document.querySelectorAll('.alert');
-        alerts.forEach(function(alert, index) {
-            setTimeout(function() {
-                alert.style.animation = 'slideUp 0.3s ease forwards';
-                setTimeout(function() {
-                    alert.remove();
-                }, 300);
-            }, index * 100);
-        });
-    }
-});
-
-// ========== MESSAGES STAY UNTIL DISMISSED ==========
-// No auto-hide timer - messages stay until user dismisses them
-
-console.log('✅ Messages will stay until dismissed manually');
-console.log('   • Click ✕ to dismiss a message');
-console.log('   • Click anywhere on the message to dismiss it');
-console.log('   • Press ESC to dismiss all messages');
+}, 5000);
 </script>
-
 </body>
 </html>

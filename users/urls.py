@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from rest_framework_simplejwt.views import TokenRefreshView
 
 app_name = "users"
 
@@ -9,16 +10,46 @@ urlpatterns = [
     path("api/companies/", views.api_get_companies, name="api_get_companies"),
     path("api/companies/<int:company_id>/departments/", views.api_get_departments_by_company, name="api_get_departments_by_company"),
     path("api/employee/register/", views.api_employee_register, name="api_employee_register"),
+    path("api/employee/register-text/", views.api_employee_register_with_text, name="api_employee_register_text"),
     path("api/employee/login/", views.api_employee_login, name="api_employee_login"),
+    
+    # Token Refresh Endpoint
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    
+    # Password Reset (Mobile)
     path("api/employee/forgot-password/", views.api_employee_forgot_password, name="api_employee_forgot_password"),
     path("api/employee/reset-password/", views.api_employee_reset_password, name="api_employee_reset_password"),
+    
+    # Work Settings API
+    path("api/work-settings/", views.api_work_settings, name="api_work_settings"),
     
     # Social Auth APIs
     path("api/auth/google/", views.api_google_auth, name="api_google_auth"),
     path("api/auth/apple/", views.api_apple_auth, name="api_apple_auth"),
     path("api/auth/complete-profile/", views.api_complete_social_profile, name="api_complete_social_profile"),
     
-    # Protected APIs (Require login)
+    # ================= PROTECTED APIS (Require JWT Authentication) =================
+    
+    # Face Status & Re-register
+    path("api/face/status/", views.api_face_status, name="api_face_status"),
+    path("api/face/re-register/", views.api_re_register_face, name="api_re_register_face"),
+    
+    # Face Test Endpoint
+    path("api/test-face/", views.api_test_face_verification, name="api_test_face"),
+    
+    # Offline Sync Endpoints
+    path("api/sync/all-data/", views.api_sync_all_data, name="api_sync_all_data"),
+    path("api/sync/offline-data/", views.api_sync_offline_data, name="api_sync_offline_data"),
+    
+    # 2FA Endpoints
+    path("api/2fa/setup/", views.api_setup_2fa, name="api_setup_2fa"),
+    path("api/2fa/enable/", views.api_enable_2fa, name="api_enable_2fa"),
+    path("api/2fa/verify-login/", views.api_verify_2fa_login, name="api_verify_2fa_login"),
+    
+    # Check-in Status
+    path("api/attendance/check-in-status/", views.api_check_in_status, name="api_check_in_status"),
+    
+    # Attendance APIs
     path("api/attendance/check-in/", views.api_check_in, name="api_check_in"),
     path("api/attendance/check-out/", views.api_check_out, name="api_check_out"),
     path("api/attendance/history/", views.api_attendance_history, name="api_attendance_history"),
@@ -26,12 +57,18 @@ urlpatterns = [
     path("api/attendance/random-verification/", views.api_check_random_verification, name="api_check_random_verification"),
     path("api/attendance/random-verification/<int:verification_id>/", views.api_submit_random_verification, name="api_submit_random_verification"),
     path("api/attendance/verification-status/", views.api_verification_status, name="api_verification_status"),
+    
+    # Leave APIs
     path("api/leave/apply/", views.api_apply_leave, name="api_apply_leave"),
     path("api/leave/history/", views.api_leave_history, name="api_leave_history"),
     path("api/leave/balance/", views.api_leave_balance, name="api_leave_balance"),
     path("api/leave/cancel/<int:leave_id>/", views.api_cancel_leave, name="api_cancel_leave"),
+    
+    # Sync APIs
     path("api/sync/attendance/", views.api_sync_attendance, name="api_sync_attendance"),
     path("api/sync/leaves/", views.api_sync_leaves, name="api_sync_leaves"),
+    
+    # Employee APIs
     path("api/beacons/", views.api_get_beacons, name="api_get_beacons"),
     path("api/stats/dashboard/", views.api_dashboard_stats, name="api_dashboard_stats"),
     path("api/stats/monthly/", views.api_monthly_stats, name="api_monthly_stats"),
@@ -40,17 +77,26 @@ urlpatterns = [
     path("api/employee/shifts/", views.api_get_shifts_for_employee, name="api_get_shifts_for_employee"),
     path("api/employee/profile/", views.api_employee_profile, name="api_employee_profile"),
     
-    # ================= WEB VIEWS =================
-    # Root URL - Redirect to HR Login
-    path("", views.hr_login, name="home"),
+    # Shift Management APIs
+    path("api/employee/assign-shift/", views.api_assign_employee_shift, name="api_assign_employee_shift"),
+    path("api/employee/unassign-shift/", views.api_unassign_employee_shift, name="api_unassign_employee_shift"),
+    path("api/shift/unassign-all/", views.api_shift_unassign_all, name="api_shift_unassign_all"),
+    path("api/shift/bulk-assign/", views.api_shift_bulk_assign, name="api_shift_bulk_assign"),
     
-    # Authentication
+    # ================= WEB VIEWS =================
+    # Home & Auth
+    path("", views.hr_login, name="home"),
     path("login/", views.admin_login, name="login"),
     path("logout/", views.logout_view, name="logout"),
     path("hr-login/", views.hr_login, name="hr_login"),
     path("hr-register/", views.hr_register, name="hr_register"),
     path("hr-dashboard/", views.hr_dashboard, name="hr_dashboard"),
     path("dashboard/", views.dashboard, name="dashboard"),
+    
+    # Employee Web Dashboard
+    path("employee/dashboard/", views.employee_dashboard, name="employee_dashboard"),
+    path("employee/check-in/", views.employee_check_in, name="employee_check_in"),
+    path("employee/check-out/", views.employee_check_out, name="employee_check_out"),
     
     # Social Auth Web Views
     path("auth/google/", views.google_auth, name="google_auth"),
@@ -74,6 +120,9 @@ urlpatterns = [
     
     # Attendance & Reports
     path("attendance/", views.attendance_page, name="attendance_page"),
+    path("attendance/export/", views.export_attendance_csv, name="export_attendance_csv"),
+    path("attendance/live/", views.live_attendance, name="live_attendance"),
+    path("attendance/employee/<int:employee_id>/", views.employee_attendance_detail, name="employee_attendance_detail"),
     path("report/", views.report_page, name="report_page"),
     path("export-csv/", views.export_csv, name="export_csv"),
     path("export-pdf/", views.export_pdf, name="export_pdf"),
@@ -90,6 +139,7 @@ urlpatterns = [
     # Company Settings & Shifts
     path("company-settings/", views.company_settings, name="company_settings"),
     path("manage-shifts/", views.manage_shifts, name="manage_shifts"),
+    path("shift-assignments/", views.shift_assignments, name="shift_assignments"),
     path("assign-employee-shift/", views.assign_employee_shift, name="assign_employee_shift"),
     
     # Company Management (Admin)

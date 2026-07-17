@@ -90,7 +90,8 @@ body {
 .sidebar.collapsed .sidebar-header p,
 .sidebar.collapsed .company-info,
 .sidebar.collapsed .nav-title,
-.sidebar.collapsed .nav-item span {
+.sidebar.collapsed .nav-item span,
+.sidebar.collapsed .logout-item span {
     display: none;
 }
 
@@ -101,6 +102,17 @@ body {
 }
 
 .sidebar.collapsed .nav-item i {
+    margin: 0;
+    font-size: 22px;
+}
+
+.sidebar.collapsed .logout-item {
+    justify-content: center;
+    padding: 12px;
+    margin: 8px;
+}
+
+.sidebar.collapsed .logout-item i {
     margin: 0;
     font-size: 22px;
 }
@@ -136,6 +148,33 @@ body {
     border-radius: 12px;
     font-size: 12px;
     color: var(--primary);
+}
+
+/* ================= ORANGE LOGOUT BUTTON IN HEADER ================= */
+.logout-header-btn {
+    background: linear-gradient(135deg, var(--orange), #EA580C);
+    border: none;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.logout-header-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, #EA580C, var(--orange));
+}
+
+.logout-header-btn i {
+    font-size: 16px;
 }
 
 /* ================= VISIBLE SIDEBAR TOGGLE BUTTON ================= */
@@ -176,10 +215,8 @@ body {
 
 .sidebar-toggle-btn i {
     transition: transform 0.3s ease;
-}
-
-.sidebar.collapsed ~ .sidebar-toggle-btn i {
-    transform: rotate(180deg);
+    font-style: normal;
+    font-weight: bold;
 }
 
 /* Button in top bar */
@@ -260,15 +297,33 @@ body {
     margin: 15px 20px;
 }
 
+/* Logout at bottom of sidebar */
 .logout-item {
-    margin-top: auto;
-    margin-bottom: 20px;
-    color: var(--red);
+    margin: 20px 12px 20px 12px;
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ef4444;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.2);
+    white-space: nowrap;
 }
 
 .logout-item:hover {
-    background: rgba(239,68,68,0.15);
-    color: var(--red);
+    background: rgba(239,68,68,0.2);
+    border-color: rgba(239,68,68,0.4);
+    transform: translateX(4px);
+}
+
+.logout-item i {
+    width: 22px;
+    font-size: 18px;
+    text-align: center;
 }
 
 /* ================= MAIN CONTENT ================= */
@@ -634,19 +689,18 @@ tr:hover {
                 <i>📊</i> <span>Reports</span>
             </a>
         </div>
-        
-        <div class="nav-divider"></div>
-        
-        <a href="{% url 'users:logout' %}" class="nav-item logout-item">
-            <i>🚪</i> <span>Logout</span>
-        </a>
     </div>
+    
+    <!-- Logout at bottom of sidebar -->
+    <a href="{% url 'users:logout' %}" class="logout-item">
+        <i>🚪</i> <span>Logout</span>
+    </a>
 </div>
 
 <!-- ================= VISIBLE SIDEBAR TOGGLE BUTTON ================= -->
 <div class="sidebar-toggle-wrapper">
     <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Toggle Sidebar">
-        <i>◀</i>
+        <i>&lt;</i>
     </button>
 </div>
 
@@ -667,6 +721,10 @@ tr:hover {
                 👤 HR Manager
             </div>
             <button class="settings-icon" onclick="location.href='{% url 'users:company_settings' %}'">⚙️</button>
+            <!-- ORANGE LOGOUT BUTTON IN HEADER -->
+            <button class="logout-header-btn" onclick="location.href='{% url 'users:logout' %}'">
+                <i></i> Logout
+            </button>
         </div>
     </div>
     
@@ -758,7 +816,7 @@ tr:hover {
     <div class="card">
         <h3>📋 Recent Leave Requests</h3>
         <div class="table-responsive">
-            </table>
+            <table>
                 <thead>
                     <tr>
                         <th>Employee</th>
@@ -813,11 +871,11 @@ function toggleSidebar() {
     sidebar.classList.toggle('collapsed');
     mainContent.classList.toggle('expanded');
     
-    // Change arrow direction
+    // Change arrow direction with straight symbols
     if (sidebar.classList.contains('collapsed')) {
-        toggleIcon.innerHTML = '▶';
+        toggleIcon.innerHTML = '>';
     } else {
-        toggleIcon.innerHTML = '◀';
+        toggleIcon.innerHTML = '<';
     }
     
     // Save state to localStorage
@@ -851,12 +909,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         sidebar.classList.add('collapsed');
         mainContent.classList.add('expanded');
-        if (toggleIcon) toggleIcon.innerHTML = '▶';
+        if (toggleIcon) toggleIcon.innerHTML = '>';
     }
 });
 
 // Close mobile sidebar when clicking a link
-document.querySelectorAll('.nav-item').forEach(link => {
+document.querySelectorAll('.nav-item, .logout-item').forEach(link => {
     link.addEventListener('click', () => {
         if (window.innerWidth <= 768) {
             closeMobileSidebar();

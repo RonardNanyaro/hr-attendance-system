@@ -10,15 +10,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-    /* Luxury Premium Colors */
-    --primary: #0F766E;      /* Deep Teal - Main brand color */
-    --secondary: #14B8A6;    /* Soft Teal - Hover states */
-    --sidebar: #0F172A;      /* Luxury Navy - Dark backgrounds */
-    --background: #FFFAFA;   /* Snow White - Main background */
-    --card-bg: #FFFFFF;      /* Pure White - Cards */
-    --text-primary: #1E293B;  /* Dark Slate - Main text */
-    --text-secondary: #64748B; /* Gray - Secondary text */
-    --border: #E2E8F0;        /* Light gray border */
+    --primary: #0F766E;
+    --secondary: #14B8A6;
+    --background: #F8FAFC;
+    --card-bg: #FFFFFF;
+    --text-primary: #1E293B;
+    --text-secondary: #64748B;
+    --border: #E2E8F0;
+    --orange: #F97316;
+    --purple: #8B5CF6;
     
     /* Status Colors */
     --present: #10B981;
@@ -26,15 +26,14 @@
     --late: #F59E0B;
     --out: #8B5CF6;
     
-    /* Effects */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
     --shadow-luxury: 0 6px 24px rgba(15,23,42,0.08);
     --radius-sm: 8px;
     --radius-md: 12px;
-    --radius-lg: 18px;
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius-lg: 16px;
+    --transition: all 0.2s ease;
 }
 
 * {
@@ -44,78 +43,168 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Inter', -apple-system, sans-serif;
     background: var(--background);
     color: var(--text-primary);
     line-height: 1.5;
+    min-height: 100vh;
 }
 
-/* HEADER */
-.header {
+/* ================= TOP BAR ================= */
+.top-bar {
     background: var(--card-bg);
     border-bottom: 1px solid var(--border);
-    padding: 16px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 16px;
     position: sticky;
     top: 0;
     z-index: 100;
-    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
 }
 
-.header h2 {
-    margin: 0;
+.top-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 64px;
+}
+
+/* Logo Section */
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: 700;
     color: var(--primary);
-    font-size: 20px;
-    font-weight: 600;
     letter-spacing: -0.3px;
 }
 
-/* BUTTONS */
-.back-btn {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: var(--radius-md);
-    cursor: pointer;
+.logo span {
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.company-badge {
+    background: rgba(15,118,110,0.08);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
     font-weight: 500;
+    color: var(--primary);
+}
+
+/* Horizontal Navigation - Text Only */
+.nav-menu {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    padding: 8px 18px;
+    border-radius: 30px;
     font-size: 14px;
+    font-weight: 500;
     transition: var(--transition);
 }
 
-.back-btn:hover {
-    background: var(--secondary);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(15,118,110,0.3);
+.nav-menu a:hover {
+    background: rgba(15,118,110,0.06);
+    color: var(--primary);
 }
 
-/* CONTROLS */
-.controls {
+.nav-menu a.active {
+    background: rgba(15,118,110,0.1);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Orange Logout Button */
+.logout-nav {
+    background: linear-gradient(135deg, var(--orange), #EA580C);
+    color: white !important;
+    padding: 8px 22px !important;
+    border-radius: 30px !important;
+    margin-left: 12px;
+    font-weight: 600 !important;
+}
+
+.logout-nav:hover {
+    background: linear-gradient(135deg, #EA580C, var(--orange));
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Mobile Menu */
+.mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-primary);
+    padding: 8px;
+}
+
+/* ================= MAIN CONTENT ================= */
+.main-container {
+    padding: 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Page Header */
+.page-header {
+    margin-bottom: 24px;
+}
+
+.page-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.page-header p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* CONTROLS CARD */
+.controls-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    margin-bottom: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 24px;
     flex-wrap: wrap;
     gap: 16px;
-    background: var(--background);
+    box-shadow: var(--shadow-sm);
 }
 
 /* SELECT DROPDOWN */
 select {
     padding: 10px 16px;
     border-radius: var(--radius-md);
-    background: var(--card-bg);
+    background: var(--background);
     color: var(--text-primary);
     border: 1px solid var(--border);
     font-family: 'Inter', sans-serif;
     font-size: 14px;
     cursor: pointer;
     transition: var(--transition);
-    min-width: 260px;
+    min-width: 280px;
 }
 
 select:focus {
@@ -131,13 +220,14 @@ select:focus {
 }
 
 .export-btn {
-    padding: 10px 20px;
+    padding: 10px 24px;
     border: none;
     border-radius: var(--radius-md);
     cursor: pointer;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 13px;
     transition: var(--transition);
+    text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -163,27 +253,28 @@ select:focus {
     transform: translateY(-2px);
 }
 
-/* STATS CARDS */
-.cards {
+/* STATS GRID */
+.stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
-    padding: 0 24px 24px 24px;
+    margin-bottom: 32px;
 }
 
 .stat-card {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: 20px;
+    padding: 24px;
     text-align: center;
     transition: var(--transition);
-    box-shadow: var(--shadow-luxury);
+    box-shadow: var(--shadow-sm);
 }
 
 .stat-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(15,118,110,0.2);
 }
 
 .stat-value {
@@ -203,41 +294,55 @@ select:focus {
 .stat-card.late .stat-value { color: var(--late); }
 .stat-card.out .stat-value { color: var(--out); }
 
-/* TABLE WRAPPER */
+.stat-card.present { border-top: 3px solid var(--present); }
+.stat-card.absent { border-top: 3px solid var(--absent); }
+.stat-card.late { border-top: 3px solid var(--late); }
+.stat-card.out { border-top: 3px solid var(--out); }
+
+/* TABLE CARD */
+.table-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
 .table-wrapper {
-    padding: 0 24px 24px 24px;
     overflow-x: auto;
 }
 
-/* TABLE */
 .attendance-table {
     width: 100%;
     min-width: 700px;
     border-collapse: collapse;
-    background: var(--card-bg);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-luxury);
 }
 
-/* TABLE HEADER */
 .attendance-table th {
-    background: rgba(15,118,110,0.08);
+    background: rgba(15,118,110,0.04);
     color: var(--primary);
-    padding: 14px 16px;
+    padding: 16px;
     text-align: left;
     font-weight: 600;
-    font-size: 14px;
-    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-/* TABLE CELLS */
 .attendance-table td {
     padding: 14px 16px;
     text-align: left;
     border-bottom: 1px solid var(--border);
     color: var(--text-primary);
     font-size: 14px;
+}
+
+.attendance-table tbody tr {
+    transition: var(--transition);
+}
+
+.attendance-table tbody tr:hover {
+    background: rgba(15,118,110,0.02);
 }
 
 /* STATUS BADGES */
@@ -267,15 +372,10 @@ select:focus {
     border: 1px solid rgba(245,158,11,0.2);
 }
 
-.status-out {
+.status-early_departure {
     background: rgba(139,92,246,0.1);
     color: var(--out);
     border: 1px solid rgba(139,92,246,0.2);
-}
-
-/* ROW HOVER */
-.attendance-table tbody tr:hover {
-    background: rgba(15,118,110,0.04);
 }
 
 /* EMPTY STATE */
@@ -285,15 +385,65 @@ select:focus {
     color: var(--text-secondary);
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        text-align: center;
-        padding: 16px;
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+    .top-bar-container {
+        padding: 0 20px;
     }
     
-    .controls {
+    .nav-menu {
+        gap: 4px;
+    }
+    
+    .nav-menu a {
+        padding: 6px 14px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 768px) {
+    .mobile-toggle {
+        display: block;
+    }
+    
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 20px;
+        gap: 8px;
+        box-shadow: var(--shadow-md);
+    }
+    
+    .nav-menu.show {
+        display: flex;
+    }
+    
+    .nav-menu a {
+        width: 100%;
+        padding: 10px 16px;
+    }
+    
+    .logout-nav {
+        margin-left: 0;
+        margin-top: 4px;
+        text-align: center;
+    }
+    
+    .main-container {
+        padding: 20px;
+    }
+    
+    .page-header h1 {
+        font-size: 22px;
+    }
+    
+    .controls-card {
         flex-direction: column;
         align-items: stretch;
         padding: 16px;
@@ -307,28 +457,53 @@ select:focus {
         justify-content: center;
     }
     
-    .cards {
-        grid-template-columns: repeat(2, 1fr);
+    .stats-grid {
         gap: 12px;
-        padding: 0 16px 16px 16px;
+    }
+    
+    .stat-card {
+        padding: 16px;
     }
     
     .stat-value {
         font-size: 28px;
     }
     
-    .table-wrapper {
-        padding: 0 16px 16px 16px;
+    .attendance-table th,
+    .attendance-table td {
+        padding: 10px 12px;
+        font-size: 12px;
     }
 }
 
 @media (max-width: 480px) {
-    .cards {
+    .top-bar-container {
+        padding: 0 16px;
+    }
+    
+    .logo {
+        font-size: 16px;
+    }
+    
+    .company-badge {
+        font-size: 10px;
+        padding: 4px 10px;
+    }
+    
+    .logo-section {
+        gap: 12px;
+    }
+    
+    .stats-grid {
         grid-template-columns: 1fr;
     }
     
-    .stat-card {
-        padding: 16px;
+    .export-buttons {
+        flex-direction: column;
+    }
+    
+    .export-btn {
+        justify-content: center;
     }
 }
 </style>
@@ -336,95 +511,139 @@ select:focus {
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-    <h2>📊 Weekly Attendance Report</h2>
-    <a href="{% url 'users:hr_dashboard' %}">
-        <button class="back-btn">← Back to Dashboard</button>
-    </a>
-</div>
-
-<!-- CONTROLS -->
-<div class="controls">
-    <form method="GET">
-        <select name="week" onchange="this.form.submit()">
-            {% for w in weeks %}
-            <option value="{{ w.start|date:'Y-m-d' }}|{{ w.end|date:'Y-m-d' }}"
-                {% if w.start|date:'Y-m-d' == selected_start|date:'Y-m-d' %}selected{% endif %}>
-                {{ w.start|date:"d M Y" }} → {{ w.end|date:"d M Y" }}
-            </option>
-            {% endfor %}
-        </select>
-    </form>
-
-    <div class="export-buttons">
-        <a href="{% url 'users:export_csv' %}?start={{ selected_start|date:'Y-m-d' }}&end={{ selected_end|date:'Y-m-d' }}">
-            <button class="export-btn csv-btn">📄 Export CSV</button>
-        </a>
-        <a href="{% url 'users:export_pdf' %}?start={{ selected_start|date:'Y-m-d' }}&end={{ selected_end|date:'Y-m-d' }}">
-            <button class="export-btn pdf-btn">📑 Export PDF</button>
-        </a>
+<!-- TOP BAR WITH HORIZONTAL NAVIGATION -->
+<div class="top-bar">
+    <div class="top-bar-container">
+        <div class="logo-section">
+            <div class="logo"><span>HR SYSTEM</span></div>
+            <div class="company-badge">{{ company.name|default:"HR Portal" }}</div>
+        </div>
+        
+        <div class="nav-menu" id="navMenu">
+            <a href="{% url 'users:hr_dashboard' %}">Dashboard</a>
+            <a href="{% url 'users:attendance_page' %}">Attendance</a>
+            <a href="{% url 'users:leave_page' %}">Leave</a>
+            <a href="{% url 'users:departments_page' %}">Departments</a>
+            <a href="{% url 'users:employee_verification' %}">Verification</a>
+            <a href="{% url 'users:report_page' %}" class="active">Reports</a>
+            <a href="{% url 'users:analytics_page' %}">Analytics</a>
+            <a href="{% url 'users:company_settings' %}">Settings</a>
+            <a href="{% url 'users:logout' %}" class="logout-nav">Logout</a>
+        </div>
+        
+        <button class="mobile-toggle" onclick="toggleMenu()">☰</button>
     </div>
 </div>
 
-<!-- STATS CARDS -->
-<div class="cards">
-    <div class="stat-card present">
-        <div class="stat-value">{{ present|default:"0" }}</div>
-        <div class="stat-label">✅ Present</div>
+<!-- MAIN CONTENT -->
+<div class="main-container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>📊 Weekly Attendance Report</h1>
+        <p>View and export attendance reports by week</p>
     </div>
-    <div class="stat-card absent">
-        <div class="stat-value">{{ absent|default:"0" }}</div>
-        <div class="stat-label">❌ Absent</div>
+
+    <!-- Controls Card -->
+    <div class="controls-card">
+        <form method="GET" style="flex: 1;">
+            <select name="week" onchange="this.form.submit()">
+                {% for w in weeks %}
+                <option value="{{ w.start|date:'Y-m-d' }}|{{ w.end|date:'Y-m-d' }}"
+                    {% if w.start|date:'Y-m-d' == selected_start|date:'Y-m-d' %}selected{% endif %}>
+                    {{ w.start|date:"d M Y" }} → {{ w.end|date:"d M Y" }}
+                </option>
+                {% endfor %}
+            </select>
+        </form>
+
+        <div class="export-buttons">
+            <a href="{% url 'users:export_csv' %}?start={{ selected_start|date:'Y-m-d' }}&end={{ selected_end|date:'Y-m-d' }}" class="export-btn csv-btn">
+                📄 Export CSV
+            </a>
+            <a href="{% url 'users:export_pdf' %}?start={{ selected_start|date:'Y-m-d' }}&end={{ selected_end|date:'Y-m-d' }}" class="export-btn pdf-btn">
+                📑 Export PDF
+            </a>
+        </div>
     </div>
-    <div class="stat-card late">
-        <div class="stat-value">{{ late|default:"0" }}</div>
-        <div class="stat-label">⚠️ Late</div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card present">
+            <div class="stat-value">{{ present|default:"0" }}</div>
+            <div class="stat-label">✅ Present</div>
+        </div>
+        <div class="stat-card absent">
+            <div class="stat-value">{{ absent|default:"0" }}</div>
+            <div class="stat-label">❌ Absent</div>
+        </div>
+        <div class="stat-card late">
+            <div class="stat-value">{{ late|default:"0" }}</div>
+            <div class="stat-label">⚠️ Late</div>
+        </div>
+        <div class="stat-card out">
+            <div class="stat-value">{{ out|default:"0" }}</div>
+            <div class="stat-label">🏃 Early Departure</div>
+        </div>
     </div>
-    <div class="stat-card out">
-        <div class="stat-value">{{ out|default:"0" }}</div>
-        <div class="stat-label">🏃 Early Departure</div>
+
+    <!-- Table Card -->
+    <div class="table-card">
+        <div class="table-wrapper">
+            <table class="attendance-table">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Check-In</th>
+                        <th>Check-Out</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in attendance %}
+                    <tr>
+                        <td><strong>{{ a.employee.name }}</strong></td>
+                        <td>{{ a.date|date:"d M Y" }}</td>
+                        <td>
+                            <span class="status-badge status-{{ a.status|lower }}">
+                                {% if a.status == 'present' %}✓ Present
+                                {% elif a.status == 'absent' %}✗ Absent
+                                {% elif a.status == 'late' %}⚠ Late
+                                {% elif a.status == 'early_departure' %}🏃 Early Departure
+                                {% else %}{{ a.status|title }}
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td>{{ a.check_in|default:"—" }}</td>
+                        <td>{{ a.check_out|default:"—" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="empty-state">No attendance data available for this period</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+
 </div>
 
-<!-- TABLE -->
-<div class="table-wrapper">
-    <table class="attendance-table">
-        <thead>
-            <tr>
-                <th>Employee</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Check-In</th>
-                <th>Check-Out</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for a in attendance %}
-            <tr>
-                <td>{{ a.employee.name }}</td>
-                <td>{{ a.date|date:"d M Y" }}</td>
-                <td>
-                    <span class="status-badge status-{{ a.status|lower }}">
-                        {% if a.status == 'present' %}✓ Present
-                        {% elif a.status == 'absent' %}✗ Absent
-                        {% elif a.status == 'late' %}⚠ Late
-                        {% elif a.status == 'early_departure' %}🏃 Early Departure
-                        {% else %}{{ a.status|title }}
-                        {% endif %}
-                    </span>
-                </td>
-                <td>{{ a.check_in|default:"—" }}</td>
-                <td>{{ a.check_out|default:"—" }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="5" class="empty-state">No attendance data available for this period</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+<script>
+function toggleMenu() {
+    document.getElementById("navMenu").classList.toggle("show");
+}
+
+// Close mobile menu on link click
+document.querySelectorAll('.nav-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            document.getElementById("navMenu").classList.remove("show");
+        }
+    });
+});
+</script>
 
 </body>
 </html>
