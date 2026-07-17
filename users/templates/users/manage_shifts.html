@@ -165,25 +165,13 @@
         }
 
         @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-12px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes slideUp {
-            from {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
         }
 
         .alert-info {
@@ -204,7 +192,6 @@
             color: var(--red);
         }
 
-        /* Dismiss button */
         .alert .btn-close {
             position: absolute;
             top: 50%;
@@ -225,14 +212,6 @@
         .alert .btn-close:hover {
             opacity: 1;
             background: rgba(0, 0, 0, 0.05);
-        }
-
-        .alert-success .btn-close:hover {
-            background: rgba(16, 185, 129, 0.1);
-        }
-
-        .alert-error .btn-close:hover {
-            background: rgba(239, 68, 68, 0.1);
         }
 
         /* ================= MAIN CONTENT ================= */
@@ -460,6 +439,91 @@
             color: var(--text-secondary);
         }
 
+        /* ================= POPUP / TOAST ================= */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 30px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .toast {
+            background: var(--card-bg);
+            border-left: 4px solid var(--green);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            box-shadow: var(--shadow-md);
+            animation: slideInRight 0.4s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            border: 1px solid var(--border);
+        }
+
+        .toast-error {
+            border-left-color: var(--red);
+        }
+
+        .toast-success {
+            border-left-color: var(--green);
+        }
+
+        .toast-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .toast-message {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 0 4px;
+            flex-shrink: 0;
+            margin-top: -4px;
+        }
+
+        .toast-close:hover {
+            color: var(--text-primary);
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideOutRight {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(60px); }
+        }
+
+        .toast.removing {
+            animation: slideOutRight 0.3s ease forwards;
+        }
+
         /* ================= RESPONSIVE ================= */
         @media (max-width: 768px) {
             .top-bar-container {
@@ -505,13 +569,11 @@
             .assign-form select, .assign-form button {
                 width: 100%;
             }
-            .alert {
-                padding: 12px 14px;
-                font-size: 13px;
-            }
-            .alert .btn-close {
-                font-size: 18px;
-                right: 8px;
+            .toast-container {
+                right: 16px;
+                left: 16px;
+                max-width: none;
+                top: 70px;
             }
         }
     </style>
@@ -553,6 +615,9 @@
     {% endif %}
 </div>
 
+<!-- ================= TOAST CONTAINER ================= -->
+<div class="toast-container" id="toastContainer"></div>
+
 <!-- ================= MAIN CONTENT ================= -->
 <div class="main-container">
     <div class="page-header">
@@ -574,7 +639,7 @@
         <!-- LEFT: Create Shift -->
         <div class="card">
             <h2>➕ Create New Shift</h2>
-            <form method="POST" action="{% url 'users:manage_shifts' %}">
+            <form method="POST" action="{% url 'users:manage_shifts' %}" onsubmit="return handleCreateShift(event)">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="create">
                 <div class="form-group">
@@ -624,11 +689,11 @@
                                 <td>{{ shift.end_time|time:"h:i A" }}</td>
                                 <td><span class="badge">{{ shift.employees.count }}</span></td>
                                 <td>
-                                    <form method="POST" action="{% url 'users:manage_shifts' %}" style="display:inline;">
+                                    <form method="POST" action="{% url 'users:manage_shifts' %}" style="display:inline;" onsubmit="return confirm('Delete {{ shift.name }}? This will unassign all employees.')">
                                         {% csrf_token %}
                                         <input type="hidden" name="action" value="delete">
                                         <input type="hidden" name="shift_id" value="{{ shift.id }}">
-                                        <button type="submit" class="btn-danger" onclick="return confirm('Delete {{ shift.name }}? This will unassign all employees.')">Delete</button>
+                                        <button type="submit" class="btn-danger">Delete</button>
                                     </form>
                                 </td>
                             </tr>
@@ -665,10 +730,10 @@
                     </thead>
                     <tbody>
                         {% for employee in employees %}
-                        <tr>
+                        <tr id="employee-row-{{ employee.id }}">
                             <td><strong>{{ employee.name }}</strong></td>
                             <td>{{ employee.department|default:"—" }}</td>
-                            <td>
+                            <td id="shift-display-{{ employee.id }}">
                                 {% if employee.assigned_shift %}
                                     <span class="shift-assigned">✅ {{ employee.assigned_shift.name }}</span>
                                 {% else %}
@@ -676,10 +741,10 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <form method="POST" action="{% url 'users:assign_employee_shift' %}" class="assign-form">
+                                <form class="assign-form" onsubmit="return assignShift(event, {{ employee.id }})">
                                     {% csrf_token %}
                                     <input type="hidden" name="employee_id" value="{{ employee.id }}">
-                                    <select name="shift_id">
+                                    <select name="shift_id" id="shift-select-{{ employee.id }}">
                                         <option value="">— No Shift —</option>
                                         {% for shift in shifts %}
                                         <option value="{{ shift.id }}" {% if employee.assigned_shift and employee.assigned_shift.id == shift.id %}selected{% endif %}>
@@ -721,6 +786,22 @@
 
 <!-- ================= JAVASCRIPT ================= -->
 <script>
+// ========== CSRF TOKEN ==========
+function getCSRF() {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.substring(0, 10) === ('csrftoken' + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(10));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 // ========== NAVIGATION TOGGLE ==========
 function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
@@ -738,21 +819,16 @@ document.querySelectorAll('.nav-menu a').forEach(link => {
 function dismissMessage(button) {
     const alert = button.closest('.alert');
     if (alert) {
-        // Animate out
         alert.style.animation = 'slideUp 0.3s ease forwards';
-        
-        // Remove after animation
         setTimeout(function() {
             alert.remove();
         }, 300);
     }
 }
 
-// ========== DISMISS BY CLICKING ANYWHERE ON MESSAGE (Optional) ==========
-// Click anywhere on the message to dismiss it (except buttons)
+// Click anywhere on message to dismiss
 document.querySelectorAll('.alert').forEach(function(alert) {
     alert.addEventListener('click', function(e) {
-        // Don't dismiss if clicking a button, link, or the close button
         if (!e.target.closest('button') && !e.target.closest('a') && !e.target.closest('.btn-close')) {
             const btn = this.querySelector('.btn-close');
             if (btn) {
@@ -762,7 +838,106 @@ document.querySelectorAll('.alert').forEach(function(alert) {
     });
 });
 
-// ========== KEYBOARD SHORTCUT: ESC to dismiss all messages ==========
+// ========== TOAST / POPUP SYSTEM ==========
+function showToast(title, message, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    
+    const icons = {
+        success: '✅',
+        error: '❌',
+        info: 'ℹ️'
+    };
+    
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `
+        <div class="toast-icon">${icons[type] || 'ℹ️'}</div>
+        <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            <div class="toast-message">${message}</div>
+        </div>
+        <button class="toast-close" onclick="removeToast(this)">✕</button>
+    `;
+    
+    container.appendChild(toast);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        removeToast(toast.querySelector('.toast-close'));
+    }, 5000);
+}
+
+function removeToast(button) {
+    const toast = button.closest('.toast');
+    if (toast) {
+        toast.classList.add('removing');
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
+    }
+}
+
+// ========== ASSIGN SHIFT (AJAX) ==========
+function assignShift(event, employeeId) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    const shiftId = formData.get('shift_id');
+    const shiftSelect = document.getElementById(`shift-select-${employeeId}`);
+    const shiftDisplay = document.getElementById(`shift-display-${employeeId}`);
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    // Disable button while processing
+    submitBtn.disabled = true;
+    submitBtn.textContent = '⏳ Processing...';
+    
+    // Send AJAX request
+    fetch('/assign-employee-shift/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCSRF(),
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update the display
+            const shiftName = shiftSelect.options[shiftSelect.selectedIndex]?.text || 'No Shift';
+            if (shiftId) {
+                shiftDisplay.innerHTML = `<span class="shift-assigned">✅ ${shiftName}</span>`;
+            } else {
+                shiftDisplay.innerHTML = `<span class="shift-none">📌 Fixed Schedule</span>`;
+            }
+            
+            // Show success toast
+            showToast('✅ Shift Assigned', data.message, 'success');
+        } else {
+            showToast('❌ Error', data.error || 'Failed to assign shift', 'error');
+        }
+    })
+    .catch(error => {
+        showToast('❌ Error', 'Network error: ' + error.message, 'error');
+    })
+    .finally(() => {
+        // Re-enable button
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Assign';
+    });
+    
+    return false;
+}
+
+// ========== HANDLE CREATE SHIFT ==========
+function handleCreateShift(event) {
+    // Let the form submit normally - it will reload with messages
+    // The messages will show as alerts at the top
+    return true;
+}
+
+// ========== ESC TO DISMISS ALL MESSAGES ==========
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         const alerts = document.querySelectorAll('.alert');
@@ -777,13 +952,10 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// ========== MESSAGES STAY UNTIL DISMISSED ==========
-// No auto-hide timer - messages stay until user dismisses them
-
-console.log('✅ Messages will stay until dismissed manually');
-console.log('   • Click ✕ to dismiss a message');
-console.log('   • Click anywhere on the message to dismiss it');
-console.log('   • Press ESC to dismiss all messages');
+console.log('✅ Manage Shifts loaded');
+console.log('   • Assign shifts via AJAX with popup notifications');
+console.log('   • Create/delete shifts via traditional POST');
+console.log('   • Messages stay until dismissed');
 </script>
 
 </body>
